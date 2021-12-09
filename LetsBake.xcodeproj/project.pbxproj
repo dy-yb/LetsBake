@@ -19,6 +19,9 @@
 		6182F2F52761C4AE001848E0 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2F42761C4AE001848E0 /* TimerViewController.swift */; };
 		6182F2F72761C4BC001848E0 /* DiaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2F62761C4BC001848E0 /* DiaryViewController.swift */; };
 		6182F2FA2761C799001848E0 /* UITabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2F92761C799001848E0 /* UITabBar.swift */; };
+		6182F2FC276207C4001848E0 /* ExchangerResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2FB276207C4001848E0 /* ExchangerResultViewController.swift */; };
+		6182F30027621557001848E0 /* ExchangeResultTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2FF27621557001848E0 /* ExchangeResultTableCell.swift */; };
+		6182F303276215FA001848E0 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F302276215FA001848E0 /* UIView.swift */; };
 		A20FC0B71685498AF643AEE4 /* Pods_LetsBake.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56CE610B7260C570A4242F9A /* Pods_LetsBake.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +41,9 @@
 		6182F2F42761C4AE001848E0 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 		6182F2F62761C4BC001848E0 /* DiaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryViewController.swift; sourceTree = "<group>"; };
 		6182F2F92761C799001848E0 /* UITabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBar.swift; sourceTree = "<group>"; };
+		6182F2FB276207C4001848E0 /* ExchangerResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangerResultViewController.swift; sourceTree = "<group>"; };
+		6182F2FF27621557001848E0 /* ExchangeResultTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeResultTableCell.swift; sourceTree = "<group>"; };
+		6182F302276215FA001848E0 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		91B266D82BA4A6BFA2B92495 /* Pods-LetsBake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsBake.release.xcconfig"; path = "Target Support Files/Pods-LetsBake/Pods-LetsBake.release.xcconfig"; sourceTree = "<group>"; };
 		E652DCB799530F8D15050E25 /* Pods-LetsBake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsBake.debug.xcconfig"; path = "Target Support Files/Pods-LetsBake/Pods-LetsBake.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -109,7 +115,7 @@
 		6182F2EC275F6AE2001848E0 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6182F2D72755FEB0001848E0 /* ExchangerViewController.swift */,
+				6182F3012762155F001848E0 /* Exchanger */,
 				6182F2F42761C4AE001848E0 /* TimerViewController.swift */,
 				6182F2F62761C4BC001848E0 /* DiaryViewController.swift */,
 			);
@@ -120,8 +126,19 @@
 			isa = PBXGroup;
 			children = (
 				6182F2F92761C799001848E0 /* UITabBar.swift */,
+				6182F302276215FA001848E0 /* UIView.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		6182F3012762155F001848E0 /* Exchanger */ = {
+			isa = PBXGroup;
+			children = (
+				6182F2D72755FEB0001848E0 /* ExchangerViewController.swift */,
+				6182F2FB276207C4001848E0 /* ExchangerResultViewController.swift */,
+				6182F2FF27621557001848E0 /* ExchangeResultTableCell.swift */,
+			);
+			path = Exchanger;
 			sourceTree = "<group>";
 		};
 		656C48F0932D05CF977556DD /* Pods */ = {
@@ -259,11 +276,14 @@
 			files = (
 				6182F2D82755FEB0001848E0 /* ExchangerViewController.swift in Sources */,
 				6182F2F12761C467001848E0 /* ExchangerViewModel.swift in Sources */,
+				6182F303276215FA001848E0 /* UIView.swift in Sources */,
 				6182F2EF275F6C13001848E0 /* Ratio.swift in Sources */,
 				6182F2F52761C4AE001848E0 /* TimerViewController.swift in Sources */,
+				6182F30027621557001848E0 /* ExchangeResultTableCell.swift in Sources */,
 				6182F2F72761C4BC001848E0 /* DiaryViewController.swift in Sources */,
 				6182F2D42755FEB0001848E0 /* AppDelegate.swift in Sources */,
 				6182F2D62755FEB0001848E0 /* SceneDelegate.swift in Sources */,
+				6182F2FC276207C4001848E0 /* ExchangerResultViewController.swift in Sources */,
 				6182F2FA2761C799001848E0 /* UITabBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
