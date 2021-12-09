@@ -11,12 +11,43 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   var window: UIWindow?
 
-
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-    // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-    // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-    // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-    guard let _ = (scene as? UIWindowScene) else { return }
+    guard let windowScene = (scene as? UIWindowScene) else { return }
+    window = UIWindow(windowScene: windowScene)
+
+    let rootView = DiaryViewController()
+    let timerView = TimerViewController()
+    let exchangerView = ExchangerViewController()
+    let diaryView = UINavigationController(rootViewController: rootView)
+
+    let tabBarController = UITabBarController()
+    self.window?.rootViewController = tabBarController
+
+    tabBarController.setViewControllers([diaryView, timerView, exchangerView], animated: false)
+
+    // MARK: TabBar Style
+
+    tabBarController.tabBar.layer.applyShadow(color: .gray, alpha: 0.3, shadowX: 0, shadowY: 0, blur: 12)
+    UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .normal)
+    UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.blue], for: .selected)
+
+    if let tbc = self.window?.rootViewController as? UITabBarController {
+      if let tbItems = tbc.tabBar.items {
+        tbItems[0].image = UIImage(named: "ic_diary_50_off")?.withRenderingMode(.alwaysOriginal)
+        tbItems[0].selectedImage = UIImage(named: "ic_diary_50_on")?.withRenderingMode(.alwaysOriginal)
+        tbItems[0].title = "일지"
+
+        tbItems[1].image = UIImage(named: "ic_timer_50_off")?.withRenderingMode(.alwaysOriginal)
+        tbItems[1].selectedImage = UIImage(named: "ic_timer_50_on")?.withRenderingMode(.alwaysOriginal)
+        tbItems[1].title = "타이머"
+
+        tbItems[2].image = UIImage(named: "ic_exchanger_50_off")?.withRenderingMode(.alwaysOriginal)
+        tbItems[2].selectedImage = UIImage(named: "ic_exchanger_50_on")?.withRenderingMode(.alwaysOriginal)
+        tbItems[2].title = "계량 도우미"
+      }
+      tbc.tabBar.backgroundColor = .white
+    }
+    window?.makeKeyAndVisible()
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {
@@ -47,6 +78,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // to restore the scene back to its current state.
   }
 
-
 }
-
