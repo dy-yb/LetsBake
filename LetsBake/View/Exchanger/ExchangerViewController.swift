@@ -71,14 +71,15 @@ class ExchangerViewController: UIViewController {
     button.layer.cornerRadius = 10
     button.backgroundColor = .lightGray
     button.setTitle("결과보기", for: .normal)
+    button.addTarget(self, action: #selector(resultButtonEvent), for: .touchUpInside)
     return button
   }()
 
   // MARK: - Lifecycle
 
   override func viewDidLayoutSubviews() {
-    setUnderLineToTextField(textField: numberTextField)
-    setUnderLineToTextField(textField: unitsTextField)
+    numberTextField.setUnderLineToTextField()
+    unitsTextField.setUnderLineToTextField()
   }
 
   override func viewDidLoad() {
@@ -94,7 +95,7 @@ class ExchangerViewController: UIViewController {
   func setView() {
     view.backgroundColor = .white
     navigationItem.title = "계량 도우미"
-    resultButton.addTarget(self, action: #selector(resultButtonEvent), for: .touchUpInside)
+
     view.addSubview(questionLabel)
     view.addSubview(ingredientsTextField)
     view.addSubview(numberTextField)
@@ -102,13 +103,13 @@ class ExchangerViewController: UIViewController {
     view.addSubview(resultButton)
   }
 
-  func setUnderLineToTextField(textField: UITextField) {
-    let border = CALayer()
-    border.frame = CGRect(x: 0, y: textField.frame.size.height-1, width: textField.frame.width, height: 1)
-    border.backgroundColor = UIColor.darkGray.cgColor
-    textField.layer.addSublayer(border)
-    textField.backgroundColor = .white
-  }
+//  func setUnderLineToTextField(textField: UITextField) {
+//    let border = CALayer()
+//    border.frame = CGRect(x: 0, y: textField.frame.size.height-1, width: textField.frame.width, height: 1)
+//    border.backgroundColor = UIColor.darkGray.cgColor
+//    textField.layer.addSublayer(border)
+//    textField.backgroundColor = .white
+//  }
 
   func layout() {
     NSLayoutConstraint.activate([

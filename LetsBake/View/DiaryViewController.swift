@@ -36,4 +36,3 @@ class DiaryViewController: UIViewController {
     ])
   }
 }
-

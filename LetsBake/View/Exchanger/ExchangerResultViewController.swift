@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 class ExchangerResultViewController: UIViewController {
+
   // MARK: - Properties
 
   static let cellID = "exchangeTableCell"
@@ -65,7 +66,7 @@ class ExchangerResultViewController: UIViewController {
       dimmedView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
 
       bottomSheetView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-      bottomSheetView.heightAnchor.constraint(equalToConstant: 115),
+      bottomSheetView.heightAnchor.constraint(equalToConstant: 300),
       bottomSheetView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       bottomSheetView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ])
