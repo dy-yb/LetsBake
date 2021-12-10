@@ -51,6 +51,11 @@ class ExchangerResultViewController: UIViewController {
     layout()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    showBottomSheet()
+  }
+
   // MARK: - Layout
 
   func setView() {
@@ -76,6 +81,18 @@ class ExchangerResultViewController: UIViewController {
       resultTableView.leftAnchor.constraint(equalTo: resultBottomSheetView.leftAnchor)
     ])
   }
+
+  // MARK: Functions
+
+  func showBottomSheet() {
+    resultBottomSheetView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+
+    UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
+      self.dimmedView.alpha = 0.7
+      self.view.layoutIfNeeded()
+    }, completion: nil)
+  }
+
 }
 
 extension ExchangerResultViewController: UITableViewDataSource {
