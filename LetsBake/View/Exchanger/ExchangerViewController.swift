@@ -94,22 +94,12 @@ class ExchangerViewController: UIViewController {
 
   func setView() {
     view.backgroundColor = .white
-    navigationItem.title = "계량 도우미"
-
     view.addSubview(questionLabel)
     view.addSubview(ingredientsTextField)
     view.addSubview(numberTextField)
     view.addSubview(unitsTextField)
     view.addSubview(resultButton)
   }
-
-//  func setUnderLineToTextField(textField: UITextField) {
-//    let border = CALayer()
-//    border.frame = CGRect(x: 0, y: textField.frame.size.height-1, width: textField.frame.width, height: 1)
-//    border.backgroundColor = UIColor.darkGray.cgColor
-//    textField.layer.addSublayer(border)
-//    textField.backgroundColor = .white
-//  }
 
   func layout() {
     NSLayoutConstraint.activate([
@@ -139,8 +129,7 @@ class ExchangerViewController: UIViewController {
   }
 
   @objc func resultButtonEvent() {
-    let exchangerResultViewController = ExchangerViewController()
-
+    let exchangerResultViewController = ExchangerResultViewController()
     exchangerResultViewController.modalPresentationStyle = .overFullScreen
     self.present(exchangerResultViewController, animated: false, completion: nil)
   }
@@ -176,9 +165,9 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
 
   @objc func donePicker() {
     // why..?
-//    let row = self.ingredientsPickerView.selectedRow(inComponent: 0)
-//    self.ingredientsPickerView.selectRow(row, inComponent: 0, animated: false)
-//    self.ingredientsTextField.text = self.ingredients[row]
+    //    let row = self.ingredientsPickerView.selectedRow(inComponent: 0)
+    //    self.ingredientsPickerView.selectRow(row, inComponent: 0, animated: false)
+    //    self.ingredientsTextField.text = self.ingredients[row]
     self.ingredientsTextField.resignFirstResponder()
   }
 

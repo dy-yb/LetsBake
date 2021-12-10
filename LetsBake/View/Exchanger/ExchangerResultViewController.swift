@@ -13,6 +13,7 @@ class ExchangerResultViewController: UIViewController {
   // MARK: - Properties
 
   static let cellID = "exchangeTableCell"
+  let result = returnRatios()
 
   // MARK: - UI
 
@@ -23,7 +24,7 @@ class ExchangerResultViewController: UIViewController {
     return view
   }()
 
-  let bottomSheetView: UIView = {
+  let resultBottomSheetView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
     view.backgroundColor = .white
@@ -31,7 +32,7 @@ class ExchangerResultViewController: UIViewController {
     return view
   }()
 
-  let bottomSheetTableView: UITableView = {
+  let resultTableView: UITableView = {
     let tableView = UITableView()
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.separatorColor = .white
@@ -39,9 +40,15 @@ class ExchangerResultViewController: UIViewController {
     tableView.allowsSelection = true
     return tableView
   }()
-  let label: UILabel = {
+  
+  let unitNameLabel: UILabel = {
     let label = UILabel()
-    label.text = "test"
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }()
+
+  let resultLabel: UILabel = {
+    let label = UILabel()
     return label
   }()
 
@@ -51,11 +58,13 @@ class ExchangerResultViewController: UIViewController {
     setView()
     layout()
   }
+
   // MARK: - Layout
+
   func setView() {
-    view.backgroundColor = .orange
     view.addSubview(dimmedView)
-    view.addSubview(bottomSheetView)
+    view.addSubview(resultBottomSheetView)
+    resultBottomSheetView.addSubview(resultTableView)
   }
 
   func layout() {
@@ -65,10 +74,28 @@ class ExchangerResultViewController: UIViewController {
       dimmedView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
       dimmedView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
 
-      bottomSheetView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-      bottomSheetView.heightAnchor.constraint(equalToConstant: 300),
-      bottomSheetView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-      bottomSheetView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+      resultBottomSheetView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+      resultBottomSheetView.heightAnchor.constraint(equalToConstant: 300),
+      resultBottomSheetView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+      resultBottomSheetView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+      resultTableView.topAnchor.constraint(equalTo: resultBottomSheetView.topAnchor, constant: 15),
+      resultTableView.rightAnchor.constraint(equalTo: resultBottomSheetView.rightAnchor),
+      resultTableView.bottomAnchor.constraint(equalTo: resultBottomSheetView.safeAreaLayoutGuide.bottomAnchor),
+      resultTableView.leftAnchor.constraint(equalTo: resultBottomSheetView.leftAnchor)
     ])
+  }
+}
+
+extension ExchangerResultViewController: UITableViewDelegate, UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return result.count
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let exchangeResultTableCell = tableView.dequeueReusableCell(withIdentifier: ExchangerResultViewController.cellID, for: indexPath) as? ExchangeResultTableCell else {
+      return .init()
+    }
+    return exchangeResultTableCell
   }
 }

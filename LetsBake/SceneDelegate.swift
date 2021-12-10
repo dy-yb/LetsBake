@@ -19,15 +19,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let timerView = TimerViewController()
     let exchangerView = ExchangerViewController()
 
-    let exchangeResultView = ExchangerResultViewController()
-
     let navDiaryView = UINavigationController(rootViewController: diaryView)
-    let navExchangerView = UINavigationController(rootViewController: exchangerView)
 
     let tabBarController = UITabBarController()
     self.window?.rootViewController = tabBarController
 
-    tabBarController.setViewControllers([navDiaryView, exchangeResultView, navExchangerView], animated: false)
+    tabBarController.setViewControllers([navDiaryView, timerView, exchangerView], animated: false)
 
     // MARK: TabBar Style
 

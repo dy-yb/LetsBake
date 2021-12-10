@@ -33,6 +33,7 @@ class ExchangeResultTableCell: UITableViewCell {
   required init?(coder: NSCoder) {
     super.init(coder: coder)
   }
+
   func setView() {
     contentView.backgroundColor = .orange
 
