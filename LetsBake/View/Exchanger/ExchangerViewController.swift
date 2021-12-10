@@ -71,6 +71,7 @@ class ExchangerViewController: UIViewController {
     button.layer.cornerRadius = 10
     button.backgroundColor = .lightGray
     button.setTitle("결과보기", for: .normal)
+    button.setTitleColor(.black, for: .normal)
     button.addTarget(self, action: #selector(resultButtonEvent), for: .touchUpInside)
     return button
   }()

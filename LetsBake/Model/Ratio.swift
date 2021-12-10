@@ -9,6 +9,7 @@ import Foundation
 
 struct Units {
   // let gram: Float
+  let ingredient: String
   let teaspoon: Float
   let tablespoon: Float
   let cup: Float
@@ -25,9 +26,9 @@ struct Units {
 //}
 
 func returnRatios() -> [Units] {
-  let softFlourRatio = Units(teaspoon: 0.13, tablespoon: 0.4, cup: 0.01, ounce: 0.04, milliliter: 2)
-  let midiumFlourRatio = Units(teaspoon: 0.36, tablespoon: 0.12, cup: 0.01, ounce: 0.04, milliliter: 1.82)
-  let strongFlourRatio = Units(teaspoon: 0.3, tablespoon: 0.1, cup: 0.01, ounce: 0.04, milliliter: 1.49)
+  let softFlourRatio = Units(ingredient: "박력분", teaspoon: 0.13, tablespoon: 0.4, cup: 0.01, ounce: 0.04, milliliter: 2)
+  let midiumFlourRatio = Units(ingredient: "중력분", teaspoon: 0.36, tablespoon: 0.12, cup: 0.01, ounce: 0.04, milliliter: 1.82)
+  let strongFlourRatio = Units(ingredient: "강력분", teaspoon: 0.3, tablespoon: 0.1, cup: 0.01, ounce: 0.04, milliliter: 1.49)
 
   return [softFlourRatio, midiumFlourRatio, strongFlourRatio]
 }

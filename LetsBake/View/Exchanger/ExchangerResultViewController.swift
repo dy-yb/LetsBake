@@ -13,7 +13,8 @@ class ExchangerResultViewController: UIViewController {
   // MARK: - Properties
 
   static let cellID = "exchangeTableCell"
-  let result = returnRatios()
+  let unitArray = ["그램", "킬로그램", "티스푼", "테이블스푼", "컵", "온스", "밀리리터", "리터"]
+  let resultArray = ["1 g", "0.01 kg", "0.13 tsp", "0.4 tbsp", "0.01 cup", "0.04 onz", "2 ml", "0.002 L"]
 
   // MARK: - UI
 
@@ -35,26 +36,17 @@ class ExchangerResultViewController: UIViewController {
   let resultTableView: UITableView = {
     let tableView = UITableView()
     tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.separatorColor = .white
+    tableView.separatorColor = .lightGray
+    tableView.separatorInset.right = tableView.separatorInset.left
     tableView.register(ExchangeResultTableCell.classForCoder(), forCellReuseIdentifier: cellID)
-    tableView.allowsSelection = true
+    tableView.allowsSelection = false
     return tableView
-  }()
-  
-  let unitNameLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-
-  let resultLabel: UILabel = {
-    let label = UILabel()
-    return label
   }()
 
   // MARK: - Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
+    resultTableView.dataSource = self 
     setView()
     layout()
   }
@@ -75,11 +67,10 @@ class ExchangerResultViewController: UIViewController {
       dimmedView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
 
       resultBottomSheetView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-      resultBottomSheetView.heightAnchor.constraint(equalToConstant: 300),
       resultBottomSheetView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       resultBottomSheetView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-      resultTableView.topAnchor.constraint(equalTo: resultBottomSheetView.topAnchor, constant: 15),
+      resultTableView.topAnchor.constraint(equalTo: resultBottomSheetView.topAnchor, constant: 30),
       resultTableView.rightAnchor.constraint(equalTo: resultBottomSheetView.rightAnchor),
       resultTableView.bottomAnchor.constraint(equalTo: resultBottomSheetView.safeAreaLayoutGuide.bottomAnchor),
       resultTableView.leftAnchor.constraint(equalTo: resultBottomSheetView.leftAnchor)
@@ -87,15 +78,19 @@ class ExchangerResultViewController: UIViewController {
   }
 }
 
-extension ExchangerResultViewController: UITableViewDelegate, UITableViewDataSource {
+extension ExchangerResultViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return result.count
+    return resultArray.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let exchangeResultTableCell = tableView.dequeueReusableCell(withIdentifier: ExchangerResultViewController.cellID, for: indexPath) as? ExchangeResultTableCell else {
       return .init()
     }
+
+    exchangeResultTableCell.unitNameLabel.text = unitArray[indexPath.row]
+    exchangeResultTableCell.resultLabel.text = resultArray[indexPath.row]
+
     return exchangeResultTableCell
   }
 }

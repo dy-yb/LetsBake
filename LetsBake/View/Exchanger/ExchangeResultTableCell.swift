@@ -12,15 +12,16 @@ class ExchangeResultTableCell: UITableViewCell {
   
   // MARK: UI
 
-  let ingredientLabel: UILabel = {
+  let unitNameLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.font = .boldSystemFont(ofSize: 13)
+    label.font = .boldSystemFont(ofSize: 17)
     return label
   }()
 
   let resultLabel: UILabel = {
     let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
@@ -35,12 +36,17 @@ class ExchangeResultTableCell: UITableViewCell {
   }
 
   func setView() {
-    contentView.backgroundColor = .orange
-
+    contentView.addSubview(unitNameLabel)
+    contentView.addSubview(resultLabel)
   }
 
   func layout() {
     NSLayoutConstraint.activate([
+      unitNameLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 10),
+      unitNameLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 20),
+
+      resultLabel.topAnchor.constraint(equalTo: unitNameLabel.topAnchor),
+      resultLabel.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -20)
     ])
   }
 }
