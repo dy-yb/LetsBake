@@ -62,6 +62,8 @@ class ExchangerResultViewController: UIViewController {
     view.addSubview(dimmedView)
     view.addSubview(resultBottomSheetView)
     resultBottomSheetView.addSubview(resultTableView)
+    dimmedView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:))))
+    dimmedView.isUserInteractionEnabled = true
   }
 
   func layout() {
@@ -86,13 +88,29 @@ class ExchangerResultViewController: UIViewController {
 
   func showBottomSheet() {
     resultBottomSheetView.heightAnchor.constraint(equalToConstant: 300).isActive = true
-
     UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
       self.dimmedView.alpha = 0.7
       self.view.layoutIfNeeded()
     }, completion: nil)
   }
 
+  func hideBottomSheet() {
+    print("112")
+    resultTableView.isHidden = true
+    resultBottomSheetView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+
+    UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
+      self.dimmedView.alpha = 0.0
+      self.view.layoutIfNeeded()
+    }) { _ in
+      if self.presentingViewController != nil {
+        self.dismiss(animated: false, completion: nil)
+      }
+    }
+  }
+  @objc func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
+    hideBottomSheet()
+  }
 }
 
 extension ExchangerResultViewController: UITableViewDataSource {
