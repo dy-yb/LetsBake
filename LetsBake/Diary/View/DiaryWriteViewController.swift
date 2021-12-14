@@ -13,9 +13,9 @@ class DiaryWriteViewController: UITableViewController {
 
   var titleInputCell = UITableViewCell()
   var dateInputCell = UITableViewCell()
-  var ingredientsInputCell = UITableViewCell()
-  var reciepeInputCell = UITableViewCell()
-  var starRatingInputCell = UITableViewCell()
+//  var ingredientsInputCell = UITableViewCell()
+//  var reciepeInputCell = UITableViewCell()
+//  var starRatingInputCell = UITableViewCell()
 
   var titleTextField: UITextField = {
     let textField = UITextField()
@@ -25,32 +25,40 @@ class DiaryWriteViewController: UITableViewController {
     return textField
   }()
 
-  let dateTextField: UITextField = {
-    let textField = UITextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    textField.placeholder = "베이킹한 날짜"
-    textField.frame = CGRect(x: 0, y: 0, width: 414, height: 44)
-    return textField
+  let datePicker: UIDatePicker = {
+    let datePicker = UIDatePicker()
+    datePicker.translatesAutoresizingMaskIntoConstraints = false
+    datePicker.preferredDatePickerStyle = .automatic
+    datePicker.datePickerMode = .dateAndTime
+    datePicker.locale = Locale(identifier: "ko-KR")
+    datePicker.addTarget(self, action: #selector(hadleDatePicker(_:)), for: .valueChanged)
+    return datePicker
   }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-      navigationItem.title = "일지 작성"
-      tableView.dataSource = self
-      tableView.delegate = self
-      setView()
-      layout()
+  let button: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.backgroundColor = .blue
+    return button
+  }()
 
-    }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    navigationItem.title = "일지 작성"
+    tableView.dataSource = self
+    tableView.delegate = self
+    setView()
+    layout()
+  }
 
   // MARK: - Layout
+
   func setView() {
     self.tableView.dataSource = self
     titleInputCell.backgroundColor = .lightGray
     titleInputCell.addSubview(titleTextField)
-    dateInputCell.addSubview(dateTextField)
-
+    dateInputCell.addSubview(datePicker)
+    view.addSubview(button)
   }
 
   func layout() {
@@ -60,11 +68,19 @@ class DiaryWriteViewController: UITableViewController {
       titleTextField.rightAnchor.constraint(equalTo: titleInputCell.contentView.rightAnchor),
       titleTextField.bottomAnchor.constraint(equalTo: titleInputCell.contentView.bottomAnchor),
 
-      dateTextField.topAnchor.constraint(equalTo: dateInputCell.contentView.topAnchor),
-      dateTextField.leftAnchor.constraint(equalTo: dateInputCell.contentView.leftAnchor),
-      dateTextField.rightAnchor.constraint(equalTo: dateInputCell.contentView.rightAnchor),
-      dateTextField.bottomAnchor.constraint(equalTo: dateInputCell.contentView.bottomAnchor)
+      datePicker.topAnchor.constraint(equalTo: dateInputCell.contentView.topAnchor),
+      datePicker.leftAnchor.constraint(equalTo: dateInputCell.contentView.leftAnchor),
+      datePicker.rightAnchor.constraint(equalTo: dateInputCell.contentView.rightAnchor),
+      datePicker.bottomAnchor.constraint(equalTo: dateInputCell.contentView.bottomAnchor),
+
+      button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      button.widthAnchor.constraint(equalToConstant: 144),
+      button.heightAnchor.constraint(equalToConstant: 40)
     ])
+  }
+
+  @objc func hadleDatePicker(_ sender: UIDatePicker) {
+    print(sender.date)
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -73,8 +89,8 @@ class DiaryWriteViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch(indexPath.row) {
-    case 0: return self.titleInputCell  // section 0, row 0 is the first name
-    case 1: return self.dateInputCell  // section 0, row 1 is the last name
+    case 0: return self.titleInputCell
+    case 1: return self.dateInputCell
     default: fatalError("Unknown row in section 0")
     }
   }
