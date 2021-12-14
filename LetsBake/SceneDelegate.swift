@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
 
-    let diaryView = DiaryViewController()
+    let diaryView = DiaryWriteViewController()
     let timerView = TimerViewController()
     let exchangerView = ExchangerViewController()
 

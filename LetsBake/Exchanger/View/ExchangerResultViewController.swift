@@ -40,6 +40,7 @@ class ExchangerResultViewController: UIViewController {
     tableView.separatorInset.right = tableView.separatorInset.left
     tableView.register(ExchangeResultTableCell.classForCoder(), forCellReuseIdentifier: cellID)
     tableView.allowsSelection = false
+    tableView.rowHeight = 44
     return tableView
   }()
 

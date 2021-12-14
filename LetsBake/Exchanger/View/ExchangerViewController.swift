@@ -105,7 +105,7 @@ class ExchangerViewController: UIViewController {
   func layout() {
     NSLayoutConstraint.activate([
       questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 65),
-      questionLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 33),
+      questionLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 33),
 
       ingredientsTextField.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 20),
       ingredientsTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -222),
@@ -146,7 +146,7 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
   }
 
   func configToolbar() {
-    let toolBar = UIToolbar()
+    let toolBar = UIToolbar(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.width, height: 44)))
     toolBar.barStyle = UIBarStyle.default
     toolBar.isTranslucent = true
     toolBar.tintColor = .white

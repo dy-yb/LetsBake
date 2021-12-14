@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DiaryViewController: UIViewController {
+class DiaryCollectionViewController: UIViewController {
   // MARK: - Properties
   // MARK: - UI
   let noteLabel: UILabel = {
