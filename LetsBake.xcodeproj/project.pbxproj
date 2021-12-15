@@ -24,6 +24,9 @@
 		6182F303276215FA001848E0 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F302276215FA001848E0 /* UIView.swift */; };
 		6182F30527623226001848E0 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F30427623226001848E0 /* UITextField.swift */; };
 		6182F30F27678817001848E0 /* DiaryWriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F30E27678817001848E0 /* DiaryWriteViewController.swift */; };
+		6182F3172768C405001848E0 /* DiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F3162768C405001848E0 /* DiaryCollectionViewCell.swift */; };
+		6182F3192769FFE4001848E0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F3182769FFE4001848E0 /* UIColor.swift */; };
+		6182F31B276A1765001848E0 /* DiaryIngredientsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F31A276A1765001848E0 /* DiaryIngredientsTableViewCell.swift */; };
 		96EBEB9F79360C3629DCA791 /* Pods_LetsBake.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F45EA3DC6A3E9A686344595 /* Pods_LetsBake.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +51,9 @@
 		6182F302276215FA001848E0 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		6182F30427623226001848E0 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		6182F30E27678817001848E0 /* DiaryWriteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryWriteViewController.swift; sourceTree = "<group>"; };
+		6182F3162768C405001848E0 /* DiaryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewCell.swift; sourceTree = "<group>"; };
+		6182F3182769FFE4001848E0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		6182F31A276A1765001848E0 /* DiaryIngredientsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryIngredientsTableViewCell.swift; sourceTree = "<group>"; };
 		8F45EA3DC6A3E9A686344595 /* Pods_LetsBake.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LetsBake.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F691CB0BC95D2EC2C2FF6992 /* Pods-LetsBake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsBake.debug.xcconfig"; path = "Target Support Files/Pods-LetsBake/Pods-LetsBake.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,7 +126,9 @@
 			isa = PBXGroup;
 			children = (
 				6182F2F62761C4BC001848E0 /* DiaryCollectionViewController.swift */,
+				6182F3162768C405001848E0 /* DiaryCollectionViewCell.swift */,
 				6182F30E27678817001848E0 /* DiaryWriteViewController.swift */,
+				6182F31A276A1765001848E0 /* DiaryIngredientsTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -131,6 +139,7 @@
 				6182F2F92761C799001848E0 /* UITabBar.swift */,
 				6182F302276215FA001848E0 /* UIView.swift */,
 				6182F30427623226001848E0 /* UITextField.swift */,
+				6182F3182769FFE4001848E0 /* UIColor.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -348,8 +357,11 @@
 				6182F2F12761C467001848E0 /* ExchangerViewModel.swift in Sources */,
 				6182F303276215FA001848E0 /* UIView.swift in Sources */,
 				6182F2EF275F6C13001848E0 /* Ratio.swift in Sources */,
+				6182F3192769FFE4001848E0 /* UIColor.swift in Sources */,
 				6182F2F52761C4AE001848E0 /* TimerViewController.swift in Sources */,
+				6182F31B276A1765001848E0 /* DiaryIngredientsTableViewCell.swift in Sources */,
 				6182F30027621557001848E0 /* ExchangeResultTableCell.swift in Sources */,
+				6182F3172768C405001848E0 /* DiaryCollectionViewCell.swift in Sources */,
 				6182F2F72761C4BC001848E0 /* DiaryCollectionViewController.swift in Sources */,
 				6182F2D42755FEB0001848E0 /* AppDelegate.swift in Sources */,
 				6182F30F27678817001848E0 /* DiaryWriteViewController.swift in Sources */,

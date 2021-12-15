@@ -9,30 +9,94 @@ import UIKit
 
 class DiaryCollectionViewController: UIViewController {
   // MARK: - Properties
+
+  static let cellID = "DiaryCollectionViewCell"
+
   // MARK: - UI
-  let noteLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "Diary View"
-    return label
+
+  lazy var rightPlusButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action:  #selector(writeDiary(_:)))
+    button.tag = 1
+    return button
   }()
+
+  let diaryCollectionView: UICollectionView = {
+    let flowLayout = UICollectionViewFlowLayout.init()
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+    flowLayout.scrollDirection = .vertical
+    collectionView.translatesAutoresizingMaskIntoConstraints = false
+    collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: DiaryCollectionViewController.cellID)
+    return collectionView
+  }()
+
   // MARK: - Lifecycle
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setView()
     layout()
   }
+
   // MARK: - Layout
+
   func setView() {
     view.backgroundColor = .brown
-    view.addSubview(noteLabel)
     navigationItem.title = "Diary"
+    navigationItem.rightBarButtonItem = self.rightPlusButton
+    diaryCollectionView.dataSource = self
+    view.addSubview(diaryCollectionView)
   }
 
   func layout() {
     NSLayoutConstraint.activate([
-      noteLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      noteLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+      diaryCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      diaryCollectionView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+      diaryCollectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+      diaryCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ])
+  }
+
+  @objc func writeDiary(_ send: Any) {
+//    let diaryWriteViewController = DiaryWriteViewController()
+    self.navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
+    print("called")
+  }
+}
+
+// MARK: - Extensions
+
+extension DiaryCollectionViewController: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryCollectionViewController.cellID, for: indexPath) as? DiaryCollectionViewCell else {
+      return UICollectionViewCell()
+    }
+    return cell
+  }
+
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 30
+  }
+}
+
+extension DiaryCollectionViewController: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    // view.frame.width - (5(3개의 cell 사이 공백(2.5*2)) + 40(collectionView와 view.frame 간 간격(20*2)) + 5(collectionView 내부 margin))
+
+    return CGSize(width: 100, height: 400)
+  }
+
+  // 셀 간 상하 간격
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return 5
+  }
+
+  // 셀 간 좌우 간격
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    return 5
+  }
+
+  // collectionView internal margin
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
   }
 }
