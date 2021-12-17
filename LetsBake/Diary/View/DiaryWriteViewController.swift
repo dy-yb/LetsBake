@@ -48,7 +48,6 @@ class DiaryWriteViewController: UIViewController {
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.placeholder = "ex. 얼그레이 마들렌"
     textField.isUserInteractionEnabled = true
-
     return textField
   }()
 
@@ -116,6 +115,7 @@ class DiaryWriteViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     navigationItem.title = "일지 작성"
+    self.hidesBottomBarWhenPushed = true
     setView()
     layout()
   }
@@ -128,7 +128,7 @@ class DiaryWriteViewController: UIViewController {
 
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
-    contentView.addSubview(doneButton)
+    view.addSubview(doneButton)
     contentView.addSubview(titleInputStackView)
     contentView.addSubview(dateInputStackView)
     contentView.addSubview(ingredientsInputLabel)
@@ -190,9 +190,9 @@ class DiaryWriteViewController: UIViewController {
 //
 //      addIngredintButton.topAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 10),
 
-      doneButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      doneButton.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-      doneButton.heightAnchor.constraint(equalToConstant: 80)
+      doneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      doneButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
+      doneButton.heightAnchor.constraint(equalToConstant: 100)
     ])
   }
 
@@ -200,7 +200,7 @@ class DiaryWriteViewController: UIViewController {
     print(sender.date)
   }
 
-  @objc func addIngredients(_ sender: Any){
+  @objc func addIngredients(_ sender: Any) {
     print("Ingredient")
   }
 }

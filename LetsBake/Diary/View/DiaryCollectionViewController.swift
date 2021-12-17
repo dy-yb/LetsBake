@@ -58,6 +58,7 @@ class DiaryCollectionViewController: UIViewController {
 
   @objc func writeDiary(_ send: Any) {
 //    let diaryWriteViewController = DiaryWriteViewController()
+    self.hidesBottomBarWhenPushed = true
     self.navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
     print("called")
   }
