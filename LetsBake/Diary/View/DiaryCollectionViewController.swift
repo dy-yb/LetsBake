@@ -57,7 +57,6 @@ class DiaryCollectionViewController: UIViewController {
   }
 
   @objc func writeDiary(_ send: Any) {
-//    let diaryWriteViewController = DiaryWriteViewController()
     self.hidesBottomBarWhenPushed = true
     self.navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
     print("called")
@@ -75,15 +74,13 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 30
+    return 3
   }
 }
 
 extension DiaryCollectionViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    // view.frame.width - (5(3개의 cell 사이 공백(2.5*2)) + 40(collectionView와 view.frame 간 간격(20*2)) + 5(collectionView 내부 margin))
-
-    return CGSize(width: 100, height: 400)
+    return CGSize(width: (view.frame.width), height: 100)
   }
 
   // 셀 간 상하 간격
