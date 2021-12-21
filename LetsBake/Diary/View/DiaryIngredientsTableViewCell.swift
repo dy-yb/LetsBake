@@ -50,20 +50,20 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   }
 
   func layout() {
-    contentView.layer.cornerRadius = 10
+//    contentView.layer.cornerRadius = 10
     ingredientTextField.frame = CGRect(x: 0, y: 0, width: (contentView.frame.width - 20), height: 30)
     NSLayoutConstraint.activate([
 
       ingredientTextField.topAnchor.constraint(equalTo: contentView.topAnchor),
-      ingredientTextField.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -20),
-      ingredientTextField.heightAnchor.constraint(equalToConstant: 30),
+//      ingredientTextField.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -20),
+//      ingredientTextField.heightAnchor.constraint(equalToConstant: 30),
 //      ingredientTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor),
 //      ingredientTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
       ingredientTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor),
 
       deleteingredientButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
-      deleteingredientButton.leftAnchor.constraint(equalTo: ingredientTextField.rightAnchor, constant: 10),
-      deleteingredientButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -15)
+      deleteingredientButton.leftAnchor.constraint(equalTo: ingredientTextField.rightAnchor, constant: 10)
+//      deleteingredientButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -15)
     ])
   }
 }

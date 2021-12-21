@@ -80,21 +80,21 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
 
 extension DiaryCollectionViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: (view.frame.width), height: 100)
+    return CGSize(width: (view.frame.width - 50), height: (view.frame.width - 50) / 3)
   }
 
   // 셀 간 상하 간격
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 5
+    return 2.5
   }
 
   // 셀 간 좌우 간격
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-    return 5
+    return 2.5
   }
 
   // collectionView internal margin
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-    return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+    return UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
   }
 }
