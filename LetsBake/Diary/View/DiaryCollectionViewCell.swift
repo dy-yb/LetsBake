@@ -12,7 +12,8 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 
   override init(frame: CGRect) {
     super.init(frame: .zero)
-    contentView.backgroundColor = .cyan
+    contentView.backgroundColor = .lightGray
+    contentView.layer.cornerRadius = 10
   }
 
   required init?(coder aDecoder: NSCoder) {

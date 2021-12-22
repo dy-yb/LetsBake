@@ -40,10 +40,11 @@ class DiaryCollectionViewController: UIViewController {
   // MARK: - Layout
 
   func setView() {
-    view.backgroundColor = .brown
+    view.backgroundColor = .white
     navigationItem.title = "Diary"
     navigationItem.rightBarButtonItem = self.rightPlusButton
     diaryCollectionView.dataSource = self
+    diaryCollectionView.delegate = self
     view.addSubview(diaryCollectionView)
   }
 
@@ -74,23 +75,23 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 3
+    return 30
   }
 }
 
 extension DiaryCollectionViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: (view.frame.width - 50), height: (view.frame.width - 50) / 3)
+    return CGSize(width: (view.frame.width - 50), height: (view.frame.width - 50) / 2)
   }
 
   // 셀 간 상하 간격
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 2.5
+    return 20
   }
 
   // 셀 간 좌우 간격
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-    return 2.5
+    return 5
   }
 
   // collectionView internal margin
