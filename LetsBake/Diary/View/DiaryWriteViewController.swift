@@ -11,6 +11,7 @@ class DiaryWriteViewController: UIViewController {
 
   // MARK: - Properties
 
+  var numberOfIngredients: Int = 3
   static let cellID = "DiaryIngredientCell"
 
   // MARK: - UI
@@ -24,14 +25,13 @@ class DiaryWriteViewController: UIViewController {
   let contentView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.backgroundColor = .purple
     return view
   }()
 
   lazy var titleInputStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [titleInputLabel, titleTextField])
     stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.backgroundColor = .yellow
+//    stackView.backgroundColor = .yellow
     stackView.alignment = .bottom
     return stackView
   }()
@@ -40,6 +40,7 @@ class DiaryWriteViewController: UIViewController {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "제목"
+    label.font = .boldSystemFont(ofSize: 17)
     return label
   }()
 
@@ -47,6 +48,7 @@ class DiaryWriteViewController: UIViewController {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.placeholder = "ex. 얼그레이 마들렌"
+    textField.textAlignment = .right
     textField.isUserInteractionEnabled = true
     return textField
   }()
@@ -54,7 +56,7 @@ class DiaryWriteViewController: UIViewController {
   lazy var dateInputStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [dateInputLabel, datePicker])
     stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.backgroundColor = .yellow
+//    stackView.backgroundColor = .yellow
     stackView.alignment = .bottom
     return stackView
   }()
@@ -63,31 +65,23 @@ class DiaryWriteViewController: UIViewController {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "날짜"
+    label.font = .boldSystemFont(ofSize: 17)
     return label
   }()
 
   lazy var datePicker: UIDatePicker = {
     let datePicker = UIDatePicker()
     datePicker.translatesAutoresizingMaskIntoConstraints = false
-    datePicker.preferredDatePickerStyle = .automatic
+    datePicker.preferredDatePickerStyle = .compact
     datePicker.datePickerMode = .dateAndTime
     datePicker.locale = Locale(identifier: "ko-KR")
     datePicker.addTarget(self, action: #selector(hadleDatePicker(_:)), for: .valueChanged)
     return datePicker
   }()
 
-//  lazy var ingredientsInputStackView: UIStackView = {
-//    let stackView = UIStackView(arrangedSubviews: [ingredientsTableView, addIngredintButton])
-//    stackView.translatesAutoresizingMaskIntoConstraints = false
-//    stackView.axis = .vertical
-//    stackView.alignment = .center
-//    return stackView
-//  }()
-
   let ingredientsInputView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.backgroundColor = .red
     return view
   }()
 
@@ -95,6 +89,7 @@ class DiaryWriteViewController: UIViewController {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "재료"
+    label.font = .boldSystemFont(ofSize: 17)
     return label
   }()
 
@@ -102,17 +97,38 @@ class DiaryWriteViewController: UIViewController {
     let tableView = UITableView()
     tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.register(DiaryIngredientsTableViewCell.classForCoder(), forCellReuseIdentifier: cellID)
+    tableView.separatorColor = .white
     return tableView
   }()
 
   lazy var addIngredintButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.backgroundColor = .green
-    button.imageView?.image = UIImage(named: "bt_diary_ingredient")
+    button.setImage(UIImage(named: "bt_diary_ingredient"), for: .normal)
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
     button.addTarget(self, action: #selector(addIngredients), for: .touchUpInside)
     return button
+  }()
+
+  let receipeInputView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
+  let receipeInputLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "상세 레시피"
+    label.font = .boldSystemFont(ofSize: 17)
+    return label
+  }()
+
+  let receipeTextView: UITextView = {
+    let textView = UITextView()
+    textView.translatesAutoresizingMaskIntoConstraints = false
+    textView.backgroundColor = .lightGray
+    return textView
   }()
 
   let doneButton: UIButton = {
@@ -136,7 +152,9 @@ class DiaryWriteViewController: UIViewController {
 
   func setView() {
     view.backgroundColor = .white
+    ingredientsTableView.rowHeight = UITableView.automaticDimension
     ingredientsTableView.dataSource = self
+    ingredientsTableView.delegate = self
 
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
@@ -145,8 +163,12 @@ class DiaryWriteViewController: UIViewController {
     contentView.addSubview(dateInputStackView)
     contentView.addSubview(ingredientsInputLabel)
     contentView.addSubview(ingredientsInputView)
+    ingredientsInputView.addSubview(ingredientsInputLabel)
     ingredientsInputView.addSubview(ingredientsTableView)
     ingredientsInputView.addSubview(addIngredintButton)
+    contentView.addSubview(receipeInputView)
+    receipeInputView.addSubview(receipeInputLabel)
+    receipeInputView.addSubview(receipeTextView)
   }
 
   func layout() {
@@ -181,38 +203,45 @@ class DiaryWriteViewController: UIViewController {
       dateInputStackView.leftAnchor.constraint(equalTo: titleInputStackView.leftAnchor),
       dateInputStackView.heightAnchor.constraint(equalToConstant: 30),
 
-      dateInputLabel.topAnchor.constraint(equalTo: dateInputStackView.topAnchor, constant: 5),
+      dateInputLabel.topAnchor.constraint(equalTo: dateInputStackView.topAnchor),
       dateInputLabel.leftAnchor.constraint(equalTo: dateInputStackView.leftAnchor),
 
-      datePicker.topAnchor.constraint(equalTo: dateInputStackView.topAnchor),
+      datePicker.bottomAnchor.constraint(equalTo: dateInputStackView.bottomAnchor),
       datePicker.leftAnchor.constraint(equalTo: dateInputLabel.rightAnchor, constant: 20),
 
-      ingredientsInputLabel.topAnchor.constraint(equalTo: dateInputStackView.bottomAnchor, constant: 20),
-      ingredientsInputLabel.leftAnchor.constraint(equalTo: dateInputStackView.leftAnchor),
-      ingredientsInputLabel.heightAnchor.constraint(equalToConstant: 30),
+      ingredientsInputView.topAnchor.constraint(equalTo: dateInputStackView.bottomAnchor, constant: 25),
+      ingredientsInputView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -30),
+      ingredientsInputView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 30),
+      ingredientsInputView.heightAnchor.constraint(equalToConstant: 200),
 
-//      ingredientsInputStackView.topAnchor.constraint(equalTo: dateInputLabel.bottomAnchor, constant: 20),
-//      ingredientsInputStackView.rightAnchor.constraint(equalTo: titleInputStackView.rightAnchor),
-//      // 나중에 동적높이로 변경하기
-//      ingredientsInputStackView.heightAnchor.constraint(equalToConstant: 300),
-//      ingredientsInputStackView.leftAnchor.constraint(equalTo: titleInputStackView.leftAnchor),
+      ingredientsInputLabel.topAnchor.constraint(equalTo: ingredientsInputView.topAnchor),
+      ingredientsInputLabel.leftAnchor.constraint(equalTo: ingredientsInputView.leftAnchor),
+      ingredientsInputLabel.heightAnchor.constraint(equalToConstant: 20),
 
-      ingredientsInputView.topAnchor.constraint(equalTo: dateInputStackView.bottomAnchor, constant: 20),
-      ingredientsInputView.leftAnchor.constraint(equalTo: titleInputStackView.leftAnchor),
-      ingredientsInputView.rightAnchor.constraint(equalTo: titleInputStackView.rightAnchor),
-      ingredientsInputView.heightAnchor.constraint(equalToConstant: 300),
-
-      ingredientsTableView.topAnchor.constraint(equalTo: ingredientsInputView.topAnchor),
+      ingredientsTableView.topAnchor.constraint(equalTo: ingredientsInputLabel.bottomAnchor, constant: 10),
       ingredientsTableView.rightAnchor.constraint(equalTo: ingredientsInputView.rightAnchor),
       ingredientsTableView.bottomAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: -40),
       ingredientsTableView.leftAnchor.constraint(equalTo: ingredientsInputView.leftAnchor),
 
-      addIngredintButton.topAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: -30),
-      addIngredintButton.rightAnchor.constraint(equalTo: ingredientsInputView.rightAnchor, constant: -30),
+      addIngredintButton.topAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 10),
+      addIngredintButton.rightAnchor.constraint(equalTo: ingredientsInputView.rightAnchor, constant: -10),
+
+      receipeInputView.topAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: 10),
+      receipeInputView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30),
+      receipeInputView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 30),
+      receipeInputView.heightAnchor.constraint(equalToConstant: 400),
+
+      receipeInputLabel.topAnchor.constraint(equalTo: receipeInputView.topAnchor),
+      receipeInputLabel.leftAnchor.constraint(equalTo: receipeTextView.leftAnchor),
+
+      receipeTextView.topAnchor.constraint(equalTo: receipeInputLabel.bottomAnchor, constant: 10),
+      receipeTextView.leftAnchor.constraint(equalTo: receipeInputView.leftAnchor),
+      receipeTextView.rightAnchor.constraint(equalTo: receipeInputView.rightAnchor),
+      receipeTextView.bottomAnchor.constraint(equalTo: receipeInputView.bottomAnchor),
 
       doneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       doneButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
-      doneButton.heightAnchor.constraint(equalToConstant: 100)
+      doneButton.heightAnchor.constraint(equalToConstant: 80)
     ])
   }
 
@@ -221,13 +250,14 @@ class DiaryWriteViewController: UIViewController {
   }
 
   @objc func addIngredients(_ sender: Any) {
-    print("Ingredient")
+    numberOfIngredients += 1
+    ingredientsTableView.reloadData()
   }
 }
 
 extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 3
+    return numberOfIngredients
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -235,5 +265,8 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
       return .init()
     }
     return diaryIngredientsTableViewCell
+  }
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return tableView.rowHeight
   }
 }

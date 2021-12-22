@@ -11,21 +11,22 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
 
   // MARK: - UI
 
-  let cellView: UIView = {
+  let cellStackView: UIView = {
     let view = UIView()
     return view
   }()
 
   let ingredientTextField: UITextField = {
     let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
     textField.backgroundColor = .green
     return textField
   }()
 
   let deleteingredientButton: UIButton = {
     let button = UIButton()
-    button.backgroundColor = .orange
-    button.imageView?.image = UIImage(named: "bt_diary_ingre_delete")
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(named: "bt_diary_ingre_delete"), for: .normal) 
     button.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
     return button
   }()
@@ -45,23 +46,23 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   }
 
   func setView() {
+    contentView.layer.cornerRadius = 10
+    contentView.backgroundColor = .magenta
     contentView.addSubview(ingredientTextField)
     contentView.addSubview(deleteingredientButton)
   }
 
   func layout() {
-//    contentView.layer.cornerRadius = 10
     ingredientTextField.frame = CGRect(x: 0, y: 0, width: (contentView.frame.width - 20), height: 30)
     NSLayoutConstraint.activate([
-
-      ingredientTextField.topAnchor.constraint(equalTo: contentView.topAnchor),
+      ingredientTextField.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
 //      ingredientTextField.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -20),
-//      ingredientTextField.heightAnchor.constraint(equalToConstant: 30),
-//      ingredientTextField.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+      ingredientTextField.heightAnchor.constraint(equalToConstant: 30),
+      ingredientTextField.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -30),
 //      ingredientTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      ingredientTextField.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+      ingredientTextField.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 20),
 
-      deleteingredientButton.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 15),
+      deleteingredientButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 5),
       deleteingredientButton.leftAnchor.constraint(equalTo: ingredientTextField.rightAnchor, constant: 10)
 //      deleteingredientButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -15)
     ])
