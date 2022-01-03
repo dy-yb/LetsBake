@@ -15,7 +15,7 @@ class DiaryCollectionViewController: UIViewController {
   // MARK: - UI
 
   lazy var rightPlusButton: UIBarButtonItem = {
-    let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action:  #selector(writeDiary(_:)))
+    let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(writeDiary(_:)))
     button.tag = 1
     return button
   }()
@@ -79,7 +79,7 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 30
+    return 10
   }
 }
 
