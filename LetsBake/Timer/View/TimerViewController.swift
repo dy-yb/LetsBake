@@ -9,29 +9,38 @@ import UIKit
 
 class TimerViewController: UIViewController {
   // MARK: - Properties
+
+  static let cellID = "TimerViewCell"
+
   // MARK: - UI
-  let noteLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "Timer View"
-    return label
+
+  let timerTableView: UITableView = {
+    let tableView = UITableView()
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.register(TimerViewController.classForCoder(), forCellReuseIdentifier: TimerViewController.cellID)
+    return tableView
   }()
+
   // MARK: - Lifecycle
+
   override func viewDidLoad() {
     super.viewDidLoad()
     setView()
     layout()
   }
+
   // MARK: - Layout
+
   func setView() {
     view.backgroundColor = .orange
-    view.addSubview(noteLabel)
   }
 
   func layout() {
     NSLayoutConstraint.activate([
-      noteLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      noteLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+      timerTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      timerTableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+      timerTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+      timerTableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor)
     ])
   }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		61288CA32784238B0062579F /* TimerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CA22784238B0062579F /* TimerTableViewCell.swift */; };
+		61288CA5278575990062579F /* EditTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CA4278575990062579F /* EditTimerViewController.swift */; };
 		6182F2D42755FEB0001848E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2D32755FEB0001848E0 /* AppDelegate.swift */; };
 		6182F2D62755FEB0001848E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2D52755FEB0001848E0 /* SceneDelegate.swift */; };
 		6182F2D82755FEB0001848E0 /* ExchangerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2D72755FEB0001848E0 /* ExchangerViewController.swift */; };
@@ -32,6 +34,8 @@
 
 /* Begin PBXFileReference section */
 		3648401ECB54DBF7FE4CE346 /* Pods-LetsBake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsBake.release.xcconfig"; path = "Target Support Files/Pods-LetsBake/Pods-LetsBake.release.xcconfig"; sourceTree = "<group>"; };
+		61288CA22784238B0062579F /* TimerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTableViewCell.swift; sourceTree = "<group>"; };
+		61288CA4278575990062579F /* EditTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTimerViewController.swift; sourceTree = "<group>"; };
 		6182F2D02755FEB0001848E0 /* LetsBake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LetsBake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6182F2D32755FEB0001848E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6182F2D52755FEB0001848E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -188,6 +192,8 @@
 			isa = PBXGroup;
 			children = (
 				6182F2F42761C4AE001848E0 /* TimerViewController.swift */,
+				61288CA22784238B0062579F /* TimerTableViewCell.swift */,
+				61288CA4278575990062579F /* EditTimerViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -364,6 +370,8 @@
 				6182F3172768C405001848E0 /* DiaryCollectionViewCell.swift in Sources */,
 				6182F2F72761C4BC001848E0 /* DiaryCollectionViewController.swift in Sources */,
 				6182F2D42755FEB0001848E0 /* AppDelegate.swift in Sources */,
+				61288CA32784238B0062579F /* TimerTableViewCell.swift in Sources */,
+				61288CA5278575990062579F /* EditTimerViewController.swift in Sources */,
 				6182F30F27678817001848E0 /* DiaryWriteViewController.swift in Sources */,
 				6182F2D62755FEB0001848E0 /* SceneDelegate.swift in Sources */,
 				6182F2FC276207C4001848E0 /* ExchangerResultViewController.swift in Sources */,
