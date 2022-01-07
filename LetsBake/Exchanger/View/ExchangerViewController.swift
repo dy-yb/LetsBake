@@ -65,11 +65,11 @@ class ExchangerViewController: UIViewController {
     return pickerView
   }()
 
-  let resultButton: UIButton = {
+  lazy var resultButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.layer.cornerRadius = 10
-    button.backgroundColor = .lightGray
+    button.backgroundColor = .mainColor
     button.setTitle("결과보기", for: .normal)
     button.setTitleColor(.black, for: .normal)
     button.addTarget(self, action: #selector(resultButtonEvent), for: .touchUpInside)
@@ -125,7 +125,7 @@ class ExchangerViewController: UIViewController {
       resultButton.topAnchor.constraint(equalTo: numberTextField.bottomAnchor, constant: 30),
       resultButton.leftAnchor.constraint(equalTo: ingredientsTextField.leftAnchor),
       resultButton.rightAnchor.constraint(equalTo: unitsTextField.rightAnchor),
-      resultButton.heightAnchor.constraint(equalToConstant: 40)
+      resultButton.heightAnchor.constraint(equalToConstant: 50)
     ])
   }
 
