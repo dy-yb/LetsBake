@@ -31,7 +31,6 @@ class DiaryWriteViewController: UIViewController {
   lazy var titleInputStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [titleInputLabel, titleTextField])
     stackView.translatesAutoresizingMaskIntoConstraints = false
-//    stackView.backgroundColor = .yellow
     stackView.alignment = .bottom
     return stackView
   }()
@@ -56,7 +55,6 @@ class DiaryWriteViewController: UIViewController {
   lazy var dateInputStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [dateInputLabel, datePicker])
     stackView.translatesAutoresizingMaskIntoConstraints = false
-//    stackView.backgroundColor = .yellow
     stackView.alignment = .bottom
     return stackView
   }()
