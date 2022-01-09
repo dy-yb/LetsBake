@@ -20,7 +20,7 @@ class TimerViewController: UIViewController {
   let timeLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "00:00"
+    label.text = "00:00:00"
     label.font = .systemFont(ofSize: 70, weight: .ultraLight)
     return label
   }()
@@ -73,6 +73,8 @@ class TimerViewController: UIViewController {
     button.setImage(UIImage(named: "ic_resetTimer_50"), for: .normal)
     button.layer.cornerRadius = 10
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+    button.contentVerticalAlignment = .center
+    button.semanticContentAttribute = .forceRightToLeft
     return button
   }()
 
@@ -112,6 +114,7 @@ class TimerViewController: UIViewController {
       buttonStackView.heightAnchor.constraint(equalTo: buttonStackView.widthAnchor, multiplier: 0.3)
     ])
   }
+
 
   @objc func excuteTimePicker(_ sender: Any) {
     print("timer")

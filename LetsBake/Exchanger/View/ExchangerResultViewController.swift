@@ -45,6 +45,7 @@ class ExchangerResultViewController: UIViewController {
   }()
 
   // MARK: - Lifecycle
+
   override func viewDidLoad() {
     super.viewDidLoad()
     resultTableView.dataSource = self 
@@ -96,7 +97,6 @@ class ExchangerResultViewController: UIViewController {
   }
 
   func hideBottomSheet() {
-    print("112")
     resultTableView.isHidden = true
     resultBottomSheetView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 

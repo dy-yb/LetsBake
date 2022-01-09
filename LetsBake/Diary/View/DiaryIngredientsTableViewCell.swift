@@ -36,6 +36,7 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     setView()
     layout()
   }
+  
   override func layoutSubviews() {
     super.layoutSubviews()
     contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6))
@@ -49,22 +50,15 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     contentView.layer.cornerRadius = 10
     contentView.backgroundColor = .magenta
     contentView.addSubview(ingredientTextField)
-    contentView.addSubview(deleteingredientButton)
   }
 
   func layout() {
     ingredientTextField.frame = CGRect(x: 0, y: 0, width: (contentView.frame.width - 20), height: 30)
     NSLayoutConstraint.activate([
       ingredientTextField.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-//      ingredientTextField.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -20),
       ingredientTextField.heightAnchor.constraint(equalToConstant: 30),
       ingredientTextField.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -30),
-//      ingredientTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      ingredientTextField.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 20),
-
-      deleteingredientButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 5),
-      deleteingredientButton.leftAnchor.constraint(equalTo: ingredientTextField.rightAnchor, constant: 10)
-//      deleteingredientButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -15)
+      ingredientTextField.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 20)
     ])
   }
 }

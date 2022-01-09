@@ -59,6 +59,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
     contentView.addSubview(thumbnailImageView)
     contentView.addSubview(dateLabel)
     contentView.addSubview(titleLabel)
+
   }
 
   func layout() {
