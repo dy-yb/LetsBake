@@ -64,7 +64,6 @@ class DiaryWriteViewController: UIViewController {
     stackView.distribution = .equalCentering
     stackView.spacing = 10
     stackView.layer.borderColor = UIColor.darkGray.cgColor
-
     return stackView
   }()
 
@@ -139,6 +138,35 @@ class DiaryWriteViewController: UIViewController {
     return textView
   }()
 
+  let ratingSlider: UISlider = {
+    let slider = UISlider()
+    slider.translatesAutoresizingMaskIntoConstraints = false
+    return slider
+  }()
+
+  lazy var ratingStarStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .horizontal
+    stackView.alignment = .center
+    stackView.distribution = .fillEqually
+    stackView.spacing = 10
+//    stackView.backgroundColor = .orange
+    return stackView
+  }()
+
+//  let starImageView: UIImageView = {
+//    let imageView = UIImageView(image: UIImage(named: "ic_rating_on"))
+//    imageView.translatesAutoresizingMaskIntoConstraints = false
+//    imageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+//    imageView.contentMode = .scaleAspectFit
+//    return imageView
+//  }()
+
+  private var starImageViews: [UIImageView] = []
+
+//  let starImageView = UIImageView(image: UIImage(named: "ic_rating_on"))
+
   let doneButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -166,6 +194,15 @@ class DiaryWriteViewController: UIViewController {
   // MARK: - Layout
 
   func setView() {
+
+    for num in 0..<5 {
+      let imageView = UIImageView()
+      imageView.image = UIImage(named: "ic_rating_on")
+      imageView.tag = num
+      starImageViews += [imageView]
+      ratingStarStackView.addArrangedSubview(imageView)
+    }
+
     view.backgroundColor = .white
     ingredientsTableView.rowHeight = UITableView.automaticDimension
     ingredientsTableView.dataSource = self
@@ -178,6 +215,9 @@ class DiaryWriteViewController: UIViewController {
     contentView.addSubview(dateInputStackView)
     contentView.addSubview(ingredientsInputLabel)
     contentView.addSubview(ingredientsInputView)
+    contentView.addSubview(ratingStarStackView)
+    contentView.addSubview(ratingSlider)
+
     ingredientsInputView.addSubview(ingredientsInputLabel)
     ingredientsInputView.addSubview(ingredientsTableView)
     ingredientsInputView.addSubview(addIngredintButton)
@@ -194,7 +234,7 @@ class DiaryWriteViewController: UIViewController {
       scrollView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
 
       contentView.widthAnchor.constraint(equalToConstant: scrollView.frame.width),
-      contentView.heightAnchor.constraint(equalToConstant: scrollView.frame.height),
+      contentView.heightAnchor.constraint(equalToConstant: scrollView.frame.height+300),
       contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
       contentView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
       contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
@@ -240,15 +280,15 @@ class DiaryWriteViewController: UIViewController {
       receipeTextView.rightAnchor.constraint(equalTo: receipeInputView.rightAnchor),
       receipeTextView.bottomAnchor.constraint(equalTo: receipeInputView.bottomAnchor, constant: -30),
 
-//      ratingView.topAnchor.constraint(equalTo: receipeInputView.bottomAnchor, constant: 20),
-//      ratingView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30),
-//      ratingView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 30),
-//      ratingView.heightAnchor.constraint(equalToConstant: 150),
-//
-//      starStackView.topAnchor.constraint(equalTo: ratingView.topAnchor, constant: 30),
-//      starStackView.rightAnchor.constraint(equalTo: ratingView.rightAnchor),
-//      starStackView.bottomAnchor.constraint(equalTo: ratingView.bottomAnchor),
-//      starStackView.leftAnchor.constraint(equalTo: ratingView.leftAnchor),
+      ratingSlider.topAnchor.constraint(equalTo: receipeInputView.bottomAnchor, constant: 20),
+      ratingSlider.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+      ratingSlider.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -200),
+      ratingSlider.heightAnchor.constraint(equalToConstant: 100),
+
+      ratingStarStackView.topAnchor.constraint(equalTo: ratingSlider.topAnchor),
+      ratingStarStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+      ratingStarStackView.widthAnchor.constraint(equalTo: ratingSlider.widthAnchor),
+      ratingStarStackView.heightAnchor.constraint(equalTo: ratingSlider.heightAnchor),
 
       doneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       doneButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),

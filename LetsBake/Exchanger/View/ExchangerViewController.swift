@@ -133,7 +133,11 @@ class ExchangerViewController: UIViewController {
     let exchangerResultViewController = ExchangerResultViewController()
     exchangerResultViewController.modalPresentationStyle = .overFullScreen
     self.present(exchangerResultViewController, animated: false, completion: nil)
+
+
   }
+
+
 }
 
 // MARK: Extensions

@@ -37,7 +37,7 @@
 		6182F2D02755FEB0001848E0 /* LetsBake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LetsBake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6182F2D32755FEB0001848E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6182F2D52755FEB0001848E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		6182F2D72755FEB0001848E0 /* ExchangerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangerViewController.swift; sourceTree = "<group>"; };
+		6182F2D72755FEB0001848E0 /* ExchangerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangerViewController.swift; sourceTree = "<group>"; usesTabs = 0; };
 		6182F2DA2755FEB0001848E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6182F2DC2755FEB1001848E0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6182F2DF2755FEB1001848E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };

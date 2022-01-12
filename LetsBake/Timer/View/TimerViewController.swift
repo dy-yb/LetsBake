@@ -105,7 +105,7 @@ class TimerViewController: UIViewController {
 
       timePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       timePicker.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      timePicker.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -50),
+      timePicker.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -100),
       timePicker.heightAnchor.constraint(equalToConstant: 150),
 
       buttonStackView.topAnchor.constraint(equalTo: timePicker.bottomAnchor, constant: 50),

@@ -109,6 +109,7 @@ class ExchangerResultViewController: UIViewController {
       }
     }
   }
+  
   @objc func dimmedViewTapped(_ tapRecognizer: UITapGestureRecognizer) {
     hideBottomSheet()
   }
