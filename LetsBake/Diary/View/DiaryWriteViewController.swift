@@ -138,9 +138,15 @@ class DiaryWriteViewController: UIViewController {
     return textView
   }()
 
-  let ratingSlider: UISlider = {
-    let slider = UISlider()
+  lazy var ratingSlider: TapUISlider = {
+    let slider = TapUISlider()
     slider.translatesAutoresizingMaskIntoConstraints = false
+    slider.maximumValue = 5
+    slider.minimumValue = 0
+    slider.maximumTrackTintColor = .clear
+    slider.minimumTrackTintColor = .clear
+    slider.thumbTintColor = .clear
+    slider.addTarget(self, action: #selector(tapSlider(_:)), for: .valueChanged)
     return slider
   }()
 
@@ -149,23 +155,20 @@ class DiaryWriteViewController: UIViewController {
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .horizontal
     stackView.alignment = .center
-    stackView.distribution = .fillEqually
+    stackView.distribution = .equalSpacing
     stackView.spacing = 10
-//    stackView.backgroundColor = .orange
     return stackView
   }()
 
-//  let starImageView: UIImageView = {
-//    let imageView = UIImageView(image: UIImage(named: "ic_rating_on"))
-//    imageView.translatesAutoresizingMaskIntoConstraints = false
-//    imageView.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-//    imageView.contentMode = .scaleAspectFit
-//    return imageView
-//  }()
+  let ratingLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "이번 베이킹은 어땠나요?"
+    label.font = .boldSystemFont(ofSize: 17)
+    return label
+  }()
 
   private var starImageViews: [UIImageView] = []
-
-//  let starImageView = UIImageView(image: UIImage(named: "ic_rating_on"))
 
   let doneButton: UIButton = {
     let button = UIButton()
@@ -197,10 +200,14 @@ class DiaryWriteViewController: UIViewController {
 
     for num in 0..<5 {
       let imageView = UIImageView()
-      imageView.image = UIImage(named: "ic_rating_on")
+      imageView.image = UIImage(named: "ic_rating_off")
       imageView.tag = num
       starImageViews += [imageView]
       ratingStarStackView.addArrangedSubview(imageView)
+    }
+
+    for index in 0..<5 {
+      starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
     }
 
     view.backgroundColor = .white
@@ -215,6 +222,7 @@ class DiaryWriteViewController: UIViewController {
     contentView.addSubview(dateInputStackView)
     contentView.addSubview(ingredientsInputLabel)
     contentView.addSubview(ingredientsInputView)
+    contentView.addSubview(ratingLabel)
     contentView.addSubview(ratingStarStackView)
     contentView.addSubview(ratingSlider)
 
@@ -234,7 +242,8 @@ class DiaryWriteViewController: UIViewController {
       scrollView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
 
       contentView.widthAnchor.constraint(equalToConstant: scrollView.frame.width),
-      contentView.heightAnchor.constraint(equalToConstant: scrollView.frame.height+300),
+      //작은 화면에서 스크롤 안되는 문제 해결 해야함
+      contentView.heightAnchor.constraint(equalToConstant: scrollView.frame.height+100),
       contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
       contentView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
       contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
@@ -280,10 +289,13 @@ class DiaryWriteViewController: UIViewController {
       receipeTextView.rightAnchor.constraint(equalTo: receipeInputView.rightAnchor),
       receipeTextView.bottomAnchor.constraint(equalTo: receipeInputView.bottomAnchor, constant: -30),
 
-      ratingSlider.topAnchor.constraint(equalTo: receipeInputView.bottomAnchor, constant: 20),
+      ratingLabel.topAnchor.constraint(equalTo: receipeInputView.bottomAnchor, constant: 20),
+      ratingLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 30),
+
+      ratingSlider.topAnchor.constraint(equalTo: ratingLabel.bottomAnchor, constant: 10),
       ratingSlider.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
       ratingSlider.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -200),
-      ratingSlider.heightAnchor.constraint(equalToConstant: 100),
+      ratingSlider.heightAnchor.constraint(equalToConstant: 50),
 
       ratingStarStackView.topAnchor.constraint(equalTo: ratingSlider.topAnchor),
       ratingStarStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
@@ -303,6 +315,21 @@ class DiaryWriteViewController: UIViewController {
   @objc func addIngredients(_ sender: Any) {
     numberOfIngredients += 1
     ingredientsTableView.reloadData()
+  }
+
+  @objc func tapSlider(_ sender: UISlider) {
+    var intValue = Int(ceil(sender.value))
+
+    for index in 0..<5 {
+      if intValue == 1 {
+        intValue -= 1
+        starImageViews[index].image = UIImage(named: "ic_rating_on")
+      } else if index < intValue {
+        starImageViews[index].image = UIImage(named: "ic_rating_on")
+      } else {
+        starImageViews[index].image = UIImage(named: "ic_rating_off")
+      }
+    }
   }
 
 }

@@ -23,13 +23,13 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     return textField
   }()
 
-  let deleteingredientButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(named: "bt_diary_ingre_delete"), for: .normal) 
-    button.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
-    return button
-  }()
+//  let deleteingredientButton: UIButton = {
+//    let button = UIButton()
+//    button.translatesAutoresizingMaskIntoConstraints = false
+//    button.setImage(UIImage(named: "bt_diary_ingre_delete"), for: .normal)
+//    button.frame = CGRect(x: 0, y: 0, width: 15, height: 15)
+//    return button
+//  }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,11 +53,11 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   }
 
   func layout() {
-    ingredientTextField.frame = CGRect(x: 0, y: 0, width: (contentView.frame.width - 20), height: 30)
+//    ingredientTextField.frame = CGRect(x: 0, y: 0, width: (contentView.frame.width - 20), height: 30)
     NSLayoutConstraint.activate([
-      ingredientTextField.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+      ingredientTextField.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
       ingredientTextField.heightAnchor.constraint(equalToConstant: 30),
-      ingredientTextField.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -30),
+      ingredientTextField.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -20),
       ingredientTextField.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 20)
     ])
   }
