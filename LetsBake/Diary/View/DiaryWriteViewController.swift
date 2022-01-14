@@ -183,6 +183,7 @@ class DiaryWriteViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     navigationItem.title = "일지 작성"
+    setRatingImageView()
     setView()
     layout()
   }
@@ -197,19 +198,6 @@ class DiaryWriteViewController: UIViewController {
   // MARK: - Layout
 
   func setView() {
-
-    for num in 0..<5 {
-      let imageView = UIImageView()
-      imageView.image = UIImage(named: "ic_rating_off")
-      imageView.tag = num
-      starImageViews += [imageView]
-      ratingStarStackView.addArrangedSubview(imageView)
-    }
-
-    for index in 0..<5 {
-      starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
-    }
-
     view.backgroundColor = .white
     ingredientsTableView.rowHeight = UITableView.automaticDimension
     ingredientsTableView.dataSource = self
@@ -306,6 +294,16 @@ class DiaryWriteViewController: UIViewController {
       doneButton.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
       doneButton.heightAnchor.constraint(equalToConstant: 80)
     ])
+  }
+
+  func setRatingImageView() {
+    for index in 0..<5 {
+      let imageView = UIImageView()
+      imageView.image = UIImage(named: "ic_rating_off")
+      imageView.tag = index
+      ratingStarStackView.addArrangedSubview(imageView)
+      starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
+    }
   }
 
   @objc func hadleDatePicker(_ sender: UIDatePicker) {
