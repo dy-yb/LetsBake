@@ -64,7 +64,7 @@ class ExchangerResultViewController: UIViewController {
     view.addSubview(dimmedView)
     view.addSubview(resultBottomSheetView)
     resultBottomSheetView.addSubview(resultTableView)
-    dimmedView.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:))))
+    dimmedView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmedViewTapped(_:))))
     dimmedView.isUserInteractionEnabled = true
   }
 
