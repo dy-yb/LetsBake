@@ -26,6 +26,7 @@ class DiaryCollectionViewController: UIViewController {
     flowLayout.scrollDirection = .vertical
     collectionView.translatesAutoresizingMaskIntoConstraints = false
     collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: DiaryCollectionViewController.cellID)
+    collectionView.allowsSelection = true
     return collectionView
   }()
 
@@ -80,6 +81,13 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return 10
+  }
+}
+
+extension DiaryCollectionViewController: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let diaryDetailView = DiaryDetailViewController()
+    navigationController?.pushViewController(diaryDetailView, animated: true)
   }
 }
 
