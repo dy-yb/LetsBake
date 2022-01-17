@@ -22,7 +22,6 @@ class TimerViewController: UIViewController {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "00:00:00"
     label.font = .systemFont(ofSize: 70, weight: .ultraLight)
-    label.backgroundColor = .orange
     return label
   }()
 
@@ -102,7 +101,6 @@ class TimerViewController: UIViewController {
     progressView.addSubview(timeLabel)
     view.addSubview(buttonStackView)
     view.addSubview(progressView)
-    makeCircleProgressBar()
 
     timePicker.dataSource = self
     timePicker.delegate = self
@@ -125,17 +123,11 @@ class TimerViewController: UIViewController {
       buttonStackView.topAnchor.constraint(equalTo: timePicker.bottomAnchor, constant: 50),
       buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       buttonStackView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -80),
-      buttonStackView.heightAnchor.constraint(equalTo: buttonStackView.widthAnchor, multiplier: 0.3),
+      buttonStackView.heightAnchor.constraint(equalTo: buttonStackView.widthAnchor, multiplier: 0.3)
 
 //      circleProressBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 //      circleProressBar.centerYAnchor.constraint(equalTo: view.centerYAnchor)
     ])
-  }
-
-  func makeCircleProgressBar() {
-    let circleProressBar = UICircleProgressbar(frame: CGRect(x: 0, y: 0, width: 150, height: 150))
-    circleProressBar.center.x = view.center.x
-//    progressView.addSubview(circleProressBar)
   }
 
   @objc func excuteTimePicker(_ sender: Any) {

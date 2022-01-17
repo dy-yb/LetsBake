@@ -230,7 +230,7 @@ class DiaryWriteViewController: UIViewController {
       scrollView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
 
       contentView.widthAnchor.constraint(equalToConstant: scrollView.frame.width),
-      //작은 화면에서 스크롤 안되는 문제 해결 해야함
+      // 작은 화면에서 스크롤 안되는 문제 해결 해야함
       contentView.heightAnchor.constraint(equalToConstant: scrollView.frame.height+100),
       contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
       contentView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
