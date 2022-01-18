@@ -329,7 +329,6 @@ class DiaryWriteViewController: UIViewController {
       }
     }
   }
-
 }
 
 extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {

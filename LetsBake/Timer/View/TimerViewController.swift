@@ -46,7 +46,6 @@ class TimerViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("시작", for: .normal)
-//    button.backgroundColor = .mainColor
     button.setImage(UIImage(named: "ic_setTimer_50"), for: .normal)
     button.layer.cornerRadius = 10
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
@@ -57,7 +56,6 @@ class TimerViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("정지", for: .normal)
-//    button.backgroundColor = .mainColor
     button.setImage(UIImage(named: "ic_pauseTimer_50"), for: .normal)
     button.layer.cornerRadius = 10
     button.setTitleColor(.black, for: .normal)
@@ -69,7 +67,6 @@ class TimerViewController: UIViewController {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("리셋", for: .normal)
-//    button.backgroundColor = .mainColor
     button.setImage(UIImage(named: "ic_resetTimer_50"), for: .normal)
     button.layer.cornerRadius = 10
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
@@ -124,19 +121,12 @@ class TimerViewController: UIViewController {
       buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       buttonStackView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -80),
       buttonStackView.heightAnchor.constraint(equalTo: buttonStackView.widthAnchor, multiplier: 0.3)
-
-//      circleProressBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//      circleProressBar.centerYAnchor.constraint(equalTo: view.centerYAnchor)
     ])
   }
 
   @objc func excuteTimePicker(_ sender: Any) {
     print("timer")
   }
-//
-//  @objc func clickResetButton(_ sender: Any) {
-//  }
-
 }
 
 extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
