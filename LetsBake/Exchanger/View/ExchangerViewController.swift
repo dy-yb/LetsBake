@@ -26,19 +26,18 @@ class ExchangerViewController: UIViewController {
 
   let ingredientsTextField: UITextField = {
     let textField = UITextField()
-    let imageView = UIImageView()
-    imageView.image = UIImage(named: "ic_diary_50_off")
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.backgroundColor = .lightGray
-    textField.rightView = imageView
     textField.layer.cornerRadius = 10
     textField.textAlignment = .center
     textField.placeholder = "강력분"
+    textField.configToolbar()
     return textField
   }()
 
   let ingredientsPickerView: UIPickerView = {
     let pickerView = UIPickerView()
+    pickerView.tag = 1
     return pickerView
   }()
 
@@ -57,11 +56,13 @@ class ExchangerViewController: UIViewController {
     textField.borderStyle = .none
     textField.placeholder = "그램"
     textField.textAlignment = .center
+    textField.configToolbar()
     return textField
   }()
 
   let unitsPickerView: UIPickerView = {
     let pickerView = UIPickerView()
+    pickerView.tag = 2
     return pickerView
   }()
 
@@ -88,7 +89,6 @@ class ExchangerViewController: UIViewController {
     setView()
     layout()
     configPickerView()
-    configToolbar()
   }
 
   // MARK: - Layout
@@ -115,7 +115,7 @@ class ExchangerViewController: UIViewController {
       numberTextField.topAnchor.constraint(equalTo: ingredientsTextField.topAnchor),
       numberTextField.leftAnchor.constraint(equalTo: ingredientsTextField.rightAnchor, constant: 21),
       numberTextField.heightAnchor.constraint(equalToConstant: 40),
-      numberTextField.widthAnchor.constraint(equalToConstant: 65),
+      numberTextField.widthAnchor.constraint(equalToConstant: 50),
 
       unitsTextField.topAnchor.constraint(equalTo: ingredientsTextField.topAnchor),
       unitsTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -45),
@@ -143,38 +143,10 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     ingredientsPickerView.delegate = self
     ingredientsPickerView.dataSource = self
     ingredientsTextField.inputView = ingredientsPickerView
-  }
 
-  func configToolbar() {
-    let toolBar = UIToolbar(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: self.view.bounds.width, height: 44)))
-    toolBar.barStyle = UIBarStyle.default
-    toolBar.isTranslucent = true
-    toolBar.tintColor = .white
-    toolBar.sizeToFit()
-
-    let doneButton = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(self.donePicker))
-    let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-    let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(self.cancelPicker))
-    doneButton.tintColor = .darkGray
-    cancelButton.tintColor = .darkGray
-
-    toolBar.setItems([cancelButton, flexibleSpace, doneButton], animated: false)
-    toolBar.isUserInteractionEnabled = true
-
-    ingredientsTextField.inputAccessoryView = toolBar
-  }
-
-  @objc func donePicker() {
-    // why..?
-    //    let row = self.ingredientsPickerView.selectedRow(inComponent: 0)
-    //    self.ingredientsPickerView.selectRow(row, inComponent: 0, animated: false)
-    //    self.ingredientsTextField.text = self.ingredients[row]
-    self.ingredientsTextField.resignFirstResponder()
-  }
-
-  @objc func cancelPicker() {
-    self.ingredientsTextField.text = nil
-    self.ingredientsTextField.resignFirstResponder()
+    unitsPickerView.delegate = self
+    unitsPickerView.dataSource = self
+    unitsTextField.inputView = unitsPickerView
   }
 
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -182,14 +154,41 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
   }
 
   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    return ingredients.count
+    var numOfComponent: Int = 0
+
+    switch pickerView {
+    case ingredientsPickerView:
+      numOfComponent = ingredients.count
+    case unitsPickerView:
+      numOfComponent = units.count
+    default:
+      break;
+    }
+    return numOfComponent
   }
 
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return ingredients[row]
+    var titleRow: String?
+
+    switch pickerView {
+    case ingredientsPickerView:
+      titleRow = ingredients[row]
+    case unitsPickerView:
+      titleRow = units[row]
+    default:
+      break;
+    }
+    return titleRow
   }
 
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    self.ingredientsTextField.text = self.ingredients[row]
+    switch pickerView {
+    case ingredientsPickerView:
+      self.ingredientsTextField.text = ingredients[row]
+    case unitsPickerView:
+      self.unitsTextField.text = units[row]
+    default:
+      break;
+    }
   }
 }
