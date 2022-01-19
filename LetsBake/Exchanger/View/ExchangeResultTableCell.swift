@@ -37,7 +37,7 @@ class ExchangeResultTableCell: UITableViewCell {
 
   func setView() {
     contentView.addSubview(unitNameLabel)
-    contentView.addSubview(resultLabel)
+    contentView.addSubview(resultLabel)  
   }
 
   func layout() {

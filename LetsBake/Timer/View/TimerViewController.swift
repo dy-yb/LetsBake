@@ -11,9 +11,9 @@ class TimerViewController: UIViewController {
 
   // MARK: - Properties
 
-private  var hour: Int = 0
-private  var minute: Int = 0
-private  var second: Int = 0
+  private  var hour: Int = 0
+  private  var minute: Int = 0
+  private  var second: Int = 0
 
   // MARK: - UI
 
