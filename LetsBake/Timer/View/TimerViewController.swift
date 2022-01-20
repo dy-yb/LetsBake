@@ -11,9 +11,9 @@ class TimerViewController: UIViewController {
 
   // MARK: - Properties
 
-  private  var hour: Int = 0
-  private  var minute: Int = 0
-  private  var second: Int = 0
+  private var hour: Int = 0
+  private var minute: Int = 0
+  private var second: Int = 0
 
   // MARK: - UI
 
@@ -45,33 +45,39 @@ class TimerViewController: UIViewController {
   let setTimeButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("시작", for: .normal)
     button.setImage(UIImage(named: "ic_setTimer_50"), for: .normal)
+    button.contentMode = .scaleToFill
+    button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     button.layer.cornerRadius = 10
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+    button.tag = 1
     return button
   }()
 
   let pauseTimeButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("정지", for: .normal)
     button.setImage(UIImage(named: "ic_pauseTimer_50"), for: .normal)
+    button.contentMode = .scaleToFill
+    button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     button.layer.cornerRadius = 10
     button.setTitleColor(.black, for: .normal)
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+    button.tag = 2
     return button
   }()
 
   let resetTimeButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("리셋", for: .normal)
     button.setImage(UIImage(named: "ic_resetTimer_50"), for: .normal)
+    button.contentMode = .scaleToFill
+    button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     button.layer.cornerRadius = 10
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
     button.contentVerticalAlignment = .center
     button.semanticContentAttribute = .forceRightToLeft
+    button.tag = 3
     return button
   }()
 
