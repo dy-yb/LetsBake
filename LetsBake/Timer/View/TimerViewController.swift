@@ -11,6 +11,15 @@ class TimerViewController: UIViewController {
 
   // MARK: - Properties
 
+  enum TimerButtonTag: Int {
+    case start = 1
+    case stop = 2
+    case reset = 3
+  }
+
+  var timer: Timer?
+  var timeCount = 0
+
   private var hour: Int = 0
   private var minute: Int = 0
   private var second: Int = 0
@@ -33,51 +42,56 @@ class TimerViewController: UIViewController {
   }()
 
   lazy var buttonStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [resetTimeButton, setTimeButton, pauseTimeButton])
+    let stackView = UIStackView(arrangedSubviews: [resetTimerButton, stopTimerButton, startTimerButton])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .horizontal
     stackView.alignment = .fill
     stackView.distribution = .fillEqually
-    stackView.spacing = 20
+    stackView.spacing = 5
     return stackView
   }()
 
-  let setTimeButton: UIButton = {
+  lazy var startTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(named: "ic_setTimer_50"), for: .normal)
+    button.setImage(UIImage(named: "ic_startTimer_50_on"), for: .normal)
+    button.setImage(UIImage(named: "ic_startTimer_50_off"), for: .disabled)
     button.contentMode = .scaleToFill
     button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     button.layer.cornerRadius = 10
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
-    button.tag = 1
+    button.addTarget(self, action: #selector(clickedStartTimeButton(_:)), for: .touchUpInside)
+    button.tag = TimerButtonTag.start.rawValue
     return button
   }()
 
-  let pauseTimeButton: UIButton = {
+  lazy var stopTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(named: "ic_pauseTimer_50"), for: .normal)
+    button.isEnabled = false
+    button.setImage(UIImage(named: "ic_stopTimer_50_on"), for: .normal)
+    button.setImage(UIImage(named: "ic_stopTimer_50_off"), for: .disabled)
     button.contentMode = .scaleToFill
     button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     button.layer.cornerRadius = 10
-    button.setTitleColor(.black, for: .normal)
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
-    button.tag = 2
+    button.addTarget(self, action: #selector(clickedStopTimeButton(_:)), for: .touchUpInside)
+    button.tag = TimerButtonTag.stop.rawValue
     return button
   }()
 
-  let resetTimeButton: UIButton = {
+  lazy var resetTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(named: "ic_resetTimer_50"), for: .normal)
+    button.isEnabled = false
+    button.setImage(UIImage(named: "ic_resetTimer_50_on"), for: .normal)
+    button.setImage(UIImage(named: "ic_resetTimer_50_off"), for: .disabled)
     button.contentMode = .scaleToFill
     button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     button.layer.cornerRadius = 10
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
-    button.contentVerticalAlignment = .center
-    button.semanticContentAttribute = .forceRightToLeft
-    button.tag = 3
+    button.addTarget(self, action: #selector(clickedResetTimeButton(_:)), for: .touchUpInside)
+    button.tag = TimerButtonTag.reset.rawValue
     return button
   }()
 
@@ -130,8 +144,38 @@ class TimerViewController: UIViewController {
     ])
   }
 
+  func makeTimeLabel(count: Int) -> (String, String, String) {
+    let countSec = count
+    let countMin = count % 60
+    let countHour = (count / 60) % 60
+
+    return (String(countSec), String(countMin), String(countHour))
+  }
+
   @objc func excuteTimePicker(_ sender: Any) {
     print("timer")
+  }
+  @objc func clickedStartTimeButton(_ sender: UIButton) {
+    resetTimerButton.isEnabled = false
+    stopTimerButton.isEnabled = true
+    startTimerButton.isEnabled = false
+
+    timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { (_) in self.timeCount += 1
+      DispatchQueue.main.async {
+        let timeString = self.makeTimeLabel(count: self.timeCount)
+        self.timeLabel.text = timeString.0
+//        self.decimalLabel.text = ".\(timeString.1)"
+      }
+    })
+  }
+  @objc func clickedResetTimeButton(_ sender: UIButton) {
+    resetTimerButton.isEnabled = false
+    startTimerButton.isEnabled = true
+  }
+  @objc func clickedStopTimeButton(_ sender: UIButton) {
+    stopTimerButton.isEnabled = false
+    startTimerButton.isEnabled = true
+    resetTimerButton.isEnabled = true
   }
 }
 
