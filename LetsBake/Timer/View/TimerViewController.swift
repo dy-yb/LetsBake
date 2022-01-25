@@ -20,9 +20,10 @@ class TimerViewController: UIViewController {
   var timer: Timer?
   var timeCount = 0
 
-  private var hour: Int = 0
-  private var minute: Int = 0
-  private var second: Int = 0
+  private var inputHour: Int = 0
+  private var inputMinute: Int = 0
+  private var inputSecond: Int = 0
+  //  private var inputTotalSecond: Int = 0
 
   // MARK: - UI
 
@@ -144,38 +145,54 @@ class TimerViewController: UIViewController {
     ])
   }
 
-  func makeTimeLabel(count: Int) -> (String, String, String) {
-    let countSec = count
-    let countMin = count % 60
-    let countHour = (count / 60) % 60
+  func setTimeLabel(hour: Int, minute: Int, second: Int) {
+    let hourToString = String(format: "%02d", hour)
+    let minuteToString = String(format: "%02d", minute)
+    let secondToString = String(format: "%02d", second)
 
-    return (String(countSec), String(countMin), String(countHour))
+    timeLabel.text = "\(hourToString):\(minuteToString):\(secondToString)"
+  }
+
+  @objc func excuteTimeCount() {
+    if timeCount != 0 {
+      timeCount -= 1
+      let countSec = timeCount % 60
+      let countMin = (timeCount / 60) % 60
+      let countHour = timeCount / 3600
+      
+      setTimeLabel(hour: countHour, minute: countMin, second: countSec)
+    } else {
+      stopTimerButton.isEnabled = false
+      startTimerButton.isEnabled = true
+      resetTimerButton.isEnabled = true
+      timer?.invalidate()
+    }
   }
 
   @objc func excuteTimePicker(_ sender: Any) {
     print("timer")
   }
+
   @objc func clickedStartTimeButton(_ sender: UIButton) {
     resetTimerButton.isEnabled = false
     stopTimerButton.isEnabled = true
     startTimerButton.isEnabled = false
+    timePicker.isHidden = true
 
-    timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { (_) in self.timeCount += 1
-      DispatchQueue.main.async {
-        let timeString = self.makeTimeLabel(count: self.timeCount)
-        self.timeLabel.text = timeString.0
-//        self.decimalLabel.text = ".\(timeString.1)"
-      }
-    })
+    timeCount = (inputHour * 3600) + (inputMinute * 60) + inputSecond
+    timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(excuteTimeCount), userInfo: nil, repeats: true)
   }
+
   @objc func clickedResetTimeButton(_ sender: UIButton) {
     resetTimerButton.isEnabled = false
     startTimerButton.isEnabled = true
   }
+
   @objc func clickedStopTimeButton(_ sender: UIButton) {
     stopTimerButton.isEnabled = false
     startTimerButton.isEnabled = true
     resetTimerButton.isEnabled = true
+    timer?.invalidate()
   }
 }
 
@@ -196,7 +213,7 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   }
 
   func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-    return pickerView.frame.size.width/3
+    return pickerView.frame.size.width / 3
   }
 
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -215,13 +232,14 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     switch component {
     case 0:
-      hour = row
+      inputHour = row
     case 1:
-      minute = row
+      inputMinute = row
     case 2:
-      second = row
+      inputSecond = row
     default:
       break;
     }
+    setTimeLabel(hour: inputHour, minute: inputMinute, second: inputSecond)
   }
 }
