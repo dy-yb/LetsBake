@@ -115,6 +115,7 @@ class TimerViewController: UIViewController {
 
   func setView() {
     view.backgroundColor = .white
+    navigationItem.title = "타이머"
     view.addSubview(timePicker)
     progressView.addSubview(timeLabel)
     view.addSubview(buttonStackView)
@@ -186,6 +187,9 @@ class TimerViewController: UIViewController {
   @objc func clickedResetTimeButton(_ sender: UIButton) {
     resetTimerButton.isEnabled = false
     startTimerButton.isEnabled = true
+    timePicker.reloadInputViews()
+    timePicker.isHidden = false
+    setTimeLabel(hour: 0, minute: 0, second: 0)
   }
 
   @objc func clickedStopTimeButton(_ sender: UIButton) {
