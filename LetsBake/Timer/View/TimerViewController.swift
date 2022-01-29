@@ -13,8 +13,8 @@ class TimerViewController: UIViewController {
 
   enum TimerButtonTag: Int {
     case start = 1
-    case stop = 2
-    case reset = 3
+    case pause = 2
+    case stop = 3
   }
 
   var timer: Timer?
@@ -43,7 +43,7 @@ class TimerViewController: UIViewController {
   }()
 
   lazy var buttonStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [resetTimerButton, stopTimerButton, startTimerButton])
+    let stackView = UIStackView(arrangedSubviews: [startTimerButton, pauseTimerButton, stopTimerButton])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .horizontal
     stackView.alignment = .fill
@@ -81,18 +81,18 @@ class TimerViewController: UIViewController {
     return button
   }()
 
-  lazy var resetTimerButton: UIButton = {
+  lazy var pauseTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.isEnabled = false
-    button.setImage(UIImage(named: "ic_resetTimer_50_on"), for: .normal)
-    button.setImage(UIImage(named: "ic_resetTimer_50_off"), for: .disabled)
+    button.setImage(UIImage(named: "ic_pauseTimer_50_on"), for: .normal)
+    button.setImage(UIImage(named: "ic_pauseTimer_50_off"), for: .disabled)
     button.contentMode = .scaleToFill
     button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     button.layer.cornerRadius = 10
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
-    button.addTarget(self, action: #selector(clickedResetTimeButton(_:)), for: .touchUpInside)
-    button.tag = TimerButtonTag.reset.rawValue
+    button.addTarget(self, action: #selector(clickedPauseTimeButton(_:)), for: .touchUpInside)
+    button.tag = TimerButtonTag.pause.rawValue
     return button
   }()
 
@@ -165,7 +165,7 @@ class TimerViewController: UIViewController {
     } else {
       stopTimerButton.isEnabled = false
       startTimerButton.isEnabled = true
-      resetTimerButton.isEnabled = true
+      pauseTimerButton.isEnabled = true
       timer?.invalidate()
     }
   }
@@ -175,28 +175,36 @@ class TimerViewController: UIViewController {
   }
 
   @objc func clickedStartTimeButton(_ sender: UIButton) {
-    resetTimerButton.isEnabled = false
+    timePicker.reloadInputViews()
+    pauseTimerButton.isEnabled = true
     stopTimerButton.isEnabled = true
     startTimerButton.isEnabled = false
     timePicker.isHidden = true
 
-    timeCount = (inputHour * 3600) + (inputMinute * 60) + inputSecond
+    if timer == nil {
+      timeCount = (inputHour * 3600) + (inputMinute * 60) + inputSecond
+    }
+
     timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(excuteTimeCount), userInfo: nil, repeats: true)
   }
 
-  @objc func clickedResetTimeButton(_ sender: UIButton) {
-    resetTimerButton.isEnabled = false
+  @objc func clickedPauseTimeButton(_ sender: UIButton) {
+    pauseTimerButton.isEnabled = false
     startTimerButton.isEnabled = true
-    timePicker.reloadInputViews()
-    timePicker.isHidden = false
-    setTimeLabel(hour: 0, minute: 0, second: 0)
+    stopTimerButton.isEnabled = true
+    timer?.invalidate()
   }
 
   @objc func clickedStopTimeButton(_ sender: UIButton) {
     stopTimerButton.isEnabled = false
     startTimerButton.isEnabled = true
-    resetTimerButton.isEnabled = true
+    pauseTimerButton.isEnabled = true
+    timePicker.isHidden = false
     timer?.invalidate()
+    setTimeLabel(hour: 0, minute: 0, second: 0)
+    timePicker.selectRow(0, inComponent: 0, animated: false)
+    timePicker.selectRow(0, inComponent: 1, animated: false)
+    timePicker.selectRow(0, inComponent: 2, animated: false)
   }
 }
 
