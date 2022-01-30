@@ -11,6 +11,8 @@ class TimerViewController: UIViewController {
 
   // MARK: - Properties
 
+  private let timerViewModel = TimerViewModel()
+
   enum TimerButtonTag: Int {
     case start = 1
     case pause = 2
@@ -23,6 +25,7 @@ class TimerViewController: UIViewController {
   private var inputHour: Int = 0
   private var inputMinute: Int = 0
   private var inputSecond: Int = 0
+
   //  private var inputTotalSecond: Int = 0
 
   // MARK: - UI
@@ -146,14 +149,6 @@ class TimerViewController: UIViewController {
     ])
   }
 
-  func setTimeLabel(hour: Int, minute: Int, second: Int) {
-    let hourToString = String(format: "%02d", hour)
-    let minuteToString = String(format: "%02d", minute)
-    let secondToString = String(format: "%02d", second)
-
-    timeLabel.text = "\(hourToString):\(minuteToString):\(secondToString)"
-  }
-
   @objc func excuteTimeCount() {
     if timeCount != 0 {
       timeCount -= 1
@@ -161,7 +156,7 @@ class TimerViewController: UIViewController {
       let countMin = (timeCount / 60) % 60
       let countHour = timeCount / 3600
       
-      setTimeLabel(hour: countHour, minute: countMin, second: countSec)
+      timeLabel.text = timerViewModel.setTimeLabel(hour: countHour, minute: countMin, second: countSec)
     } else {
       stopTimerButton.isEnabled = false
       startTimerButton.isEnabled = true
@@ -201,7 +196,10 @@ class TimerViewController: UIViewController {
     pauseTimerButton.isEnabled = true
     timePicker.isHidden = false
     timer?.invalidate()
-    setTimeLabel(hour: 0, minute: 0, second: 0)
+    inputHour = 0
+    inputSecond = 0
+    inputMinute = 0
+    timeLabel.text = timerViewModel.setTimeLabel(hour: 0, minute: 0, second: 0)
     timePicker.selectRow(0, inComponent: 0, animated: false)
     timePicker.selectRow(0, inComponent: 1, animated: false)
     timePicker.selectRow(0, inComponent: 2, animated: false)
@@ -252,6 +250,6 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     default:
       break;
     }
-    setTimeLabel(hour: inputHour, minute: inputMinute, second: inputSecond)
+    self.timeLabel.text = timerViewModel.setTimeLabel(hour: inputHour, minute: inputMinute, second: inputSecond)
   }
 }
