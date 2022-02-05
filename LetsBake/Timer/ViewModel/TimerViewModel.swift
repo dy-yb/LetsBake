@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ObeservableViewModelProtocol {
+protocol ObeservableTimerViewModelProtocol {
   associatedtype T
 
   func calculateTimeCount(inputTime: Time) -> Int
@@ -20,7 +20,7 @@ protocol ObeservableViewModelProtocol {
   
 }
 
-class TimerViewModel: ObeservableViewModelProtocol {
+class TimerViewModel: ObeservableTimerViewModelProtocol {
 
 
   var storage: Observable<Time> = Observable(Time(hour: 0, minute: 0, second: 0))

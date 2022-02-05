@@ -124,7 +124,6 @@ extension ExchangerResultViewController: UITableViewDataSource {
     guard let exchangeResultTableCell = tableView.dequeueReusableCell(withIdentifier: ExchangerResultViewController.cellID, for: indexPath) as? ExchangeResultTableCell else {
       return .init()
     }
-    
     exchangeResultTableCell.unitNameLabel.text = unitArray[indexPath.row]
     exchangeResultTableCell.resultLabel.text = resultArray[indexPath.row]
     
