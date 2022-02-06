@@ -32,6 +32,7 @@
 		6182F3192769FFE4001848E0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F3182769FFE4001848E0 /* UIColor.swift */; };
 		6182F31B276A1765001848E0 /* DiaryIngredientsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F31A276A1765001848E0 /* DiaryIngredientsTableViewCell.swift */; };
 		61C8EA1327A287EC003FD11B /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C8EA1227A287EC003FD11B /* Observable.swift */; };
+		61C8EA1627AFB05A003FD11B /* ratioTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 61C8EA1527AFB05A003FD11B /* ratioTest.json */; };
 		96EBEB9F79360C3629DCA791 /* Pods_LetsBake.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F45EA3DC6A3E9A686344595 /* Pods_LetsBake.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		6182F3182769FFE4001848E0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6182F31A276A1765001848E0 /* DiaryIngredientsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryIngredientsTableViewCell.swift; sourceTree = "<group>"; };
 		61C8EA1227A287EC003FD11B /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		61C8EA1527AFB05A003FD11B /* ratioTest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ratioTest.json; sourceTree = "<group>"; };
 		8F45EA3DC6A3E9A686344595 /* Pods_LetsBake.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LetsBake.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F691CB0BC95D2EC2C2FF6992 /* Pods-LetsBake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsBake.debug.xcconfig"; path = "Target Support Files/Pods-LetsBake/Pods-LetsBake.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -102,6 +104,7 @@
 		6182F2D22755FEB0001848E0 /* LetsBake */ = {
 			isa = PBXGroup;
 			children = (
+				61C8EA1427AFB009003FD11B /* Repository */,
 				6182F2F82761C780001848E0 /* Extension */,
 				6182F308276786FA001848E0 /* Diary */,
 				6182F3012762155F001848E0 /* Exchanger */,
@@ -235,6 +238,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		61C8EA1427AFB009003FD11B /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				61C8EA1527AFB05A003FD11B /* ratioTest.json */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		656C48F0932D05CF977556DD /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,6 +327,7 @@
 				6182F2E02755FEB1001848E0 /* LaunchScreen.storyboard in Resources */,
 				6182F2DD2755FEB1001848E0 /* Assets.xcassets in Resources */,
 				6182F2DB2755FEB0001848E0 /* Main.storyboard in Resources */,
+				61C8EA1627AFB05A003FD11B /* ratioTest.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

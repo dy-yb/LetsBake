@@ -40,10 +40,31 @@ class DiaryCollectionViewController: UIViewController {
     super.viewDidLoad()
     setView()
     layout()
+    jsonTest()
   }
   
   // MARK: - Layout
-  
+
+  func load() -> Data? {
+    let filNm: String = "ratioTest"
+    let extenstionType = "json"
+
+    guard let fileLocation = Bundle.main.url(forResource: filNm, withExtension: extenstionType) else { return nil }
+
+    do {
+      let data = try Data(contentsOf: fileLocation)
+      return data
+    } catch {
+      return nil
+    }
+  }
+
+  func jsonTest() {
+    guard let jsonData = load(),
+          let dicData = String(data: jsonData, encoding: .utf8)
+    else { return }
+  }
+
   func setView() {
     view.backgroundColor = .white
     navigationItem.title = "Diary"

@@ -14,8 +14,7 @@ class ExchangerResultViewController: UIViewController {
   
   static let cellID = "exchangeTableCell"
   let unitArray = ["컵(종이컵)", "그램", "킬로그램", "티스푼", "테이블스푼", "컵", "온스", "액체 온스", "밀리리터", "리터", "파운드"]
-  //  let resultArray = ["1 g", "0.01 kg", "0.13 tsp", "0.4 tbsp", "0.01 cup", "0.04 onz", "2 ml", "0.002 L"]
-  let viewModel = ObservableResultExchangerViewModel()
+  let viewModel = ObservableExchangerViewModel()
 
   // MARK: - UI
   
@@ -91,7 +90,7 @@ class ExchangerResultViewController: UIViewController {
   // MARK: Functions
 
   private func setData() {
-    viewModel.fetchData()
+    viewModel.fetchData(inputIngredient: "test", inputUnit: "test", inputQuantity: 123)
   }
   private func setTableView() {
     resultTableView.dataSource = self
@@ -156,7 +155,7 @@ extension ExchangerResultViewController: UITableViewDataSource {
       return .init()
     }
     exchangeResultTableCell.unitNameLabel.text = unitArray[indexPath.row]
-    exchangeResultTableCell.resultLabel.text = viewModel.storage.value[indexPath.row].ingredient
+//    exchangeResultTableCell.resultLabel.text = viewModel.storage.value[indexPath.row].ingredient
 
     return exchangeResultTableCell
   }
