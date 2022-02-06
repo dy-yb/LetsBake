@@ -27,20 +27,21 @@ protocol ObeservableExchangerViewModelProtocol {
 }
 
 class ObservableExchangerViewModel: ObeservableExchangerViewModelProtocol {
-  typealias T = QuantityAsUnits
+  typealias T = Ratio
+  let repository = Repository()
 
   func fetchData() {
-    //
+    repository.getData { response in
+            let observable = Observable(response)
+            self.storage = observable
+        }
   }
 
   func setError(_ message: String) {
     //
   }
 
-  var storage: Observable<[QuantityAsUnits]> = Observable([])
-
+  var storage: Observable<[Ratio]> = Observable([])
   var errorMessage: Observable<String?> = Observable(nil)
-
   var error: Observable<Bool> = Observable(false)
-
 }

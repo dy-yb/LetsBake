@@ -13,9 +13,10 @@ class ExchangerResultViewController: UIViewController {
   // MARK: - Properties
   
   static let cellID = "exchangeTableCell"
-  let unitArray = ["그램", "킬로그램", "티스푼", "테이블스푼", "컵", "온스", "밀리리터", "리터"]
-  let resultArray = ["1 g", "0.01 kg", "0.13 tsp", "0.4 tbsp", "0.01 cup", "0.04 onz", "2 ml", "0.002 L"]
-  
+  let unitArray = ["컵(종이컵)", "그램", "킬로그램", "티스푼", "테이블스푼", "컵", "온스", "액체 온스", "밀리리터", "리터", "파운드"]
+  //  let resultArray = ["1 g", "0.01 kg", "0.13 tsp", "0.4 tbsp", "0.01 cup", "0.04 onz", "2 ml", "0.002 L"]
+  let viewModel = ObservableResultExchangerViewModel()
+
   // MARK: - UI
   
   let dimmedView: UIView = {
@@ -48,9 +49,10 @@ class ExchangerResultViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    resultTableView.dataSource = self 
     setView()
     layout()
+    setData()
+    setTableView()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -87,7 +89,35 @@ class ExchangerResultViewController: UIViewController {
   }
   
   // MARK: Functions
-  
+
+  private func setData() {
+    viewModel.fetchData()
+  }
+  private func setTableView() {
+    resultTableView.dataSource = self
+    setupBinding()
+  }
+
+  private func setupBinding() {
+    /* storage의 값이 변경되면 reloadData를 실행합니다 */
+    viewModel.storage.bind { [weak self] _ in
+      guard let self = self else { return }
+      self.resultTableView.reloadData()
+    }
+
+    /* Error Handling */
+    let message = "에러 발생"
+    viewModel.errorMessage = Observable(message)
+
+    viewModel.error.bind { isSuccess in
+      if isSuccess {
+        print("DEBUG: success")
+      } else {
+        print("DEBUG: \(self.viewModel.errorMessage)")
+      }
+    }
+  }
+
   func showBottomSheet() {
     resultBottomSheetView.heightAnchor.constraint(equalToConstant: 300).isActive = true
     UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
@@ -117,7 +147,8 @@ class ExchangerResultViewController: UIViewController {
 
 extension ExchangerResultViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return resultArray.count
+    return viewModel.storage.value.count
+    //    return resultArray.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -125,8 +156,8 @@ extension ExchangerResultViewController: UITableViewDataSource {
       return .init()
     }
     exchangeResultTableCell.unitNameLabel.text = unitArray[indexPath.row]
-    exchangeResultTableCell.resultLabel.text = resultArray[indexPath.row]
-    
+    exchangeResultTableCell.resultLabel.text = viewModel.storage.value[indexPath.row].ingredient
+
     return exchangeResultTableCell
   }
 }
