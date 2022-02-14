@@ -41,7 +41,7 @@ class ExchangerViewController: UIViewController {
     return pickerView
   }()
 
-  let numberTextField: UITextField = {
+  let inputQuantityTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.borderStyle = .none
@@ -50,7 +50,7 @@ class ExchangerViewController: UIViewController {
     return textField
   }()
   
-  let unitsTextField: UITextField = {
+  let inputUnitsTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.borderStyle = .none
@@ -60,23 +60,29 @@ class ExchangerViewController: UIViewController {
     return textField
   }()
   
-  let unitsPickerView: UIPickerView = {
+  let inputUnitsPickerView: UIPickerView = {
     let pickerView = UIPickerView()
     pickerView.tag = 2
     return pickerView
   }()
 
+  let arrowImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.image = UIImage(named: "arrow_down")
+    return imageView
+  }()
 
-  let numberTextField: UITextField = {
+  let resultQuantityTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.borderStyle = .none
+    textField.backgroundColor = .mainColor
+    textField.layer.cornerRadius = 10
     textField.textAlignment = .center
-    textField.placeholder = "300"
     return textField
   }()
 
-  let unitsTextField: UITextField = {
+  let resultUnitsTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.borderStyle = .none
@@ -86,29 +92,18 @@ class ExchangerViewController: UIViewController {
     return textField
   }()
 
-  let unitsPickerView: UIPickerView = {
+  let resultUnitsPickerView: UIPickerView = {
     let pickerView = UIPickerView()
-    pickerView.tag = 2
+    pickerView.tag = 3
     return pickerView
-  }()
-
-
-  lazy var resultButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.layer.cornerRadius = 10
-    button.backgroundColor = .mainColor
-    button.setTitle("결과보기", for: .normal)
-    button.setTitleColor(.black, for: .normal)
-    button.addTarget(self, action: #selector(resultButtonEvent), for: .touchUpInside)
-    return button
   }()
   
   // MARK: - Lifecycle
   
   override func viewDidLayoutSubviews() {
-    numberTextField.setUnderLineToTextField()
-    unitsTextField.setUnderLineToTextField()
+    inputQuantityTextField.setUnderLineToTextField()
+    inputUnitsTextField.setUnderLineToTextField()
+    resultUnitsTextField.setUnderLineToTextField()
   }
   
   override func viewDidLoad() {
@@ -124,42 +119,49 @@ class ExchangerViewController: UIViewController {
     view.backgroundColor = .white
     view.addSubview(questionLabel)
     view.addSubview(ingredientsTextField)
-    view.addSubview(numberTextField)
-    view.addSubview(unitsTextField)
-    view.addSubview(resultButton)
+    view.addSubview(inputQuantityTextField)
+    view.addSubview(inputUnitsTextField)
+    view.addSubview(arrowImageView)
+    view.addSubview(resultQuantityTextField)
+    view.addSubview(resultUnitsTextField)
   }
   
   func layout() {
     NSLayoutConstraint.activate([
-      questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 65),
+      questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 90),
       questionLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 33),
-      
-      ingredientsTextField.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 20),
+
+      // stackview?
+      ingredientsTextField.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 30),
       ingredientsTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -222),
       ingredientsTextField.heightAnchor.constraint(equalToConstant: 40),
       ingredientsTextField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 33),
       
-      numberTextField.topAnchor.constraint(equalTo: ingredientsTextField.topAnchor),
-      numberTextField.leftAnchor.constraint(equalTo: ingredientsTextField.rightAnchor, constant: 21),
-      numberTextField.heightAnchor.constraint(equalToConstant: 40),
-      numberTextField.widthAnchor.constraint(equalToConstant: 50),
+      inputQuantityTextField.topAnchor.constraint(equalTo: ingredientsTextField.topAnchor),
+      inputQuantityTextField.leftAnchor.constraint(equalTo: ingredientsTextField.rightAnchor, constant: 21),
+      inputQuantityTextField.heightAnchor.constraint(equalToConstant: 40),
+      inputQuantityTextField.widthAnchor.constraint(equalToConstant: 50),
       
-      unitsTextField.topAnchor.constraint(equalTo: ingredientsTextField.topAnchor),
-      unitsTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -45),
-      unitsTextField.heightAnchor.constraint(equalToConstant: 40),
-      unitsTextField.leftAnchor.constraint(equalTo: numberTextField.rightAnchor, constant: 21),
-      
-      resultButton.topAnchor.constraint(equalTo: numberTextField.bottomAnchor, constant: 30),
-      resultButton.leftAnchor.constraint(equalTo: ingredientsTextField.leftAnchor),
-      resultButton.rightAnchor.constraint(equalTo: unitsTextField.rightAnchor),
-      resultButton.heightAnchor.constraint(equalToConstant: 50)
+      inputUnitsTextField.topAnchor.constraint(equalTo: ingredientsTextField.topAnchor),
+      inputUnitsTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -45),
+      inputUnitsTextField.heightAnchor.constraint(equalToConstant: 40),
+      inputUnitsTextField.leftAnchor.constraint(equalTo: inputQuantityTextField.rightAnchor, constant: 21),
+
+      arrowImageView.topAnchor.constraint(equalTo: ingredientsTextField.bottomAnchor, constant: 45),
+      arrowImageView.widthAnchor.constraint(equalToConstant: 45),
+      arrowImageView.heightAnchor.constraint(equalToConstant: 35),
+      arrowImageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
+
+      resultQuantityTextField.topAnchor.constraint(equalTo: arrowImageView.bottomAnchor, constant: 45),
+      resultQuantityTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -170),
+      resultQuantityTextField.heightAnchor.constraint(equalToConstant: 45),
+      resultQuantityTextField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 33),
+
+      resultUnitsTextField.bottomAnchor.constraint(equalTo: resultQuantityTextField.bottomAnchor),
+      resultUnitsTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -45),
+      resultUnitsTextField.leftAnchor.constraint(equalTo: resultQuantityTextField.rightAnchor, constant: 15),
+      resultUnitsTextField.heightAnchor.constraint(equalToConstant: 40)
     ])
-  }
-  
-  @objc func resultButtonEvent() {
-    let exchangerResultViewController = ExchangerResultViewController()
-    exchangerResultViewController.modalPresentationStyle = .overFullScreen
-    self.present(exchangerResultViewController, animated: false, completion: nil)
   }
 }
 
@@ -171,9 +173,13 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     ingredientsPickerView.dataSource = self
     ingredientsTextField.inputView = ingredientsPickerView
     
-    unitsPickerView.delegate = self
-    unitsPickerView.dataSource = self
-    unitsTextField.inputView = unitsPickerView
+    inputUnitsPickerView.delegate = self
+    inputUnitsPickerView.dataSource = self
+    inputUnitsTextField.inputView = inputUnitsPickerView
+
+    resultUnitsPickerView.delegate = self
+    resultUnitsPickerView.dataSource = self
+    resultUnitsTextField.inputView = resultUnitsPickerView
   }
   
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -186,7 +192,7 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     switch pickerView {
     case ingredientsPickerView:
       numOfComponent = ingredients.count
-    case unitsPickerView:
+    case inputUnitsPickerView, resultUnitsPickerView:
       numOfComponent = units.count
     default:
       break;
@@ -200,7 +206,9 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     switch pickerView {
     case ingredientsPickerView:
       titleRow = ingredients[row]
-    case unitsPickerView:
+    case inputUnitsPickerView:
+      titleRow = units[row]
+    case resultUnitsPickerView:
       titleRow = units[row]
     default:
       break;
@@ -212,8 +220,10 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     switch pickerView {
     case ingredientsPickerView:
       self.ingredientsTextField.text = ingredients[row]
-    case unitsPickerView:
-      self.unitsTextField.text = units[row]
+    case inputUnitsPickerView:
+      self.inputUnitsTextField.text = units[row]
+    case resultUnitsPickerView:
+      self.resultUnitsTextField.text = units[row]
     default:
       break;
     }

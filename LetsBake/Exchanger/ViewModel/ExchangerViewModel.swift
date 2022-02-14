@@ -40,16 +40,16 @@ class ObservableExchangerViewModel: ObeservableExchangerViewModelProtocol {
   var resultArray: [Double] = []
 
   func fetchData(inputIngredient: String, inputUnit: String, inputQuantity: Float) {
-    repository.getData { response in
-      self.storage = Observable(response)
-    }
-    for index in 0 ... storage.value.count {
-      if(inputUnit != "gram") {
-        resultArray.append(storage.value[index].quantityAsUnits.papercup)
-      }
-    } else {
-      resultArray.append(storage.value[index].quantityAsUnits.papercup)
-    }
+//    repository.getData { response in
+//      self.storage = Observable(response)
+//    }
+//    for index in 0 ... storage.value.count {
+//      if(inputUnit != "gram") {
+//        resultArray.append(storage.value[index].quantityAsUnits.papercup)
+//      }
+//    } else {
+//      resultArray.append(storage.value[index].quantityAsUnits.papercup)
+//    }
   }
 }
 

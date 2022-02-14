@@ -11,7 +11,6 @@ class DiaryCollectionViewController: UIViewController {
   // MARK: - Properties
   
   static let cellID = "DiaryCollectionViewCell"
-  var ratios: [Test] = []
   
   // MARK: - UI
   
@@ -41,24 +40,9 @@ class DiaryCollectionViewController: UIViewController {
     super.viewDidLoad()
     setView()
     layout()
-    jsonTest()
   }
   
   // MARK: - Layout
-
-  func jsonTest() {
-    let jsonDecoder = JSONDecoder()
-
-    guard let ratioData: NSDataAsset = NSDataAsset(name: "test") else {
-      return
-    }
-    do {
-      self.ratios = try jsonDecoder.decode([Test].self, from: ratioData.data)
-      print(ratios)
-    } catch {
-      print(error.localizedDescription)
-    }
-  }
 
   func setView() {
     view.backgroundColor = .white
