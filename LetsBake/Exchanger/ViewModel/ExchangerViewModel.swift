@@ -27,32 +27,30 @@ protocol ObeservableExchangerViewModelProtocol {
 }
 
 class ObservableExchangerViewModel: ObeservableExchangerViewModelProtocol {
+  typealias T = Ratio
+  var storage: Observable<[Ratio]> = Observable([])
+  var errorMessage: Observable<String?> = Observable(nil)
+  var error: Observable<Bool> = Observable(false)
+
   func setError(_ message: String) {
     //
   }
 
-  typealias T = Ratio
   let repository = Repository()
-  var resultArray: [Float] = []
+  var resultArray: [Double] = []
 
   func fetchData(inputIngredient: String, inputUnit: String, inputQuantity: Float) {
     repository.getData { response in
-      let observable = Observable(response)
-      self.storage = observable
+      self.storage = Observable(response)
     }
     for index in 0 ... storage.value.count {
       if(inputUnit != "gram") {
-        if(storage.value[index].ingredient == inputIngredient){
-          //          resultArray.append([
-          //            storage.value[i].quantityAsUnits.papercup * inputQuantity ?? 0
-          //          ])
-        }
-      } else {
+        resultArray.append(storage.value[index].quantityAsUnits.papercup)
       }
+    } else {
+      resultArray.append(storage.value[index].quantityAsUnits.papercup)
     }
   }
-  //  var storage: Observable<[Ratio]> = Observable([])
-  var storage: Observable<[Ratio]> = Observable([])
-  var errorMessage: Observable<String?> = Observable(nil)
-  var error: Observable<Bool> = Observable(false)
 }
+
+

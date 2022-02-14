@@ -40,7 +40,7 @@ class ExchangerViewController: UIViewController {
     pickerView.tag = 1
     return pickerView
   }()
-  
+
   let numberTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +65,34 @@ class ExchangerViewController: UIViewController {
     pickerView.tag = 2
     return pickerView
   }()
-  
+
+
+  let numberTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.borderStyle = .none
+    textField.textAlignment = .center
+    textField.placeholder = "300"
+    return textField
+  }()
+
+  let unitsTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.borderStyle = .none
+    textField.placeholder = "그램"
+    textField.textAlignment = .center
+    textField.configToolbar()
+    return textField
+  }()
+
+  let unitsPickerView: UIPickerView = {
+    let pickerView = UIPickerView()
+    pickerView.tag = 2
+    return pickerView
+  }()
+
+
   lazy var resultButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false

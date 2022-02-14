@@ -6,55 +6,60 @@
 //
 
 import Foundation
-
-struct RatioTest: Codable {
-  let ingredient: String
-  let quantityAsUnits: Units
-}
-
-struct UnitsTest: Codable {
-  let papercup: Float?
-  let gram: Float
-  let killogram: Float
-  let teaspoon: Float
-  let tablespoon: Float
-  let cup: Float
-  let ounce: Float
-  let fluidOunce: Float
-  let milliliter: Float
-  let liter: Float
-  let pound: Float
-}
-
-
+import UIKit
 
 struct Units {
-  let papercup: Float?
-  let gram: Float
-  let killogram: Float
-  let teaspoon: Float
-  let tablespoon: Float
-  let cup: Float
-  let ounce: Float
-  let fluidOunce: Float
-  let milliliter: Float
-  let liter: Float
-  let pound: Float
+  let papercup: Double
+  let gram: Double
+  let killogram: Double
+  let teaspoon: Double
+  let tablespoon: Double
+  let cup: Double
+  let ounce: Double
+  let fluidOunce: Double
+  let milliliter: Double
+  let liter: Double
+  let pound: Double
 }
 
 struct Ratio {
-  let ingredient: String
-  let quantityAsUnits: Units
+ let ingredient: String
+ let quantityAsUnits: Units
+ func mutate(inputUnit: String) -> Double {
+   switch inputUnit {
+   case "종이컵":
+     return quantityAsUnits.papercup
+   case "그램":
+     return quantityAsUnits.gram
+   case "킬로그램":
+     return quantityAsUnits.killogram
+   case "티스푼":
+     return quantityAsUnits.teaspoon
+   case "테이블스푼":
+     return quantityAsUnits.tablespoon
+   case "컵":
+     return quantityAsUnits.cup
+   case "온스":
+     return quantityAsUnits.ounce
+   case "액량온스":
+     return quantityAsUnits.fluidOunce
+   case "밀리리터":
+     return quantityAsUnits.milliliter
+   case "리터":
+     return quantityAsUnits.liter
+   case "파운드":
+     return quantityAsUnits.pound
+   default:
+     return 0
+   }
+ }
 }
-
-
-// let ingredients = ["밀가루", "쌀가루", "우유", "물", "소금", "흑설탕", "백설탕", "슈가파우더", "바닐라익스트랙", "베이킹소다", "베이킹파우더", "버터", "이스트", "꿀", "아몬드가루"]
 
 let resultArray: [Int] = []
 
 struct ExchangerResult {
   let unitName: String
-  let resultValue: Float
+  let resultValue: Double
 }
 
 let ingredientsRatio = [

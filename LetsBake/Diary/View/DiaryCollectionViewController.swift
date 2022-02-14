@@ -11,6 +11,7 @@ class DiaryCollectionViewController: UIViewController {
   // MARK: - Properties
   
   static let cellID = "DiaryCollectionViewCell"
+  var ratios: [Test] = []
   
   // MARK: - UI
   
@@ -45,24 +46,18 @@ class DiaryCollectionViewController: UIViewController {
   
   // MARK: - Layout
 
-  func load() -> Data? {
-    let filNm: String = "ratioTest"
-    let extenstionType = "json"
-
-    guard let fileLocation = Bundle.main.url(forResource: filNm, withExtension: extenstionType) else { return nil }
-
-    do {
-      let data = try Data(contentsOf: fileLocation)
-      return data
-    } catch {
-      return nil
-    }
-  }
-
   func jsonTest() {
-    guard let jsonData = load(),
-          let dicData = String(data: jsonData, encoding: .utf8)
-    else { return }
+    let jsonDecoder = JSONDecoder()
+
+    guard let ratioData: NSDataAsset = NSDataAsset(name: "test") else {
+      return
+    }
+    do {
+      self.ratios = try jsonDecoder.decode([Test].self, from: ratioData.data)
+      print(ratios)
+    } catch {
+      print(error.localizedDescription)
+    }
   }
 
   func setView() {

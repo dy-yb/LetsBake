@@ -1,0 +1,19 @@
+/* 
+  test.json
+  LetsBake
+
+  Created by Daye on 2022/02/10.
+  
+*/
+
+
+[
+  {
+    "name": "daye",
+    "age": 28
+  },
+  {
+    "name": "jjong",
+    "age": 9
+  }
+]
