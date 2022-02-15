@@ -90,7 +90,7 @@ class ExchangerResultViewController: UIViewController {
   // MARK: Functions
 
   private func setData() {
-    viewModel.fetchData(inputIngredient: "test", inputUnit: "test", inputQuantity: 123)
+//    viewModel.fetchData(inputIngredient: "test", inputUnit: "test", inputQuantity: 123)
   }
   private func setTableView() {
     resultTableView.dataSource = self

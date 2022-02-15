@@ -20,39 +20,40 @@ struct Units {
   let milliliter: Double
   let liter: Double
   let pound: Double
+
+  func mutate(inputUnit: String) -> Double {
+    switch inputUnit {
+    case "종이컵":
+      return papercup
+    case "그램":
+      return gram
+    case "킬로그램":
+      return killogram
+    case "티스푼":
+      return teaspoon
+    case "테이블스푼":
+      return tablespoon
+    case "컵":
+      return cup
+    case "온스":
+      return ounce
+    case "액량온스":
+      return fluidOunce
+    case "밀리리터":
+      return milliliter
+    case "리터":
+      return liter
+    case "파운드":
+      return pound
+    default:
+      return 0
+    }
+  }
 }
 
 struct Ratio {
  let ingredient: String
  let quantityAsUnits: Units
- func mutate(inputUnit: String) -> Double {
-   switch inputUnit {
-   case "종이컵":
-     return quantityAsUnits.papercup
-   case "그램":
-     return quantityAsUnits.gram
-   case "킬로그램":
-     return quantityAsUnits.killogram
-   case "티스푼":
-     return quantityAsUnits.teaspoon
-   case "테이블스푼":
-     return quantityAsUnits.tablespoon
-   case "컵":
-     return quantityAsUnits.cup
-   case "온스":
-     return quantityAsUnits.ounce
-   case "액량온스":
-     return quantityAsUnits.fluidOunce
-   case "밀리리터":
-     return quantityAsUnits.milliliter
-   case "리터":
-     return quantityAsUnits.liter
-   case "파운드":
-     return quantityAsUnits.pound
-   default:
-     return 0
-   }
- }
 }
 
 let resultArray: [Int] = []

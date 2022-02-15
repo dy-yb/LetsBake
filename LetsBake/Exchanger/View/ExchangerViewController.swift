@@ -8,7 +8,9 @@
 import UIKit
 
 class ExchangerViewController: UIViewController {
-  
+
+  let viewModel = ObservableExchangerViewModel()
+
   // MARK: - Properties
   
   let ingredients = ["강력분", "중력분", "박력분"]
@@ -111,6 +113,8 @@ class ExchangerViewController: UIViewController {
     setView()
     layout()
     configPickerView()
+    let test = viewModel.fetchData(inputIngredient: "밀가루", inputUnit: "티스푼", inputQuantity: 150, resultUnit: "파운드")
+    print(test)
   }
   
   // MARK: - Layout

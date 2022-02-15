@@ -10,7 +10,7 @@ import Foundation
 protocol ObeservableExchangerViewModelProtocol {
   associatedtype T
   // 데이터를 가져옵니다.
-  func fetchData(inputIngredient: String, inputUnit: String, inputQuantity: Float)
+  func fetchData(inputIngredient: String, inputUnit: String, inputQuantity: Double, resultUnit: String) -> Double
   
   // 에러를 처리합니다.
   func setError(_ message: String)
@@ -36,21 +36,24 @@ class ObservableExchangerViewModel: ObeservableExchangerViewModelProtocol {
     //
   }
 
-  let repository = Repository()
-  var resultArray: [Double] = []
+  func fetchData(inputIngredient: String, inputUnit: String, inputQuantity: Double, resultUnit: String) -> Double {
+    var resultQuantity: Double = 0
+    let repository = Repository()
 
-  func fetchData(inputIngredient: String, inputUnit: String, inputQuantity: Float) {
-//    repository.getData { response in
-//      self.storage = Observable(response)
-//    }
-//    for index in 0 ... storage.value.count {
-//      if(inputUnit != "gram") {
-//        resultArray.append(storage.value[index].quantityAsUnits.papercup)
-//      }
-//    } else {
-//      resultArray.append(storage.value[index].quantityAsUnits.papercup)
-//    }
+    repository.getData { response in
+      self.storage = Observable(response)
+    }
+    for index in 0 ... storage.value.count-1 {
+      if inputIngredient == storage.value[index].ingredient {
+        let ratio: Units = storage.value[index].quantityAsUnits
+        if inputUnit != "gram" {
+          let exchangeToGram = inputQuantity / ratio.mutate(inputUnit: inputUnit)
+          resultQuantity = exchangeToGram * ratio.mutate(inputUnit: resultUnit)
+        } else {
+          resultQuantity = inputQuantity * ratio.mutate(inputUnit: resultUnit)
+        }
+      }
+    }
+    return resultQuantity
   }
 }
-
-
