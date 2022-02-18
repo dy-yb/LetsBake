@@ -56,13 +56,6 @@ struct Ratio {
  let quantityAsUnits: Units
 }
 
-let resultArray: [Int] = []
-
-struct ExchangerResult {
-  let unitName: String
-  let resultValue: Double
-}
-
 let ingredientsRatio = [
   Ratio(ingredient: "밀가루", quantityAsUnits: Units(papercup: 0.01, gram: 1, killogram: 0.001, teaspoon: 0.333, tablespoon: 0.125, cup: 0.008, ounce: 0.035, fluidOunce: 0.061, milliliter: 2, liter: 0.002, pound: 0.002)),
   Ratio(ingredient: "쌀가루", quantityAsUnits: Units(papercup: 0.01, gram: 1, killogram: 0.001, teaspoon: 0.4, tablespoon: 0.08333, cup: 0.008, ounce: 0.036, fluidOunce: 0.416, milliliter: 1, liter: 0.001, pound: 0.002)),

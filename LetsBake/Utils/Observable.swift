@@ -8,20 +8,41 @@
 import Foundation
 
 class Observable<T> {
+  // value definition
   var value: T {
     didSet {
-      listner?(value)
+      // 값을 받아 이벤트 수행
+      self.listener?(value)
     }
   }
 
-  private var listner: ((T) -> Void)?
+  private var listener: ((T) -> Void)? // 이벤트 저장 할 클로저 변수
 
   init(_ value: T) {
-    self.value = value
+    self.value = value // value 초기화
   }
 
-  func bind(_ closure: @escaping (T) -> Void) {
-    closure(value)
-    listner = closure
+  func subscribe(listener: @escaping (T) -> Void) {
+    listener(value) // 이벤트 실행
+    self.listener = listener // 이벤트를 didSet에서 실행하기 위해 저장
   }
 }
+
+//class Observable<T> {
+//  var value: T {
+//    didSet {
+//      listner?(value)
+//    }
+//  }
+//
+//  private var listner: ((T) -> Void)?
+//
+//  init(_ value: T) {
+//    self.value = value
+//  }
+//
+//  func bind(_ closure: @escaping (T) -> Void) {
+//    closure(value)
+//    listner = closure
+//  }
+//}

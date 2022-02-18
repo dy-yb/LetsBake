@@ -9,7 +9,7 @@ import UIKit
 
 class ExchangerViewController: UIViewController {
 
-  let viewModel = ObservableExchangerViewModel()
+  let viewModel = ExchangerViewModel()
 
   // MARK: - Properties
   
@@ -34,6 +34,7 @@ class ExchangerViewController: UIViewController {
     textField.textAlignment = .center
     textField.placeholder = "강력분"
     textField.configToolbar()
+    textField.tintColor = .clear
     return textField
   }()
   
@@ -49,6 +50,7 @@ class ExchangerViewController: UIViewController {
     textField.borderStyle = .none
     textField.textAlignment = .center
     textField.placeholder = "300"
+    textField.keyboardType = .numberPad
     return textField
   }()
   
@@ -59,6 +61,7 @@ class ExchangerViewController: UIViewController {
     textField.placeholder = "그램"
     textField.textAlignment = .center
     textField.configToolbar()
+    textField.tintColor = .clear
     return textField
   }()
   
@@ -81,6 +84,7 @@ class ExchangerViewController: UIViewController {
     textField.backgroundColor = .mainColor
     textField.layer.cornerRadius = 10
     textField.textAlignment = .center
+    textField.tintColor = .clear
     return textField
   }()
 
@@ -91,6 +95,7 @@ class ExchangerViewController: UIViewController {
     textField.placeholder = "그램"
     textField.textAlignment = .center
     textField.configToolbar()
+    textField.tintColor = .clear
     return textField
   }()
 
@@ -113,13 +118,17 @@ class ExchangerViewController: UIViewController {
     setView()
     layout()
     configPickerView()
-    let test = viewModel.fetchData(inputIngredient: "밀가루", inputUnit: "티스푼", inputQuantity: 150, resultUnit: "파운드")
-    print(test)
+    //    setData()
   }
   
   // MARK: - Layout
   
   func setView() {
+    ingredientsTextField.delegate = self
+    inputUnitsTextField.delegate = self
+    resultUnitsTextField.delegate = self
+    resultQuantityTextField.delegate = self
+
     view.backgroundColor = .white
     view.addSubview(questionLabel)
     view.addSubview(ingredientsTextField)
@@ -167,9 +176,60 @@ class ExchangerViewController: UIViewController {
       resultUnitsTextField.heightAnchor.constraint(equalToConstant: 40)
     ])
   }
+
+  // MARK: - Funtions
+  func setBinding() {
+    viewModel.result.subscribe { value in
+      DispatchQueue.main.async {
+        self.resultQuantityTextField.text = value
+      }
+    }
+  }
+
+  //  private func setData() {
+  //    if let inputQuatity = inputQuantityTextField.text,
+  //       let inputUnit = inputUnitsTextField.text,
+  //       let inputIngredient = ingredientsTextField.text,
+  //       let resultUnit = resultUnitsTextField.text {
+  //      let doubleQuantity = Double(inputQuatity) ?? 0
+  //      self.resultQuantityTextField.text = String(viewModel.fetchData(inputIngredient: inputIngredient,
+  //                                                                inputUnit: inputUnit,
+  //                                                                inputQuantity: doubleQuantity,
+  //                                                                resultUnit: resultUnit))
+  //    }
+  //  }
+  //
+  //  private func setResult() {
+  //    //    resultTableView.dataSource = self
+  //    setupBinding()
+  //  }
+  //
+  //  private func setupBinding() {
+  //    viewModel.storage.bind { [weak self] _ in
+  //      guard let self = self else { return }
+  //      self.resultQuantityTextField.reloadInputViews()
+  //    }
+  //
+  //    /* Error Handling */
+  //    let message = "에러 발생"
+  //    viewModel.errorMessage = Observable(message)
+  //    viewModel.error.bind { isSuccess in
+  //      if isSuccess {
+  //        print("DEBUG: success")
+  //      } else {
+  //        print("DEBUG: \(self.viewModel.errorMessage)")
+  //      }
+  //    }
+  //  }
 }
 
-// MARK: Extensions
+// MARK: - Extensions
+
+extension ExchangerViewController: UITextFieldDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    return false
+  }
+}
 
 extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   func configPickerView() {

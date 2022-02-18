@@ -21,8 +21,6 @@ protocol ObeservableTimerViewModelProtocol {
 }
 
 class TimerViewModel: ObeservableTimerViewModelProtocol {
-
-
   var storage: Observable<Time> = Observable(Time(hour: 0, minute: 0, second: 0))
 
   var errorMessage: Observable<String?> = Observable(nil)
