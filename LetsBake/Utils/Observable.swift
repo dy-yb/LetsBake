@@ -27,22 +27,3 @@ class Observable<T> {
     self.listener = listener // 이벤트를 didSet에서 실행하기 위해 저장
   }
 }
-
-//class Observable<T> {
-//  var value: T {
-//    didSet {
-//      listner?(value)
-//    }
-//  }
-//
-//  private var listner: ((T) -> Void)?
-//
-//  init(_ value: T) {
-//    self.value = value
-//  }
-//
-//  func bind(_ closure: @escaping (T) -> Void) {
-//    closure(value)
-//    listner = closure
-//  }
-//}

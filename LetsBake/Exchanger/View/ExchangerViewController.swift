@@ -12,9 +12,21 @@ class ExchangerViewController: UIViewController {
   let viewModel = ExchangerViewModel()
 
   // MARK: - Properties
-  
-  let ingredients = ["강력분", "중력분", "박력분"]
-  let units = ["teaspoon", "tablespoon", "cup", "ounce", "milliliter"]
+
+  var ingredient: String = ""
+  var inputUnit: String = ""
+  var resultUnit: String = ""
+  var inputQuantity: Double = 0
+
+  let ingredients = ["밀가루", "쌀가루", "우유"]
+  let units = ["종이컵", "그램", "킬로그램", "온스", "밀리리터"]
+
+  enum ExchangerTextFieldTag: Int {
+    case ingredient = 1
+    case inputQuantity = 2
+    case inputUnit = 3
+    case resultUnit = 4
+  }
   
   // MARK: - UI
   
@@ -26,7 +38,7 @@ class ExchangerViewController: UIViewController {
     return label
   }()
   
-  let ingredientsTextField: UITextField = {
+  lazy var ingredientsTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.backgroundColor = .lightGray
@@ -35,6 +47,8 @@ class ExchangerViewController: UIViewController {
     textField.placeholder = "강력분"
     textField.configToolbar()
     textField.tintColor = .clear
+    textField.addTarget(self, action: #selector(inputing(_:)), for: .editingDidEnd)
+    textField.tag = ExchangerTextFieldTag.ingredient.rawValue
     return textField
   }()
   
@@ -44,17 +58,19 @@ class ExchangerViewController: UIViewController {
     return pickerView
   }()
 
-  let inputQuantityTextField: UITextField = {
+  lazy var inputQuantityTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.borderStyle = .none
     textField.textAlignment = .center
     textField.placeholder = "300"
     textField.keyboardType = .numberPad
+    textField.addTarget(self, action: #selector(inputing(_:)), for: .editingChanged)
+    textField.tag = ExchangerTextFieldTag.inputQuantity.rawValue
     return textField
   }()
   
-  let inputUnitsTextField: UITextField = {
+  lazy var inputUnitsTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.borderStyle = .none
@@ -62,6 +78,8 @@ class ExchangerViewController: UIViewController {
     textField.textAlignment = .center
     textField.configToolbar()
     textField.tintColor = .clear
+    textField.addTarget(self, action: #selector(inputing(_:)), for: .editingDidEnd)
+    textField.tag = ExchangerTextFieldTag.inputUnit.rawValue
     return textField
   }()
   
@@ -78,17 +96,26 @@ class ExchangerViewController: UIViewController {
     return imageView
   }()
 
-  let resultQuantityTextField: UITextField = {
-    let textField = UITextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.backgroundColor = .mainColor
-    textField.layer.cornerRadius = 10
-    textField.textAlignment = .center
-    textField.tintColor = .clear
-    return textField
+//  let resultQuantityTextField: UITextField = {
+//    let textField = UITextField()
+//    textField.translatesAutoresizingMaskIntoConstraints = false
+//    textField.backgroundColor = .mainColor
+//    textField.layer.cornerRadius = 10
+//    textField.textAlignment = .center
+//    textField.tintColor = .clear
+//    return textField
+//  }()
+
+  let resultQuantityTextField: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.backgroundColor = .mainColor
+    label.layer.cornerRadius = 10
+    label.textAlignment = .center
+    return label
   }()
 
-  let resultUnitsTextField: UITextField = {
+  lazy var resultUnitsTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.borderStyle = .none
@@ -96,6 +123,8 @@ class ExchangerViewController: UIViewController {
     textField.textAlignment = .center
     textField.configToolbar()
     textField.tintColor = .clear
+    textField.addTarget(self, action: #selector(inputing(_:)), for: .editingDidEnd)
+    textField.tag = ExchangerTextFieldTag.resultUnit.rawValue
     return textField
   }()
 
@@ -118,7 +147,7 @@ class ExchangerViewController: UIViewController {
     setView()
     layout()
     configPickerView()
-    //    setData()
+    setBinding()
   }
   
   // MARK: - Layout
@@ -127,7 +156,7 @@ class ExchangerViewController: UIViewController {
     ingredientsTextField.delegate = self
     inputUnitsTextField.delegate = self
     resultUnitsTextField.delegate = self
-    resultQuantityTextField.delegate = self
+//    resultQuantityTextField.delegate = self
 
     view.backgroundColor = .white
     view.addSubview(questionLabel)
@@ -178,49 +207,36 @@ class ExchangerViewController: UIViewController {
   }
 
   // MARK: - Funtions
+
   func setBinding() {
     viewModel.result.subscribe { value in
       DispatchQueue.main.async {
+        print("215: \(value)")
         self.resultQuantityTextField.text = value
       }
     }
   }
 
-  //  private func setData() {
-  //    if let inputQuatity = inputQuantityTextField.text,
-  //       let inputUnit = inputUnitsTextField.text,
-  //       let inputIngredient = ingredientsTextField.text,
-  //       let resultUnit = resultUnitsTextField.text {
-  //      let doubleQuantity = Double(inputQuatity) ?? 0
-  //      self.resultQuantityTextField.text = String(viewModel.fetchData(inputIngredient: inputIngredient,
-  //                                                                inputUnit: inputUnit,
-  //                                                                inputQuantity: doubleQuantity,
-  //                                                                resultUnit: resultUnit))
-  //    }
-  //  }
-  //
-  //  private func setResult() {
-  //    //    resultTableView.dataSource = self
-  //    setupBinding()
-  //  }
-  //
-  //  private func setupBinding() {
-  //    viewModel.storage.bind { [weak self] _ in
-  //      guard let self = self else { return }
-  //      self.resultQuantityTextField.reloadInputViews()
-  //    }
-  //
-  //    /* Error Handling */
-  //    let message = "에러 발생"
-  //    viewModel.errorMessage = Observable(message)
-  //    viewModel.error.bind { isSuccess in
-  //      if isSuccess {
-  //        print("DEBUG: success")
-  //      } else {
-  //        print("DEBUG: \(self.viewModel.errorMessage)")
-  //      }
-  //    }
-  //  }
+  @objc func inputing(_ sender: UITextField) {
+    switch sender.tag {
+    case ExchangerTextFieldTag.ingredient.rawValue:
+      ingredient = sender.text ?? ""
+    case ExchangerTextFieldTag.inputUnit.rawValue:
+      inputUnit = sender.text ?? ""
+    case ExchangerTextFieldTag.inputQuantity.rawValue:
+      if let quantity = sender.text {
+        inputQuantity = Double(quantity) ?? 0
+      }
+    case ExchangerTextFieldTag.resultUnit.rawValue:
+      resultUnit = sender.text ?? ""
+    default:
+      print("error")
+    }
+    viewModel.calculator(inputIngredient: ingredient, inputUnit: inputUnit, inputQuantity: inputQuantity, resultUnit: resultUnit)
+
+    print("\(ingredient),\(inputUnit),\(resultUnit),\(inputQuantity)")
+    print("238Line: \(viewModel.result.value)")
+  }
 }
 
 // MARK: - Extensions
