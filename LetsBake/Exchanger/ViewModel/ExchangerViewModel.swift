@@ -19,12 +19,12 @@ class ExchangerViewModel {
         let ratio = ingredientsRatio[index].quantityAsUnits
         if inputUnit != "gram" {
           let exchangeToGram = inputQuantity / ratio.mutate(inputUnit: inputUnit)
-          resultQuantity = exchangeToGram * ratio.mutate(inputUnit: resultUnit)
+          resultQuantity = round(exchangeToGram * ratio.mutate(inputUnit: resultUnit))
         } else {
-          resultQuantity = inputQuantity * ratio.mutate(inputUnit: resultUnit)
+          resultQuantity = round(inputQuantity * ratio.mutate(inputUnit: resultUnit))
         }
       }
     }
-    result = Observable(String(resultQuantity))
+    result.value = String(resultQuantity)
   }
 }

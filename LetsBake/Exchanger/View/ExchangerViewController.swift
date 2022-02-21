@@ -44,7 +44,7 @@ class ExchangerViewController: UIViewController {
     textField.backgroundColor = .lightGray
     textField.layer.cornerRadius = 10
     textField.textAlignment = .center
-    textField.placeholder = "강력분"
+    textField.placeholder = "밀가루"
     textField.configToolbar()
     textField.tintColor = .clear
     textField.addTarget(self, action: #selector(inputing(_:)), for: .editingDidEnd)
@@ -96,23 +96,14 @@ class ExchangerViewController: UIViewController {
     return imageView
   }()
 
-//  let resultQuantityTextField: UITextField = {
-//    let textField = UITextField()
-//    textField.translatesAutoresizingMaskIntoConstraints = false
-//    textField.backgroundColor = .mainColor
-//    textField.layer.cornerRadius = 10
-//    textField.textAlignment = .center
-//    textField.tintColor = .clear
-//    return textField
-//  }()
-
-  let resultQuantityTextField: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.backgroundColor = .mainColor
-    label.layer.cornerRadius = 10
-    label.textAlignment = .center
-    return label
+  let resultQuantityTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.backgroundColor = .mainColor
+    textField.layer.cornerRadius = 10
+    textField.textAlignment = .center
+    textField.tintColor = .clear
+    return textField
   }()
 
   lazy var resultUnitsTextField: UITextField = {
@@ -156,7 +147,7 @@ class ExchangerViewController: UIViewController {
     ingredientsTextField.delegate = self
     inputUnitsTextField.delegate = self
     resultUnitsTextField.delegate = self
-//    resultQuantityTextField.delegate = self
+    resultQuantityTextField.delegate = self
 
     view.backgroundColor = .white
     view.addSubview(questionLabel)
@@ -211,7 +202,6 @@ class ExchangerViewController: UIViewController {
   func setBinding() {
     viewModel.result.subscribe { value in
       DispatchQueue.main.async {
-        print("215: \(value)")
         self.resultQuantityTextField.text = value
       }
     }
@@ -233,9 +223,6 @@ class ExchangerViewController: UIViewController {
       print("error")
     }
     viewModel.calculator(inputIngredient: ingredient, inputUnit: inputUnit, inputQuantity: inputQuantity, resultUnit: resultUnit)
-
-    print("\(ingredient),\(inputUnit),\(resultUnit),\(inputQuantity)")
-    print("238Line: \(viewModel.result.value)")
   }
 }
 
