@@ -13,13 +13,10 @@ class ExchangerViewController: UIViewController {
 
   // MARK: - Properties
 
-  var ingredient: String = ""
-  var inputUnit: String = ""
-  var resultUnit: String = ""
+  var ingredient: String = ingredients[0]
+  var inputUnit: String = units[0]
+  var resultUnit: String = units[0]
   var inputQuantity: Double = 0
-
-  let ingredients = ["밀가루", "쌀가루", "우유"]
-  let units = ["종이컵", "그램", "킬로그램", "온스", "밀리리터"]
 
   enum ExchangerTextFieldTag: Int {
     case ingredient = 1
@@ -239,14 +236,20 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     ingredientsPickerView.delegate = self
     ingredientsPickerView.dataSource = self
     ingredientsTextField.inputView = ingredientsPickerView
+    ingredientsPickerView.selectedRow(inComponent: 0)
+    ingredientsTextField.text = ingredients[0]
     
     inputUnitsPickerView.delegate = self
     inputUnitsPickerView.dataSource = self
     inputUnitsTextField.inputView = inputUnitsPickerView
+    inputUnitsPickerView.selectedRow(inComponent: 0)
+    inputUnitsTextField.text = units[0]
 
     resultUnitsPickerView.delegate = self
     resultUnitsPickerView.dataSource = self
     resultUnitsTextField.inputView = resultUnitsPickerView
+    resultUnitsPickerView.selectedRow(inComponent: 0)
+    resultUnitsTextField.text = units[0]
   }
   
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
