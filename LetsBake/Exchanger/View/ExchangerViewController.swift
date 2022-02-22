@@ -161,7 +161,6 @@ class ExchangerViewController: UIViewController {
       questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 90),
       questionLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 33),
 
-      // stackview?
       ingredientsTextField.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 30),
       ingredientsTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -222),
       ingredientsTextField.heightAnchor.constraint(equalToConstant: 40),
