@@ -44,14 +44,13 @@ class ExchangerViewController: UIViewController {
     textField.placeholder = "밀가루"
     textField.configToolbar()
     textField.tintColor = .clear
-    textField.addTarget(self, action: #selector(inputing(_:)), for: .editingDidEnd)
+    textField.addTarget(self, action: #selector(editedTextField(_:)), for: .editingDidEnd)
     textField.tag = ExchangerTextFieldTag.ingredient.rawValue
     return textField
   }()
   
   let ingredientsPickerView: UIPickerView = {
     let pickerView = UIPickerView()
-    pickerView.tag = 1
     return pickerView
   }()
 
@@ -62,7 +61,7 @@ class ExchangerViewController: UIViewController {
     textField.textAlignment = .center
     textField.placeholder = "300"
     textField.keyboardType = .numberPad
-    textField.addTarget(self, action: #selector(inputing(_:)), for: .editingChanged)
+    textField.addTarget(self, action: #selector(editedTextField(_:)), for: .editingChanged)
     textField.tag = ExchangerTextFieldTag.inputQuantity.rawValue
     return textField
   }()
@@ -75,14 +74,13 @@ class ExchangerViewController: UIViewController {
     textField.textAlignment = .center
     textField.configToolbar()
     textField.tintColor = .clear
-    textField.addTarget(self, action: #selector(inputing(_:)), for: .editingDidEnd)
+    textField.addTarget(self, action: #selector(editedTextField(_:)), for: .editingDidEnd)
     textField.tag = ExchangerTextFieldTag.inputUnit.rawValue
     return textField
   }()
   
   let inputUnitsPickerView: UIPickerView = {
     let pickerView = UIPickerView()
-    pickerView.tag = 2
     return pickerView
   }()
 
@@ -111,14 +109,13 @@ class ExchangerViewController: UIViewController {
     textField.textAlignment = .center
     textField.configToolbar()
     textField.tintColor = .clear
-    textField.addTarget(self, action: #selector(inputing(_:)), for: .editingDidEnd)
+    textField.addTarget(self, action: #selector(editedTextField(_:)), for: .editingDidEnd)
     textField.tag = ExchangerTextFieldTag.resultUnit.rawValue
     return textField
   }()
 
   let resultUnitsPickerView: UIPickerView = {
     let pickerView = UIPickerView()
-    pickerView.tag = 3
     return pickerView
   }()
   
@@ -203,7 +200,7 @@ class ExchangerViewController: UIViewController {
     }
   }
 
-  @objc func inputing(_ sender: UITextField) {
+  @objc func editedTextField(_ sender: UITextField) {
     switch sender.tag {
     case ExchangerTextFieldTag.ingredient.rawValue:
       ingredient = sender.text ?? ""
