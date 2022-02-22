@@ -7,8 +7,8 @@
 
 import Foundation
 
-class ExchangerViewModel {
-  let model = ExchangerModel()
+final class ExchangerViewModel {
+  private let model = ExchangerModel()
   var result: Observable<String> = Observable("")
 
   func calculator(inputIngredient: String, inputUnit: String, inputQuantity: Double, resultUnit: String) {
