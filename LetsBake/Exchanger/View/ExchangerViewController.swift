@@ -8,16 +8,16 @@
 import UIKit
 
 final class ExchangerViewController: UIViewController {
-  
-  private let viewModel = ExchangerViewModel()
-  
+
+  private let exchangerViewModel = ExchangerViewModel()
+
   // MARK: - Properties
-  
+
   private var ingredient: String = ingredients[0]
   private var inputUnit: String = units[0]
   private var resultUnit: String = units[0]
   private var inputQuantity: Double = 0
-  
+
   enum ExchangerTextFieldTag: Int {
     case ingredient = 1
     case inputQuantity = 2
@@ -53,7 +53,7 @@ final class ExchangerViewController: UIViewController {
     let pickerView = UIPickerView()
     return pickerView
   }()
-  
+
   private lazy var inputQuantityTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -83,14 +83,14 @@ final class ExchangerViewController: UIViewController {
     let pickerView = UIPickerView()
     return pickerView
   }()
-  
+
   private let arrowImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.image = UIImage(named: "arrow_down")
     return imageView
   }()
-  
+
   private let resultQuantityTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -100,7 +100,7 @@ final class ExchangerViewController: UIViewController {
     textField.tintColor = .clear
     return textField
   }()
-  
+
   private lazy var resultUnitsTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
@@ -113,7 +113,7 @@ final class ExchangerViewController: UIViewController {
     textField.tag = ExchangerTextFieldTag.resultUnit.rawValue
     return textField
   }()
-  
+
   private let resultUnitsPickerView: UIPickerView = {
     let pickerView = UIPickerView()
     return pickerView
@@ -142,7 +142,7 @@ final class ExchangerViewController: UIViewController {
     inputUnitsTextField.delegate = self
     resultUnitsTextField.delegate = self
     resultQuantityTextField.delegate = self
-    
+
     view.backgroundColor = .white
     view.addSubview(questionLabel)
     view.addSubview(ingredientsTextField)
@@ -157,7 +157,7 @@ final class ExchangerViewController: UIViewController {
     NSLayoutConstraint.activate([
       questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 90),
       questionLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 33),
-      
+
       ingredientsTextField.topAnchor.constraint(equalTo: questionLabel.bottomAnchor, constant: 30),
       ingredientsTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -222),
       ingredientsTextField.heightAnchor.constraint(equalToConstant: 40),
@@ -172,34 +172,34 @@ final class ExchangerViewController: UIViewController {
       inputUnitsTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -45),
       inputUnitsTextField.heightAnchor.constraint(equalToConstant: 40),
       inputUnitsTextField.leftAnchor.constraint(equalTo: inputQuantityTextField.rightAnchor, constant: 21),
-      
+
       arrowImageView.topAnchor.constraint(equalTo: ingredientsTextField.bottomAnchor, constant: 45),
       arrowImageView.widthAnchor.constraint(equalToConstant: 45),
       arrowImageView.heightAnchor.constraint(equalToConstant: 35),
       arrowImageView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
-      
+
       resultQuantityTextField.topAnchor.constraint(equalTo: arrowImageView.bottomAnchor, constant: 45),
       resultQuantityTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -170),
       resultQuantityTextField.heightAnchor.constraint(equalToConstant: 45),
       resultQuantityTextField.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 33),
-      
+
       resultUnitsTextField.bottomAnchor.constraint(equalTo: resultQuantityTextField.bottomAnchor),
       resultUnitsTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -45),
       resultUnitsTextField.leftAnchor.constraint(equalTo: resultQuantityTextField.rightAnchor, constant: 15),
       resultUnitsTextField.heightAnchor.constraint(equalToConstant: 40)
     ])
   }
-  
+
   // MARK: - Funtions
-  
+
   private func setBinding() {
-    viewModel.result.subscribe { value in
+    exchangerViewModel.result.subscribe { value in
       DispatchQueue.main.async {
         self.resultQuantityTextField.text = value
       }
     }
   }
-  
+
   @objc func editedTextField(_ sender: UITextField) {
     switch sender.tag {
     case ExchangerTextFieldTag.ingredient.rawValue:
@@ -215,7 +215,7 @@ final class ExchangerViewController: UIViewController {
     default:
       print("error")
     }
-    viewModel.calculator(inputIngredient: ingredient, inputUnit: inputUnit, inputQuantity: inputQuantity, resultUnit: resultUnit)
+    exchangerViewModel.calculator(inputIngredient: ingredient, inputUnit: inputUnit, inputQuantity: inputQuantity, resultUnit: resultUnit)
   }
 }
 
@@ -240,7 +240,7 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     inputUnitsTextField.inputView = inputUnitsPickerView
     inputUnitsPickerView.selectedRow(inComponent: 0)
     inputUnitsTextField.text = units[0]
-    
+
     resultUnitsPickerView.delegate = self
     resultUnitsPickerView.dataSource = self
     resultUnitsTextField.inputView = resultUnitsPickerView

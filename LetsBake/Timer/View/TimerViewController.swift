@@ -19,8 +19,8 @@ class TimerViewController: UIViewController {
     case stop = 3
   }
 
-  var timer: Timer?
-  var timeCount = 0
+  private var timer: Timer?
+  private var timeCount = 0
 
   private var inputHour: Int = 0
   private var inputMinute: Int = 0
@@ -30,7 +30,7 @@ class TimerViewController: UIViewController {
 
   // MARK: - UI
 
-  let timeLabel: UILabel = {
+  private let timeLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "00:00:00"
@@ -38,14 +38,14 @@ class TimerViewController: UIViewController {
     return label
   }()
 
-  let timePicker: UIPickerView = {
+  private let timePicker: UIPickerView = {
     let pickerView = UIPickerView()
     pickerView.translatesAutoresizingMaskIntoConstraints = false
     pickerView.layer.cornerRadius = 10
     return pickerView
   }()
 
-  lazy var buttonStackView: UIStackView = {
+  private lazy var buttonStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [startTimerButton, pauseTimerButton, stopTimerButton])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .horizontal
@@ -55,7 +55,7 @@ class TimerViewController: UIViewController {
     return stackView
   }()
 
-  lazy var startTimerButton: UIButton = {
+  private lazy var startTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setImage(UIImage(named: "ic_startTimer_50_on"), for: .normal)
@@ -69,7 +69,7 @@ class TimerViewController: UIViewController {
     return button
   }()
 
-  lazy var stopTimerButton: UIButton = {
+  private lazy var stopTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.isEnabled = false
@@ -84,7 +84,7 @@ class TimerViewController: UIViewController {
     return button
   }()
 
-  lazy var pauseTimerButton: UIButton = {
+  private lazy var pauseTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.isEnabled = false
@@ -99,7 +99,7 @@ class TimerViewController: UIViewController {
     return button
   }()
 
-  let progressView: UIView = {
+  private let progressView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
     view.backgroundColor = .blue
@@ -112,6 +112,7 @@ class TimerViewController: UIViewController {
     super.viewDidLoad()
     setView()
     layout()
+    setBinding()
   }
 
   // MARK: - Layout
@@ -124,6 +125,7 @@ class TimerViewController: UIViewController {
     view.addSubview(buttonStackView)
     view.addSubview(progressView)
 
+    timePicker.setPickerLabelsWith(labels: ["시간", "분", "초"])
     timePicker.dataSource = self
     timePicker.delegate = self
   }
@@ -139,14 +141,24 @@ class TimerViewController: UIViewController {
 
       timePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       timePicker.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      timePicker.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -100),
-      timePicker.heightAnchor.constraint(equalToConstant: 150),
+      timePicker.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -50),
+      timePicker.heightAnchor.constraint(equalToConstant: 200),
 
       buttonStackView.topAnchor.constraint(equalTo: timePicker.bottomAnchor, constant: 50),
       buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       buttonStackView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -80),
       buttonStackView.heightAnchor.constraint(equalTo: buttonStackView.widthAnchor, multiplier: 0.3)
     ])
+  }
+
+  // MARK: - functions
+
+  func setBinding() {
+    timerViewModel.time.subscribe { value in
+      DispatchQueue.main.async {
+        self.timeLabel.text = value
+      }
+    }
   }
 
   @objc func excuteTimeCount() {
@@ -156,17 +168,13 @@ class TimerViewController: UIViewController {
       let countMin = (timeCount / 60) % 60
       let countHour = timeCount / 3600
       
-      timeLabel.text = timerViewModel.setTimeLabel(hour: countHour, minute: countMin, second: countSec)
+//      timerViewModel.setTimeLabel(hour: countHour, minute: countMin, second: countSec)
     } else {
       stopTimerButton.isEnabled = false
       startTimerButton.isEnabled = true
       pauseTimerButton.isEnabled = true
       timer?.invalidate()
     }
-  }
-
-  @objc func excuteTimePicker(_ sender: Any) {
-    print("timer")
   }
 
   @objc func clickedStartTimeButton(_ sender: UIButton) {
@@ -179,7 +187,6 @@ class TimerViewController: UIViewController {
     if timer == nil {
       timeCount = (inputHour * 3600) + (inputMinute * 60) + inputSecond
     }
-
     timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(excuteTimeCount), userInfo: nil, repeats: true)
   }
 
@@ -199,10 +206,10 @@ class TimerViewController: UIViewController {
     inputHour = 0
     inputSecond = 0
     inputMinute = 0
-    timeLabel.text = timerViewModel.setTimeLabel(hour: 0, minute: 0, second: 0)
-    timePicker.selectRow(0, inComponent: 0, animated: false)
-    timePicker.selectRow(0, inComponent: 1, animated: false)
-    timePicker.selectRow(0, inComponent: 2, animated: false)
+//    timerViewModel.setTimeLabel(hour: 0, minute: 0, second: 0)
+//    timePicker.selectRow(0, inComponent: 0, animated: false)
+//    timePicker.selectRow(0, inComponent: 1, animated: false)
+//    timePicker.selectRow(0, inComponent: 2, animated: false)
   }
 }
 
@@ -225,15 +232,18 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
     return pickerView.frame.size.width / 3
   }
+  func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+    return 30
+  }
 
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     switch component {
     case 0:
-      return "\(row) hour"
+      return "\(row)"
     case 1:
-      return "\(row) min"
+      return "\(row)"
     case 2:
-      return "\(row) sec"
+      return "\(row)"
     default:
       return ""
     }
@@ -244,12 +254,13 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     case 0:
       inputHour = row
     case 1:
-      inputMinute = row
-    case 2:
       inputSecond = row
+    case 2:
+      inputMinute = row
     default:
       break;
     }
-    self.timeLabel.text = timerViewModel.setTimeLabel(hour: inputHour, minute: inputMinute, second: inputSecond)
+//    let inputTime = Time(hour: inputHour, minute: inputMinute, second: inputSecond)
+//    timerViewModel.setTimeLabel(inputTime: inputTime)
   }
 }
