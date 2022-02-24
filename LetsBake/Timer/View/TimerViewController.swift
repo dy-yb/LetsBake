@@ -164,15 +164,11 @@ class TimerViewController: UIViewController {
   @objc func excuteTimeCount() {
     if timeCount != 0 {
       timeCount -= 1
-      let countSec = timeCount % 60
-      let countMin = (timeCount / 60) % 60
-      let countHour = timeCount / 3600
-      
-//      timerViewModel.setTimeLabel(hour: countHour, minute: countMin, second: countSec)
+      timerViewModel.setTimeLabel(timeCount: timeCount)
     } else {
       stopTimerButton.isEnabled = false
       startTimerButton.isEnabled = true
-      pauseTimerButton.isEnabled = true
+      pauseTimerButton.isEnabled = false
       timer?.invalidate()
     }
   }
@@ -185,7 +181,7 @@ class TimerViewController: UIViewController {
     timePicker.isHidden = true
 
     if timer == nil {
-      timeCount = (inputHour * 3600) + (inputMinute * 60) + inputSecond
+      timeCount = timerViewModel.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond)
     }
     timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(excuteTimeCount), userInfo: nil, repeats: true)
   }
@@ -203,13 +199,12 @@ class TimerViewController: UIViewController {
     pauseTimerButton.isEnabled = true
     timePicker.isHidden = false
     timer?.invalidate()
-    inputHour = 0
-    inputSecond = 0
-    inputMinute = 0
-//    timerViewModel.setTimeLabel(hour: 0, minute: 0, second: 0)
-//    timePicker.selectRow(0, inComponent: 0, animated: false)
-//    timePicker.selectRow(0, inComponent: 1, animated: false)
-//    timePicker.selectRow(0, inComponent: 2, animated: false)
+
+    timeCount = timerViewModel.setTimeCount(hour: 0, minute: 0, second: 0)
+    timerViewModel.setTimeLabel(timeCount: timeCount)
+    timePicker.selectRow(0, inComponent: 0, animated: false)
+    timePicker.selectRow(0, inComponent: 1, animated: false)
+    timePicker.selectRow(0, inComponent: 2, animated: false)
   }
 }
 
@@ -254,13 +249,13 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     case 0:
       inputHour = row
     case 1:
-      inputSecond = row
-    case 2:
       inputMinute = row
+    case 2:
+      inputSecond = row
     default:
       break;
     }
-//    let inputTime = Time(hour: inputHour, minute: inputMinute, second: inputSecond)
-//    timerViewModel.setTimeLabel(inputTime: inputTime)
+    timeCount = timerViewModel.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond)
+    timerViewModel.setTimeLabel(timeCount: timeCount)
   }
 }
