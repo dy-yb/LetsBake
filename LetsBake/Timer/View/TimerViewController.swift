@@ -26,8 +26,6 @@ class TimerViewController: UIViewController {
   private var inputMinute: Int = 0
   private var inputSecond: Int = 0
 
-  //  private var inputTotalSecond: Int = 0
-
   // MARK: - UI
 
   private let timeLabel: UILabel = {
@@ -41,7 +39,6 @@ class TimerViewController: UIViewController {
   private let timePicker: UIPickerView = {
     let pickerView = UIPickerView()
     pickerView.translatesAutoresizingMaskIntoConstraints = false
-    pickerView.layer.cornerRadius = 10
     return pickerView
   }()
 
@@ -174,16 +171,21 @@ class TimerViewController: UIViewController {
   }
 
   @objc func clickedStartTimeButton(_ sender: UIButton) {
-    timePicker.reloadInputViews()
-    pauseTimerButton.isEnabled = true
-    stopTimerButton.isEnabled = true
-    startTimerButton.isEnabled = false
-    timePicker.isHidden = true
+    if timeCount != 0 {
+      UIView.animate(withDuration: 0.5, animations: {
+        self.buttonStackView.transform = CGAffineTransform(translationX: 0, y: -100)
+      })
+      timePicker.reloadInputViews()
+      pauseTimerButton.isEnabled = true
+      stopTimerButton.isEnabled = true
+      startTimerButton.isEnabled = false
+      timePicker.isHidden = true
 
-    if timer == nil {
-      timeCount = timerViewModel.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond)
+          if timer == nil {
+            timeCount = timerViewModel.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond)
+          }
+      timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(excuteTimeCount), userInfo: nil, repeats: true)
     }
-    timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(excuteTimeCount), userInfo: nil, repeats: true)
   }
 
   @objc func clickedPauseTimeButton(_ sender: UIButton) {
@@ -194,17 +196,23 @@ class TimerViewController: UIViewController {
   }
 
   @objc func clickedStopTimeButton(_ sender: UIButton) {
+    UIView.animate(withDuration: 0.5, animations: {
+      self.buttonStackView.transform = CGAffineTransform(translationX: 0, y: 0)
+    })
     stopTimerButton.isEnabled = false
     startTimerButton.isEnabled = true
-    pauseTimerButton.isEnabled = true
+    pauseTimerButton.isEnabled = false
     timePicker.isHidden = false
     timer?.invalidate()
 
-    timeCount = timerViewModel.setTimeCount(hour: 0, minute: 0, second: 0)
-    timerViewModel.setTimeLabel(timeCount: timeCount)
     timePicker.selectRow(0, inComponent: 0, animated: false)
     timePicker.selectRow(0, inComponent: 1, animated: false)
     timePicker.selectRow(0, inComponent: 2, animated: false)
+    inputHour = 0
+    inputMinute = 0
+    inputSecond = 0
+    timeCount = timerViewModel.setTimeCount(hour: 0, minute: 0, second: 0)
+    timerViewModel.setTimeLabel(timeCount: timeCount)
   }
 }
 
