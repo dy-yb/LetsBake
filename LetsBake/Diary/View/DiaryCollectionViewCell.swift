@@ -9,11 +9,11 @@ import Foundation
 import UIKit
 
 class DiaryCollectionViewCell: UICollectionViewCell {
-
+  
   // MARK: - Properties
-
+  
   // MARK: - UI
-
+  
   let thumbnailImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +32,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
     label.backgroundColor = .white
     return label
   }()
-
+  
   let titleLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -41,37 +41,37 @@ class DiaryCollectionViewCell: UICollectionViewCell {
     label.backgroundColor = .white
     return label
   }()
-
+  
   override init(frame: CGRect) {
     super.init(frame: .zero)
     setView()
     layout()
   }
-
+  
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
+  
   func setView() {
     contentView.backgroundColor = .lightGray
     contentView.layer.cornerRadius = 10
-
+    
     contentView.addSubview(thumbnailImageView)
     contentView.addSubview(dateLabel)
     contentView.addSubview(titleLabel)
-
+    
   }
-
+  
   func layout() {
     NSLayoutConstraint.activate([
       thumbnailImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
       thumbnailImageView.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor),
       thumbnailImageView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
       thumbnailImageView.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
-
+      
       titleLabel.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
       titleLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 10),
-
+      
       dateLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 10),
       dateLabel.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -5)
     ])

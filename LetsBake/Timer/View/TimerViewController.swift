@@ -11,9 +11,22 @@ class TimerViewController: UIViewController {
 
   // MARK: - Properties
 
-private  var hour: Int = 0
-private  var minute: Int = 0
-private  var second: Int = 0
+  private let timerViewModel = TimerViewModel()
+
+  enum TimerButtonTag: Int {
+    case start = 1
+    case pause = 2
+    case stop = 3
+  }
+
+  var timer: Timer?
+  var timeCount = 0
+
+  private var inputHour: Int = 0
+  private var inputMinute: Int = 0
+  private var inputSecond: Int = 0
+
+  //  private var inputTotalSecond: Int = 0
 
   // MARK: - UI
 
@@ -33,45 +46,56 @@ private  var second: Int = 0
   }()
 
   lazy var buttonStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [resetTimeButton, setTimeButton, pauseTimeButton])
+    let stackView = UIStackView(arrangedSubviews: [startTimerButton, pauseTimerButton, stopTimerButton])
     stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .horizontal
     stackView.alignment = .fill
     stackView.distribution = .fillEqually
-    stackView.spacing = 20
+    stackView.spacing = 5
     return stackView
   }()
 
-  let setTimeButton: UIButton = {
+  lazy var startTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("시작", for: .normal)
-    button.setImage(UIImage(named: "ic_setTimer_50"), for: .normal)
+    button.setImage(UIImage(named: "ic_startTimer_50_on"), for: .normal)
+    button.setImage(UIImage(named: "ic_startTimer_50_off"), for: .disabled)
+    button.contentMode = .scaleToFill
+    button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     button.layer.cornerRadius = 10
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+    button.addTarget(self, action: #selector(clickedStartTimeButton(_:)), for: .touchUpInside)
+    button.tag = TimerButtonTag.start.rawValue
     return button
   }()
 
-  let pauseTimeButton: UIButton = {
+  lazy var stopTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("정지", for: .normal)
-    button.setImage(UIImage(named: "ic_pauseTimer_50"), for: .normal)
+    button.isEnabled = false
+    button.setImage(UIImage(named: "ic_stopTimer_50_on"), for: .normal)
+    button.setImage(UIImage(named: "ic_stopTimer_50_off"), for: .disabled)
+    button.contentMode = .scaleToFill
+    button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     button.layer.cornerRadius = 10
-    button.setTitleColor(.black, for: .normal)
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+    button.addTarget(self, action: #selector(clickedStopTimeButton(_:)), for: .touchUpInside)
+    button.tag = TimerButtonTag.stop.rawValue
     return button
   }()
 
-  let resetTimeButton: UIButton = {
+  lazy var pauseTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("리셋", for: .normal)
-    button.setImage(UIImage(named: "ic_resetTimer_50"), for: .normal)
+    button.isEnabled = false
+    button.setImage(UIImage(named: "ic_pauseTimer_50_on"), for: .normal)
+    button.setImage(UIImage(named: "ic_pauseTimer_50_off"), for: .disabled)
+    button.contentMode = .scaleToFill
+    button.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     button.layer.cornerRadius = 10
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
-    button.contentVerticalAlignment = .center
-    button.semanticContentAttribute = .forceRightToLeft
+    button.addTarget(self, action: #selector(clickedPauseTimeButton(_:)), for: .touchUpInside)
+    button.tag = TimerButtonTag.pause.rawValue
     return button
   }()
 
@@ -94,6 +118,7 @@ private  var second: Int = 0
 
   func setView() {
     view.backgroundColor = .white
+    navigationItem.title = "타이머"
     view.addSubview(timePicker)
     progressView.addSubview(timeLabel)
     view.addSubview(buttonStackView)
@@ -124,8 +149,60 @@ private  var second: Int = 0
     ])
   }
 
+  @objc func excuteTimeCount() {
+    if timeCount != 0 {
+      timeCount -= 1
+      let countSec = timeCount % 60
+      let countMin = (timeCount / 60) % 60
+      let countHour = timeCount / 3600
+      
+      timeLabel.text = timerViewModel.setTimeLabel(hour: countHour, minute: countMin, second: countSec)
+    } else {
+      stopTimerButton.isEnabled = false
+      startTimerButton.isEnabled = true
+      pauseTimerButton.isEnabled = true
+      timer?.invalidate()
+    }
+  }
+
   @objc func excuteTimePicker(_ sender: Any) {
     print("timer")
+  }
+
+  @objc func clickedStartTimeButton(_ sender: UIButton) {
+    timePicker.reloadInputViews()
+    pauseTimerButton.isEnabled = true
+    stopTimerButton.isEnabled = true
+    startTimerButton.isEnabled = false
+    timePicker.isHidden = true
+
+    if timer == nil {
+      timeCount = (inputHour * 3600) + (inputMinute * 60) + inputSecond
+    }
+
+    timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(excuteTimeCount), userInfo: nil, repeats: true)
+  }
+
+  @objc func clickedPauseTimeButton(_ sender: UIButton) {
+    pauseTimerButton.isEnabled = false
+    startTimerButton.isEnabled = true
+    stopTimerButton.isEnabled = true
+    timer?.invalidate()
+  }
+
+  @objc func clickedStopTimeButton(_ sender: UIButton) {
+    stopTimerButton.isEnabled = false
+    startTimerButton.isEnabled = true
+    pauseTimerButton.isEnabled = true
+    timePicker.isHidden = false
+    timer?.invalidate()
+    inputHour = 0
+    inputSecond = 0
+    inputMinute = 0
+    timeLabel.text = timerViewModel.setTimeLabel(hour: 0, minute: 0, second: 0)
+    timePicker.selectRow(0, inComponent: 0, animated: false)
+    timePicker.selectRow(0, inComponent: 1, animated: false)
+    timePicker.selectRow(0, inComponent: 2, animated: false)
   }
 }
 
@@ -146,7 +223,7 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   }
 
   func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
-    return pickerView.frame.size.width/3
+    return pickerView.frame.size.width / 3
   }
 
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -165,13 +242,14 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     switch component {
     case 0:
-      hour = row
+      inputHour = row
     case 1:
-      minute = row
+      inputMinute = row
     case 2:
-      second = row
+      inputSecond = row
     default:
       break;
     }
+    self.timeLabel.text = timerViewModel.setTimeLabel(hour: inputHour, minute: inputMinute, second: inputSecond)
   }
 }
