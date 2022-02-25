@@ -174,6 +174,7 @@ class TimerViewController: UIViewController {
     if timeCount != 0 {
       UIView.animate(withDuration: 0.5, animations: {
         self.buttonStackView.transform = CGAffineTransform(translationX: 0, y: -100)
+        self.timeLabel.transform = CGAffineTransform(translationX: 0, y: 50)
       })
       timePicker.reloadInputViews()
       pauseTimerButton.isEnabled = true
@@ -198,6 +199,7 @@ class TimerViewController: UIViewController {
   @objc func clickedStopTimeButton(_ sender: UIButton) {
     UIView.animate(withDuration: 0.5, animations: {
       self.buttonStackView.transform = CGAffineTransform(translationX: 0, y: 0)
+      self.timeLabel.transform = CGAffineTransform(translationX: 0, y: 0)
     })
     stopTimerButton.isEnabled = false
     startTimerButton.isEnabled = true

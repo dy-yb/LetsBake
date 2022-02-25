@@ -22,6 +22,21 @@ class ExchangerModel {
     let pound: Double
 
     func mutate(inputUnit: String) -> Double {
+//      enum result: String {
+//        case papercup = "종이컵"
+//        case gram = "그램"
+//        case killogram = "킬로그램"
+//        case teaspoon = "티스푼"
+//        case tablespoon = "테이블스푼"
+//        case cup = "컵"
+//        case ounce = "온스"
+//        case fluidOunce = "액량온스"
+//        case milliliter = "밀리리터"
+//        case liter = "리터"
+//        case pound = "파운드"
+//      }
+//
+      
       switch inputUnit {
       case "종이컵":
         return papercup
@@ -52,7 +67,7 @@ class ExchangerModel {
   }
 
   struct Ratio {
-   let ingredient: String
-   let quantityAsUnits: Units
+    let ingredient: String
+    let quantityAsUnits: Units
   }
 }
