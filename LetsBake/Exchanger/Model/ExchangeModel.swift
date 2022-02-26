@@ -7,6 +7,20 @@
 
 import Foundation
 
+enum UnitString: String {
+  case papercup = "종이컵"
+  case gram = "그램"
+  case killogram = "킬로그램"
+  case teaspoon = "티스푼"
+  case tablespoon = "테이블스푼"
+  case cup = "컵"
+  case ounce = "온스"
+  case fluidOunce = "액량온스"
+  case milliliter = "밀리리터"
+  case liter = "리터"
+  case pound = "파운드"
+}
+
 class ExchangerModel {
   struct Units {
     let papercup: Double
@@ -22,43 +36,28 @@ class ExchangerModel {
     let pound: Double
 
     func mutate(inputUnit: String) -> Double {
-//      enum result: String {
-//        case papercup = "종이컵"
-//        case gram = "그램"
-//        case killogram = "킬로그램"
-//        case teaspoon = "티스푼"
-//        case tablespoon = "테이블스푼"
-//        case cup = "컵"
-//        case ounce = "온스"
-//        case fluidOunce = "액량온스"
-//        case milliliter = "밀리리터"
-//        case liter = "리터"
-//        case pound = "파운드"
-//      }
-//
-      
       switch inputUnit {
-      case "종이컵":
+      case UnitString.papercup.rawValue:
         return papercup
-      case "그램":
+      case UnitString.gram.rawValue:
         return gram
-      case "킬로그램":
+      case UnitString.killogram.rawValue:
         return killogram
-      case "티스푼":
+      case UnitString.teaspoon.rawValue:
         return teaspoon
-      case "테이블스푼":
+      case UnitString.tablespoon.rawValue:
         return tablespoon
-      case "컵":
+      case UnitString.cup.rawValue:
         return cup
-      case "온스":
+      case UnitString.ounce.rawValue:
         return ounce
-      case "액량온스":
+      case UnitString.fluidOunce.rawValue:
         return fluidOunce
-      case "밀리리터":
+      case UnitString.milliliter.rawValue:
         return milliliter
-      case "리터":
+      case UnitString.liter.rawValue:
         return liter
-      case "파운드":
+      case UnitString.pound.rawValue:
         return pound
       default:
         return 0
