@@ -9,6 +9,15 @@ import Foundation
 import UIKit
 
 extension UIPickerView {
+//  override open func didAddSubview(_ subview: UIView) {
+//    super.didAddSubview(subview)
+//    if let color = UIColor.mainColor {
+//      if subview.bounds.height <= 1.0 {
+//        subview.backgroundColor = color
+//      }
+//    }
+//  }
+
   func setPickerLabelsWith(labels: [String]) {
     let columCount = labels.count
     let fontSize: CGFloat = 23
@@ -19,7 +28,7 @@ extension UIPickerView {
       label.text = labels[index]
       label.font = .boldSystemFont(ofSize: 20)
       label.textColor = .mainColor
-      label.textAlignment = .right
+      label.textAlignment = .left
       label.sizeToFit()
       labelList.append(label)
     }
@@ -28,8 +37,8 @@ extension UIPickerView {
     let labelY: CGFloat = (self.frame.size.height / 2) - (fontSize / 2)
     
     for (index, label) in labelList.enumerated() {
-      let labelX: CGFloat = (pickerWidth / CGFloat(columCount)) * CGFloat(index + 1) - 30
-      label.frame = CGRect(x: labelX, y: labelY, width: fontSize*2, height: fontSize)
+      let labelX: CGFloat = (pickerWidth / CGFloat(columCount)) * CGFloat(index + 1) - 36
+      label.frame = CGRect(x: labelX, y: labelY-7, width: fontSize*2, height: fontSize)
       self.addSubview(label)
     }
   }

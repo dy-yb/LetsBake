@@ -108,6 +108,7 @@ class TimerViewController: UIViewController {
     super.viewDidLoad()
     setView()
     layout()
+    configPickerView()
     setBinding()
   }
 
@@ -137,7 +138,7 @@ class TimerViewController: UIViewController {
 
       timePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       timePicker.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      timePicker.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -50),
+      timePicker.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -100),
       timePicker.heightAnchor.constraint(equalToConstant: 200),
 
       buttonStackView.topAnchor.constraint(equalTo: timePicker.bottomAnchor, constant: 50),
@@ -181,9 +182,9 @@ class TimerViewController: UIViewController {
       startTimerButton.isEnabled = false
       timePicker.isHidden = true
 
-          if timer == nil {
-            timeCount = timerViewModel?.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond) ?? 0
-          }
+      if timer == nil {
+        timeCount = timerViewModel?.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond) ?? 0
+      }
       timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(excuteTimeCount), userInfo: nil, repeats: true)
     }
   }
@@ -218,6 +219,11 @@ class TimerViewController: UIViewController {
 }
 
 extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+  func configPickerView() {
+    timePicker.subviews[0].backgroundColor = UIColor.white
+    timePicker.subviews[1].backgroundColor = UIColor.white
+    timePicker.subviews[2].backgroundColor = UIColor.white
+  }
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return 3
   }
