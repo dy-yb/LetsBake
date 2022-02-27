@@ -16,7 +16,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window = UIWindow(windowScene: windowScene)
 
     let diaryView = DiaryCollectionViewController()
+
     let timerView = TimerViewController()
+    let timerModel = Time(hour: 0, minute: 0, second: 0)
+    let timerViewModel = TimerViewModel(timerModel: timerModel)
+    timerView.timerViewModel = timerViewModel
+
     let exchangerView = ExchangerViewController()
 
     let navDiaryView = UINavigationController(rootViewController: diaryView)

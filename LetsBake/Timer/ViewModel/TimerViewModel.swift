@@ -8,20 +8,22 @@
 import Foundation
 
 class TimerViewModel {
-  let timerModel = TimerModel()
+  var timerModel: Time
   var time: Observable<String> = Observable("00:00:00")
+
+  init(timerModel: Time) {
+    self.timerModel = timerModel
+  }
 
   func setTimeCount(hour: Int, minute: Int, second: Int) -> Int {
     return (hour * 3600) + (minute * 60) + second
   }
 
   func setTimeLabel(timeCount: Int) {
-    let countSec = timeCount % 60
-    let countMin = (timeCount / 60) % 60
-    let countHour = timeCount / 3600
-    let currentTime = TimerModel.Time(hour: countHour, minute: countMin, second: countSec)
+    timerModel.hour = timeCount / 3600
+    timerModel.minute = (timeCount / 60) % 60
+    timerModel.second = timeCount % 60
 
-    time.value = currentTime.toString(time: currentTime)
-
+    time.value = timerModel.toString()
   }
 }

@@ -207,9 +207,8 @@ final class ExchangerViewController: UIViewController {
     case ExchangerTextFieldTag.inputUnit.rawValue:
       inputUnit = sender.text ?? ""
     case ExchangerTextFieldTag.inputQuantity.rawValue:
-      if let quantity = sender.text {
-        inputQuantity = Double(quantity) ?? 0
-      }
+      guard let quantity = sender.text else { return }
+      inputQuantity = Double(quantity) ?? 0
     case ExchangerTextFieldTag.resultUnit.rawValue:
       resultUnit = sender.text ?? ""
     default:

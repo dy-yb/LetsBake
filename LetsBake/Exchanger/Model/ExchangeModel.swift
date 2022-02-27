@@ -35,6 +35,20 @@ class ExchangerModel {
     let liter: Double
     let pound: Double
 
+//    init() {
+//      papercup = 0
+//      gram = 0
+//      killogram = 0
+//      teaspoon = 0
+//      tablespoon = 0
+//      cup = 0
+//      ounce = 0
+//      fluidOunce = 0
+//      milliliter = 0
+//      liter = 0
+//      pound = 0
+//    }
+
     func mutate(inputUnit: String) -> Double {
       switch inputUnit {
       case UnitString.papercup.rawValue:

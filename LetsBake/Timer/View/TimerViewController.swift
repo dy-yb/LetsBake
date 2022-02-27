@@ -11,7 +11,7 @@ class TimerViewController: UIViewController {
 
   // MARK: - Properties
 
-  private let timerViewModel = TimerViewModel()
+  var timerViewModel: TimerViewModel?
 
   enum TimerButtonTag: Int {
     case start = 1
@@ -21,7 +21,6 @@ class TimerViewController: UIViewController {
 
   private var timer: Timer?
   private var timeCount = 0
-
   private var inputHour: Int = 0
   private var inputMinute: Int = 0
   private var inputSecond: Int = 0
@@ -151,7 +150,7 @@ class TimerViewController: UIViewController {
   // MARK: - functions
 
   func setBinding() {
-    timerViewModel.time.subscribe { value in
+    timerViewModel?.time.subscribe { value in
       DispatchQueue.main.async {
         self.timeLabel.text = value
       }
@@ -161,7 +160,7 @@ class TimerViewController: UIViewController {
   @objc func excuteTimeCount() {
     if timeCount != 0 {
       timeCount -= 1
-      timerViewModel.setTimeLabel(timeCount: timeCount)
+      timerViewModel?.setTimeLabel(timeCount: timeCount)
     } else {
       stopTimerButton.isEnabled = false
       startTimerButton.isEnabled = true
@@ -183,7 +182,7 @@ class TimerViewController: UIViewController {
       timePicker.isHidden = true
 
           if timer == nil {
-            timeCount = timerViewModel.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond)
+            timeCount = timerViewModel?.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond) ?? 0
           }
       timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(excuteTimeCount), userInfo: nil, repeats: true)
     }
@@ -213,8 +212,8 @@ class TimerViewController: UIViewController {
     inputHour = 0
     inputMinute = 0
     inputSecond = 0
-    timeCount = timerViewModel.setTimeCount(hour: 0, minute: 0, second: 0)
-    timerViewModel.setTimeLabel(timeCount: timeCount)
+    timeCount = timerViewModel?.setTimeCount(hour: 0, minute: 0, second: 0) ?? 0
+    timerViewModel?.setTimeLabel(timeCount: timeCount)
   }
 }
 
@@ -265,7 +264,7 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     default:
       break;
     }
-    timeCount = timerViewModel.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond)
-    timerViewModel.setTimeLabel(timeCount: timeCount)
+    timeCount = timerViewModel?.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond) ?? 0
+    timerViewModel?.setTimeLabel(timeCount: timeCount)
   }
 }
