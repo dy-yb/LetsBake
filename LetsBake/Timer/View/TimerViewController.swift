@@ -7,26 +7,26 @@
 
 import UIKit
 
-class TimerViewController: UIViewController {
-
+final class TimerViewController: UIViewController {
+  
   // MARK: - Properties
-
+  
   var timerViewModel: TimerViewModel?
-
+  
   enum TimerButtonTag: Int {
     case start = 1
     case pause = 2
     case stop = 3
   }
-
+  
   private var timer: Timer?
   private var timeCount = 0
   private var inputHour: Int = 0
   private var inputMinute: Int = 0
   private var inputSecond: Int = 0
-
+  
   // MARK: - UI
-
+  
   private let timeLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -34,13 +34,13 @@ class TimerViewController: UIViewController {
     label.font = .systemFont(ofSize: 70, weight: .ultraLight)
     return label
   }()
-
+  
   private let timePicker: UIPickerView = {
     let pickerView = UIPickerView()
     pickerView.translatesAutoresizingMaskIntoConstraints = false
     return pickerView
   }()
-
+  
   private lazy var buttonStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [startTimerButton, pauseTimerButton, stopTimerButton])
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +50,7 @@ class TimerViewController: UIViewController {
     stackView.spacing = 5
     return stackView
   }()
-
+  
   private lazy var startTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +64,7 @@ class TimerViewController: UIViewController {
     button.tag = TimerButtonTag.start.rawValue
     return button
   }()
-
+  
   private lazy var stopTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -79,7 +79,7 @@ class TimerViewController: UIViewController {
     button.tag = TimerButtonTag.stop.rawValue
     return button
   }()
-
+  
   private lazy var pauseTimerButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -94,16 +94,16 @@ class TimerViewController: UIViewController {
     button.tag = TimerButtonTag.pause.rawValue
     return button
   }()
-
+  
   private let progressView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
     view.backgroundColor = .blue
     return view
   }()
-
+  
   // MARK: - Lifecycle
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setView()
@@ -111,53 +111,53 @@ class TimerViewController: UIViewController {
     configPickerView()
     setBinding()
   }
-
+  
   // MARK: - Layout
-
-  func setView() {
+  
+  private func setView() {
     view.backgroundColor = .white
     navigationItem.title = "타이머"
     view.addSubview(timePicker)
     progressView.addSubview(timeLabel)
     view.addSubview(buttonStackView)
     view.addSubview(progressView)
-
+    
     timePicker.setPickerLabelsWith(labels: ["시간", "분", "초"])
     timePicker.dataSource = self
     timePicker.delegate = self
   }
-
-  func layout() {
+  
+  private func layout() {
     NSLayoutConstraint.activate([
       progressView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       progressView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
       progressView.heightAnchor.constraint(equalToConstant: 200),
-
+      
       timeLabel.topAnchor.constraint(equalTo: progressView.topAnchor, constant: 10),
       timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
+      
       timePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       timePicker.centerYAnchor.constraint(equalTo: view.centerYAnchor),
       timePicker.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -100),
       timePicker.heightAnchor.constraint(equalToConstant: 200),
-
+      
       buttonStackView.topAnchor.constraint(equalTo: timePicker.bottomAnchor, constant: 50),
       buttonStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       buttonStackView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -80),
       buttonStackView.heightAnchor.constraint(equalTo: buttonStackView.widthAnchor, multiplier: 0.3)
     ])
   }
-
+  
   // MARK: - functions
-
-  func setBinding() {
+  
+  private func setBinding() {
     timerViewModel?.time.subscribe { value in
       DispatchQueue.main.async {
         self.timeLabel.text = value
       }
     }
   }
-
+  
   @objc func excuteTimeCount() {
     if timeCount != 0 {
       timeCount -= 1
@@ -169,7 +169,7 @@ class TimerViewController: UIViewController {
       timer?.invalidate()
     }
   }
-
+  
   @objc func clickedStartTimeButton(_ sender: UIButton) {
     if timeCount != 0 {
       UIView.animate(withDuration: 0.5, animations: {
@@ -181,21 +181,21 @@ class TimerViewController: UIViewController {
       stopTimerButton.isEnabled = true
       startTimerButton.isEnabled = false
       timePicker.isHidden = true
-
+      
       if timer == nil {
         timeCount = timerViewModel?.setTimeCount(hour: inputHour, minute: inputMinute, second: inputSecond) ?? 0
       }
       timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(excuteTimeCount), userInfo: nil, repeats: true)
     }
   }
-
+  
   @objc func clickedPauseTimeButton(_ sender: UIButton) {
     pauseTimerButton.isEnabled = false
     startTimerButton.isEnabled = true
     stopTimerButton.isEnabled = true
     timer?.invalidate()
   }
-
+  
   @objc func clickedStopTimeButton(_ sender: UIButton) {
     UIView.animate(withDuration: 0.5, animations: {
       self.buttonStackView.transform = CGAffineTransform(translationX: 0, y: 0)
@@ -206,7 +206,7 @@ class TimerViewController: UIViewController {
     pauseTimerButton.isEnabled = false
     timePicker.isHidden = false
     timer?.invalidate()
-
+    
     timePicker.selectRow(0, inComponent: 0, animated: false)
     timePicker.selectRow(0, inComponent: 1, animated: false)
     timePicker.selectRow(0, inComponent: 2, animated: false)
@@ -227,7 +227,7 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return 3
   }
-
+  
   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
     switch component {
     case 0:
@@ -238,14 +238,14 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
       return 0
     }
   }
-
+  
   func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
     return pickerView.frame.size.width / 3
   }
   func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
     return 30
   }
-
+  
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
     switch component {
     case 0:
@@ -258,7 +258,7 @@ extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
       return ""
     }
   }
-
+  
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     switch component {
     case 0:
