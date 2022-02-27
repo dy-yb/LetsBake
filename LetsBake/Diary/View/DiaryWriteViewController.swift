@@ -84,7 +84,30 @@ class DiaryWriteViewController: UIViewController {
     datePicker.addTarget(self, action: #selector(hadleDatePicker(_:)), for: .valueChanged)
     return datePicker
   }()
-  
+
+  let photoInputView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
+  let photoInputLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "사진"
+    label.font = .boldSystemFont(ofSize: 17)
+    return label
+  }()
+
+  let addPhotoButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(named: "bt_diary_ingredient"), for: .normal)
+    button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+//    button.addTarget(self, action: #selector(addIngredients), for: .touchUpInside)
+    return button
+  }()
+
   let ingredientsInputView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -191,6 +214,7 @@ class DiaryWriteViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     titleInputStackView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
     dateInputStackView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
+    photoInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
     ingredientsInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
     receipeInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
   }
@@ -208,16 +232,21 @@ class DiaryWriteViewController: UIViewController {
     view.addSubview(doneButton)
     contentView.addSubview(titleInputStackView)
     contentView.addSubview(dateInputStackView)
+    contentView.addSubview(photoInputView)
     contentView.addSubview(ingredientsInputLabel)
     contentView.addSubview(ingredientsInputView)
+    contentView.addSubview(receipeInputView)
     contentView.addSubview(ratingLabel)
     contentView.addSubview(ratingStarStackView)
     contentView.addSubview(ratingSlider)
-    
+
+    photoInputView.addSubview(photoInputLabel)
+    photoInputView.addSubview(addPhotoButton)
+
     ingredientsInputView.addSubview(ingredientsInputLabel)
     ingredientsInputView.addSubview(ingredientsTableView)
     ingredientsInputView.addSubview(addIngredintButton)
-    contentView.addSubview(receipeInputView)
+
     receipeInputView.addSubview(receipeInputLabel)
     receipeInputView.addSubview(receipeTextView)
   }
@@ -246,8 +275,20 @@ class DiaryWriteViewController: UIViewController {
       dateInputStackView.rightAnchor.constraint(equalTo: titleInputStackView.rightAnchor),
       dateInputStackView.leftAnchor.constraint(equalTo: titleInputStackView.leftAnchor),
       dateInputStackView.heightAnchor.constraint(equalToConstant: 60),
-      
-      ingredientsInputView.topAnchor.constraint(equalTo: dateInputStackView.bottomAnchor, constant: 25),
+
+      photoInputView.topAnchor.constraint(equalTo: dateInputStackView.bottomAnchor, constant: 25),
+      photoInputView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -30),
+      photoInputView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 30),
+      photoInputView.heightAnchor.constraint(equalToConstant: 220),
+
+      photoInputLabel.topAnchor.constraint(equalTo: photoInputView.topAnchor),
+      photoInputLabel.leftAnchor.constraint(equalTo: photoInputView.leftAnchor),
+      photoInputLabel.heightAnchor.constraint(equalToConstant: 20),
+
+      addPhotoButton.centerXAnchor.constraint(equalTo: photoInputView.centerXAnchor),
+      addPhotoButton.centerYAnchor.constraint(equalTo: photoInputView.centerYAnchor, constant: -20),
+
+      ingredientsInputView.topAnchor.constraint(equalTo: photoInputView.bottomAnchor, constant: 25),
       ingredientsInputView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -30),
       ingredientsInputView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 30),
       ingredientsInputView.heightAnchor.constraint(equalToConstant: 220),
