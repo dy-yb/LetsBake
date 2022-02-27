@@ -200,6 +200,12 @@ final class ExchangerViewController: UIViewController {
     }
   }
 
+  func checkMaxLength(textField: UITextField, maxLength: Int) {
+    if textField.text?.count ?? 0 > maxLength {
+      textField.deleteBackward()
+    }
+  }
+
   @objc func editedTextField(_ sender: UITextField) {
     switch sender.tag {
     case ExchangerTextFieldTag.ingredient.rawValue:
@@ -207,6 +213,7 @@ final class ExchangerViewController: UIViewController {
     case ExchangerTextFieldTag.inputUnit.rawValue:
       inputUnit = sender.text ?? ""
     case ExchangerTextFieldTag.inputQuantity.rawValue:
+      checkMaxLength(textField: sender, maxLength: 5)
       guard let quantity = sender.text else { return }
       inputQuantity = Double(quantity) ?? 0
     case ExchangerTextFieldTag.resultUnit.rawValue:
