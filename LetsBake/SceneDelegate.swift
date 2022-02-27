@@ -23,6 +23,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     timerView.timerViewModel = timerViewModel
 
     let exchangerView = ExchangerViewController()
+    let exchangerModel = ExchangerModel()
+    let exchangerViewModel = ExchangerViewModel(model: exchangerModel)
+    exchangerView.exchangerViewModel = exchangerViewModel
 
     let navDiaryView = UINavigationController(rootViewController: diaryView)
 

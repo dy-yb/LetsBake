@@ -9,7 +9,7 @@ import UIKit
 
 final class ExchangerViewController: UIViewController {
 
-  private let exchangerViewModel = ExchangerViewModel()
+  var exchangerViewModel: ExchangerViewModel?
 
   // MARK: - Properties
 
@@ -193,7 +193,7 @@ final class ExchangerViewController: UIViewController {
   // MARK: - Funtions
 
   private func setBinding() {
-    exchangerViewModel.result.subscribe { value in
+    exchangerViewModel?.result.subscribe { value in
       DispatchQueue.main.async {
         self.resultQuantityTextField.text = value
       }
@@ -214,7 +214,7 @@ final class ExchangerViewController: UIViewController {
     default:
       print("error")
     }
-    exchangerViewModel.calculator(inputIngredient: ingredient, inputUnit: inputUnit, inputQuantity: inputQuantity, resultUnit: resultUnit)
+    exchangerViewModel?.calculator(inputIngredient: ingredient, inputUnit: inputUnit, inputQuantity: inputQuantity, resultUnit: resultUnit)
   }
 }
 
