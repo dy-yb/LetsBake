@@ -260,7 +260,7 @@ class DiaryWriteViewController: UIViewController {
       
       contentView.widthAnchor.constraint(equalToConstant: scrollView.frame.width),
       // 작은 화면에서 스크롤 안되는 문제 해결 해야함
-      contentView.heightAnchor.constraint(equalToConstant: scrollView.frame.height+100),
+      contentView.heightAnchor.constraint(equalToConstant: scrollView.frame.height+350),
       contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
       contentView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
       contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
@@ -383,12 +383,15 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
     }
     return diaryIngredientsTableViewCell
   }
+  
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return tableView.rowHeight
   }
+
   func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     return .delete
   }
+
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
       tableView.beginUpdates()
