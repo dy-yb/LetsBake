@@ -50,8 +50,9 @@ class DiaryDetailViewController: UIViewController {
   let titleTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.placeholder = "ex. 얼그레이 마들렌(15자 이내)"
+    textField.text = "얼그레이 마들렌"
     textField.textAlignment = .right
+    textField.tintColor = .clear
     textField.isUserInteractionEnabled = true
     return textField
   }()
@@ -78,8 +79,9 @@ class DiaryDetailViewController: UIViewController {
   let dateTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.placeholder = "ex. 얼그레이 마들렌(15자 이내)"
+    textField.text = "2022년 2월 26일"
     textField.textAlignment = .right
+    textField.tintColor = .clear
     textField.isUserInteractionEnabled = true
     return textField
   }()
@@ -146,6 +148,7 @@ class DiaryDetailViewController: UIViewController {
     let textView = UITextView()
     textView.translatesAutoresizingMaskIntoConstraints = false
     textView.backgroundColor = .lightGray
+    textView.tintColor = .clear
     textView.layer.cornerRadius = 10
     return textView
   }()
@@ -213,6 +216,10 @@ class DiaryDetailViewController: UIViewController {
 
     receipeView.addSubview(receipeHeaderLabel)
     receipeView.addSubview(receipeTextView)
+
+    titleTextField.delegate = self
+    dateTextField.delegate = self
+    receipeTextView.delegate = self
   }
 
   func layout() {
@@ -302,6 +309,15 @@ class DiaryDetailViewController: UIViewController {
   }
 }
 
+extension DiaryDetailViewController: UITextFieldDelegate, UITextViewDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    return false
+  }
+
+  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    return false
+  }
+}
 
 extension DiaryDetailViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -317,17 +333,5 @@ extension DiaryDetailViewController: UITableViewDataSource, UITableViewDelegate 
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return tableView.rowHeight
-  }
-  
-  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-    return .delete
-  }
-
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    if editingStyle == .delete {
-      tableView.beginUpdates()
-      tableView.deleteRows(at: [indexPath], with: .fade)
-      tableView.endUpdates()
-    }
   }
 }
