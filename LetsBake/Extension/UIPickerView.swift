@@ -9,15 +9,6 @@ import Foundation
 import UIKit
 
 extension UIPickerView {
-//  override open func didAddSubview(_ subview: UIView) {
-//    super.didAddSubview(subview)
-//    if let color = UIColor.mainColor {
-//      if subview.bounds.height <= 1.0 {
-//        subview.backgroundColor = color
-//      }
-//    }
-//  }
-
   func setPickerLabelsWith(labels: [String]) {
     let columCount = labels.count
     let fontSize: CGFloat = 23
