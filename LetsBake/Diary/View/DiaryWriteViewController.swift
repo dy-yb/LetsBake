@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 class DiaryWriteViewController: UIViewController {
   
@@ -99,14 +100,28 @@ class DiaryWriteViewController: UIViewController {
     return label
   }()
 
-  let addPhotoButton: UIButton = {
+  lazy var photoImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.isHidden = true
+    imageView.layer.cornerRadius = 10
+    imageView.contentMode = .scaleToFill
+    imageView.backgroundColor = .lightGray
+    imageView.isUserInteractionEnabled = true
+    imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickImage)))
+    return imageView
+  }()
+
+  lazy var addPhotoButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setImage(UIImage(named: "bt_diary_ingredient"), for: .normal)
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
-//    button.addTarget(self, action: #selector(addIngredients), for: .touchUpInside)
+    button.addTarget(self, action: #selector(pickImage), for: .touchUpInside)
     return button
   }()
+
+  let photoPicker = PHPickerViewController(configuration: PHPicker().phPickerConfiguration)
 
   let ingredientsInputView: UIView = {
     let view = UIView()
@@ -223,13 +238,17 @@ class DiaryWriteViewController: UIViewController {
   
   func setView() {
     view.backgroundColor = .white
+
+    photoPicker.delegate = self
+
     ingredientsTableView.rowHeight = UITableView.automaticDimension
     ingredientsTableView.dataSource = self
     ingredientsTableView.delegate = self
     
     view.addSubview(scrollView)
-    scrollView.addSubview(contentView)
     view.addSubview(doneButton)
+
+    scrollView.addSubview(contentView)
     contentView.addSubview(titleInputStackView)
     contentView.addSubview(dateInputStackView)
     contentView.addSubview(photoInputView)
@@ -241,6 +260,7 @@ class DiaryWriteViewController: UIViewController {
     contentView.addSubview(ratingSlider)
 
     photoInputView.addSubview(photoInputLabel)
+    photoInputView.addSubview(photoImageView)
     photoInputView.addSubview(addPhotoButton)
 
     ingredientsInputView.addSubview(ingredientsInputLabel)
@@ -285,8 +305,13 @@ class DiaryWriteViewController: UIViewController {
       photoInputLabel.leftAnchor.constraint(equalTo: photoInputView.leftAnchor),
       photoInputLabel.heightAnchor.constraint(equalToConstant: 20),
 
+      photoImageView.topAnchor.constraint(equalTo: photoInputLabel.bottomAnchor, constant: 10),
+      photoImageView.leftAnchor.constraint(equalTo: photoInputView.leftAnchor),
+      photoImageView.rightAnchor.constraint(equalTo: photoInputView.rightAnchor),
+      photoImageView.bottomAnchor.constraint(equalTo: photoInputView.bottomAnchor, constant: -30),
+
       addPhotoButton.centerXAnchor.constraint(equalTo: photoInputView.centerXAnchor),
-      addPhotoButton.centerYAnchor.constraint(equalTo: photoInputView.centerYAnchor, constant: -20),
+      addPhotoButton.centerYAnchor.constraint(equalTo: photoInputView.centerYAnchor),
 
       ingredientsInputView.topAnchor.constraint(equalTo: photoInputView.bottomAnchor, constant: 25),
       ingredientsInputView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -30),
@@ -346,7 +371,13 @@ class DiaryWriteViewController: UIViewController {
       starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
     }
   }
-  
+
+  @objc func pickImage() {
+    self.navigationController?.pushViewController(ImageCropViewController(), animated: true)
+//    present(ImageCropViewController(), animated: true, completion: nil)
+//    self.present(self.photoPicker, animated: true, completion: nil)
+  }
+
   @objc func hadleDatePicker(_ sender: UIDatePicker) {
     print(sender.date)
   }
@@ -367,6 +398,29 @@ class DiaryWriteViewController: UIViewController {
         starImageViews[index].image = UIImage(named: "ic_rating_on")
       } else {
         starImageViews[index].image = UIImage(named: "ic_rating_off")
+      }
+    }
+  }
+}
+
+extension DiaryWriteViewController: PHPickerViewControllerDelegate {
+  func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+    // 선택완료 혹은 취소하면 뷰 dismiss.
+    picker.dismiss(animated: true, completion: nil)
+
+    // itemProvider 를 가져온다.
+    let itemProvider = results.first?.itemProvider
+    if let itemProvider = itemProvider,
+       // itemProvider 에서 지정한 타입으로 로드할 수 있는지 체크
+       itemProvider.canLoadObject(ofClass: UIImage.self) {
+      // loadObject() 메서드는 completionHandler 로 NSItemProviderReading 과 error 를 준다.
+      itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+        // itemProvider 는 background asnyc 작업이기 때문에 UI 와 관련된 업데이트는 꼭 main 쓰레드에서 실행해줘야 합니다.
+        DispatchQueue.main.sync {
+          self.photoImageView.image = image as? UIImage
+          self.addPhotoButton.isHidden = true
+          self.photoImageView.isHidden = false
+        }
       }
     }
   }
