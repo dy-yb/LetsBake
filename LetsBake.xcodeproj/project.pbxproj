@@ -12,6 +12,7 @@
 		61288CAF2797E8380062579F /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CAE2797E8380062579F /* TimerViewModel.swift */; };
 		61288CB12797E8430062579F /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CB02797E8430062579F /* TimerModel.swift */; };
 		613C593527C227F7003FF3F7 /* StaticData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C593427C227F7003FF3F7 /* StaticData.swift */; };
+		615D1ACF27D08D3000F315A1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 615D1ACE27D08D3000F315A1 /* GoogleService-Info.plist */; };
 		6182F2D42755FEB0001848E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2D32755FEB0001848E0 /* AppDelegate.swift */; };
 		6182F2D62755FEB0001848E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2D52755FEB0001848E0 /* SceneDelegate.swift */; };
 		6182F2D82755FEB0001848E0 /* ExchangerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2D72755FEB0001848E0 /* ExchangerViewController.swift */; };
@@ -46,6 +47,7 @@
 		61288CAE2797E8380062579F /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		61288CB02797E8430062579F /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 		613C593427C227F7003FF3F7 /* StaticData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticData.swift; sourceTree = "<group>"; };
+		615D1ACE27D08D3000F315A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6182F2D02755FEB0001848E0 /* LetsBake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LetsBake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6182F2D32755FEB0001848E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6182F2D52755FEB0001848E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				6182F2DC2755FEB1001848E0 /* Assets.xcassets */,
 				6182F2DE2755FEB1001848E0 /* LaunchScreen.storyboard */,
 				6182F2E12755FEB1001848E0 /* Info.plist */,
+				615D1ACE27D08D3000F315A1 /* GoogleService-Info.plist */,
 			);
 			path = LetsBake;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				6182F2CC2755FEB0001848E0 /* Sources */,
 				6182F2CD2755FEB0001848E0 /* Frameworks */,
 				6182F2CE2755FEB0001848E0 /* Resources */,
+				B1A7088378494C2D1208BC97 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -334,6 +338,7 @@
 			files = (
 				6182F2E927575087001848E0 /* .swiftlint.yml in Resources */,
 				6182F2E02755FEB1001848E0 /* LaunchScreen.storyboard in Resources */,
+				615D1ACF27D08D3000F315A1 /* GoogleService-Info.plist in Resources */,
 				6182F2DD2755FEB1001848E0 /* Assets.xcassets in Resources */,
 				6182F2DB2755FEB0001848E0 /* Main.storyboard in Resources */,
 			);
@@ -379,6 +384,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B1A7088378494C2D1208BC97 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LetsBake/Pods-LetsBake-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LetsBake/Pods-LetsBake-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LetsBake/Pods-LetsBake-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
