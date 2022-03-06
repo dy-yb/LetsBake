@@ -124,7 +124,6 @@ class DiaryWriteViewController: UIViewController {
     return button
   }()
 
-
   let ingredientsInputView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false

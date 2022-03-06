@@ -11,22 +11,57 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   
   // MARK: - UI
   
-  let cellStackView: UIView = {
-    let view = UIView()
-    return view
+  lazy var cellStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [ingredientTextField, quantityTextField, unitsTextField])
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .horizontal
+    stackView.alignment = .fill
+    stackView.distribution = .fillEqually
+    stackView.spacing = 10
+    return stackView
   }()
-  
+
   let ingredientTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.backgroundColor = .green
     return textField
   }()
+
+  private lazy var quantityTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.borderStyle = .none
+    textField.textAlignment = .center
+    textField.placeholder = "300"
+    textField.keyboardType = .numberPad
+    textField.addTarget(self, action: #selector(editedTextField(_:)), for: .editingChanged)
+    textField.backgroundColor = .yellow
+    return textField
+  }()
+
+  private lazy var unitsTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.borderStyle = .none
+    textField.placeholder = "그램"
+    textField.textAlignment = .center
+    textField.configToolbar()
+    textField.tintColor = .clear
+    textField.backgroundColor = .red
+    return textField
+  }()
+
+  private let unitsPickerView: UIPickerView = {
+    let pickerView = UIPickerView()
+    return pickerView
+  }()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setView()
     layout()
+    configPickerView()
   }
   
   override func layoutSubviews() {
@@ -37,19 +72,63 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   required init?(coder: NSCoder) {
     super.init(coder: coder)
   }
+
+  // MARK: - layout
   
   func setView() {
     contentView.layer.cornerRadius = 10
     contentView.backgroundColor = .magenta
-    contentView.addSubview(ingredientTextField)
+    contentView.addSubview(cellStackView)
   }
   
   func layout() {
     NSLayoutConstraint.activate([
-      ingredientTextField.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
-      ingredientTextField.heightAnchor.constraint(equalToConstant: 30),
-      ingredientTextField.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -20),
-      ingredientTextField.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 20)
+      cellStackView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
+      cellStackView.heightAnchor.constraint(equalToConstant: 30),
+      cellStackView.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -20),
+      cellStackView.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 20)
     ])
+  }
+
+  // MARK: - functions
+  func checkMaxLength(textField: UITextField, maxLength: Int) {
+    if textField.text?.count ?? 0 > maxLength {
+      textField.deleteBackward()
+    }
+  }
+  @objc func editedTextField(_ sender: UITextField) {
+    checkMaxLength(textField: sender, maxLength: 5)
+  }
+}
+
+extension DiaryIngredientsTableViewCell: UITextFieldDelegate {
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    return false
+  }
+}
+
+extension DiaryIngredientsTableViewCell: UIPickerViewDelegate, UIPickerViewDataSource {
+  func configPickerView() {
+    unitsPickerView.delegate = self
+    unitsPickerView.dataSource = self
+    unitsTextField.inputView = unitsPickerView
+    unitsPickerView.selectedRow(inComponent: 0)
+    unitsTextField.text = units[0]
+  }
+
+  func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    return 1
+  }
+
+  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    return units.count
+  }
+
+  func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    return units[row]
+  }
+
+  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    unitsTextField.text = units[row]
   }
 }
