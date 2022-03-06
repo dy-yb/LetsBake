@@ -7,11 +7,14 @@
 
 import UIKit
 import PhotosUI
+import FirebaseDatabase
 
 class DiaryWriteViewController: UIViewController {
   
   // MARK: - Properties
-  
+
+  var ref: DatabaseReference?
+
   var numberOfIngredients: Int = 3
   static let cellID = "DiaryIngredientCell"
   
@@ -121,7 +124,6 @@ class DiaryWriteViewController: UIViewController {
     return button
   }()
 
-  let photoPicker = PHPickerViewController(configuration: PHPicker().phPickerConfiguration)
 
   let ingredientsInputView: UIView = {
     let view = UIView()
@@ -140,6 +142,7 @@ class DiaryWriteViewController: UIViewController {
   let ingredientsTableView: UITableView = {
     let tableView = UITableView()
     tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.rowHeight = 15
     tableView.register(DiaryIngredientsTableViewCell.classForCoder(), forCellReuseIdentifier: cellID)
     tableView.separatorColor = .white
     return tableView
@@ -208,13 +211,14 @@ class DiaryWriteViewController: UIViewController {
   
   private var starImageViews: [UIImageView] = []
   
-  let doneButton: UIButton = {
+  lazy var doneButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setTitle("작성 완료", for: .normal)
     button.setTitleColor(.white, for: .normal)
     button.titleLabel?.font = .boldSystemFont(ofSize: 20)
     button.backgroundColor = .mainColor
+    button.addTarget(self, action: #selector(tapDoneButton(_:)), for: .touchUpInside)
     return button
   }()
   
@@ -239,7 +243,6 @@ class DiaryWriteViewController: UIViewController {
   func setView() {
     view.backgroundColor = .white
 
-    photoPicker.delegate = self
 
     ingredientsTableView.rowHeight = UITableView.automaticDimension
     ingredientsTableView.dataSource = self
@@ -373,9 +376,17 @@ class DiaryWriteViewController: UIViewController {
   }
 
   @objc func pickImage() {
-    self.navigationController?.pushViewController(ImageCropViewController(), animated: true)
+//    self.navigationController?.pushViewController(ImageCropViewController(), animated: true)
 //    present(ImageCropViewController(), animated: true, completion: nil)
-//    self.present(self.photoPicker, animated: true, completion: nil)
+
+        var configuration = PHPickerConfiguration()
+    configuration.selectionLimit = 1
+    configuration.filter = .images
+    configuration.preferredAssetRepresentationMode = .automatic
+    let photoPicker = PHPickerViewController(configuration: configuration)
+    photoPicker.delegate = self
+
+    self.present(photoPicker, animated: true, completion: nil)
   }
 
   @objc func hadleDatePicker(_ sender: UIDatePicker) {
@@ -400,6 +411,13 @@ class DiaryWriteViewController: UIViewController {
         starImageViews[index].image = UIImage(named: "ic_rating_off")
       }
     }
+  }
+
+  @objc func tapDoneButton(_ sender: UIButton) {
+    let title = titleTextField.text
+    self.ref = Database.database().reference()
+    let itemRef = self.ref?.child("list")
+    itemRef?.setValue(title)
   }
 }
 

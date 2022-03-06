@@ -61,8 +61,8 @@ class ImageCropViewController: UIViewController {
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     scrollView.addSubview(imageView)
-    scrollView.addSubview(cropView)
-    scrollView.addSubview(cropButton)
+    view.addSubview(cropView)
+    view.addSubview(cropButton)
   }
 
   func layout() {
