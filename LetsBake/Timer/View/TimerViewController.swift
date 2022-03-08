@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 final class TimerViewController: UIViewController {
   
@@ -163,10 +164,17 @@ final class TimerViewController: UIViewController {
       timeCount -= 1
       timerViewModel?.setTimeLabel(timeCount: timeCount)
     } else {
-      stopTimerButton.isEnabled = false
-      startTimerButton.isEnabled = true
-      pauseTimerButton.isEnabled = false
+      AudioServicesPlayAlertSound(1005)
       timer?.invalidate()
+      timePicker.selectRow(0, inComponent: 0, animated: false)
+      timePicker.selectRow(0, inComponent: 1, animated: false)
+      timePicker.selectRow(0, inComponent: 2, animated: false)
+      timePicker.isHidden = false
+
+      UIView.animate(withDuration: 0.5, animations: {
+        self.buttonStackView.transform = CGAffineTransform(translationX: 0, y: 0)
+        self.timeLabel.transform = CGAffineTransform(translationX: 0, y: 0)
+      })
     }
   }
   
@@ -220,9 +228,7 @@ final class TimerViewController: UIViewController {
 
 extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   func configPickerView() {
-    timePicker.subviews[0].backgroundColor = UIColor.white
-    timePicker.subviews[1].backgroundColor = UIColor.white
-    timePicker.subviews[2].backgroundColor = UIColor.white
+    timePicker.subviews.forEach { _ in timePicker.backgroundColor = .white } 
   }
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return 3
