@@ -9,7 +9,7 @@ import UIKit
 
 final class ExchangerViewController: UIViewController {
   
-  private let viewModel = ExchangerViewModel()
+  var exchangerViewModel: ExchangerViewModel?
   
   // MARK: - Properties
   
@@ -137,7 +137,7 @@ final class ExchangerViewController: UIViewController {
   
   // MARK: - Layout
   
-  func setView() {
+  private func setView() {
     ingredientsTextField.delegate = self
     inputUnitsTextField.delegate = self
     resultUnitsTextField.delegate = self
@@ -153,7 +153,7 @@ final class ExchangerViewController: UIViewController {
     view.addSubview(resultUnitsTextField)
   }
   
-  func layout() {
+  private func layout() {
     NSLayoutConstraint.activate([
       questionLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 90),
       questionLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 33),
@@ -193,10 +193,16 @@ final class ExchangerViewController: UIViewController {
   // MARK: - Funtions
   
   private func setBinding() {
-    viewModel.result.subscribe { value in
+    exchangerViewModel?.result.subscribe { value in
       DispatchQueue.main.async {
         self.resultQuantityTextField.text = value
       }
+    }
+  }
+  
+  private func checkMaxLength(textField: UITextField, maxLength: Int) {
+    if textField.text?.count ?? 0 > maxLength {
+      textField.deleteBackward()
     }
   }
   
@@ -207,15 +213,15 @@ final class ExchangerViewController: UIViewController {
     case ExchangerTextFieldTag.inputUnit.rawValue:
       inputUnit = sender.text ?? ""
     case ExchangerTextFieldTag.inputQuantity.rawValue:
-      if let quantity = sender.text {
-        inputQuantity = Double(quantity) ?? 0
-      }
+      checkMaxLength(textField: sender, maxLength: 5)
+      guard let quantity = sender.text else { return }
+      inputQuantity = Double(quantity) ?? 0
     case ExchangerTextFieldTag.resultUnit.rawValue:
       resultUnit = sender.text ?? ""
     default:
       print("error")
     }
-    viewModel.calculator(inputIngredient: ingredient, inputUnit: inputUnit, inputQuantity: inputQuantity, resultUnit: resultUnit)
+    exchangerViewModel?.calculator(inputIngredient: ingredient, inputUnit: inputUnit, inputQuantity: inputQuantity, resultUnit: resultUnit)
   }
 }
 

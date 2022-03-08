@@ -7,42 +7,23 @@
 
 import Foundation
 
-protocol ObeservableTimerViewModelProtocol {
-  associatedtype T
-
-  func calculateTimeCount(inputTime: Time) -> Int
-  var storage: Observable<T> { get set }
-  // 에러 메세지
-  var errorMessage: Observable<String?> { get set }
+final class TimerViewModel {
+  var timerModel: Time
+  var time: Observable<String> = Observable("00:00:00")
   
-  // 에러
-  var error: Observable<Bool> { get set }
-  
-}
-
-class TimerViewModel: ObeservableTimerViewModelProtocol {
-  var storage: Observable<Time> = Observable(Time(hour: 0, minute: 0, second: 0))
-
-  var errorMessage: Observable<String?> = Observable(nil)
-
-  var error: Observable<Bool> = Observable(false)
-
-  typealias T = Time
-
-  private var time = Time(hour: 0, minute: 0, second: 0)
-  private var timeCount: Int = 0
-
-  func calculateTimeCount(inputTime: Time) -> Int {
-    let currentSecond = (inputTime.hour * 3600) + (inputTime.minute * 60) + inputTime.second
-    
-    return currentSecond
+  init(timerModel: Time) {
+    self.timerModel = timerModel
   }
-
-  func setTimeLabel(hour: Int, minute: Int, second: Int) -> String {
-    let hourToString = String(format: "%02d", hour)
-    let minuteToString = String(format: "%02d", minute)
-    let secondToString = String(format: "%02d", second)
-
-    return "\(hourToString):\(minuteToString):\(secondToString)"
+  
+  func setTimeCount(hour: Int, minute: Int, second: Int) -> Int {
+    return (hour * 3600) + (minute * 60) + second
+  }
+  
+  func setTimeLabel(timeCount: Int) {
+    timerModel.hour = timeCount / 3600
+    timerModel.minute = (timeCount / 60) % 60
+    timerModel.second = timeCount % 60
+    
+    time.value = timerModel.toString()
   }
 }
