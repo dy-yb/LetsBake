@@ -228,7 +228,7 @@ final class TimerViewController: UIViewController {
 
 extension TimerViewController: UIPickerViewDelegate, UIPickerViewDataSource {
   func configPickerView() {
-    timerPicker.subviews.forEach { $0.backgroundColor = .white } 
+    timePicker.subviews.forEach { _ in timePicker.backgroundColor = .white } 
   }
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
     return 3
