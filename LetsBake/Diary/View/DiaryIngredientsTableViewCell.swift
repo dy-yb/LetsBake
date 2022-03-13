@@ -8,9 +8,9 @@
 import UIKit
 
 class DiaryIngredientsTableViewCell: UITableViewCell {
-  
+
   // MARK: - UI
-  
+
   lazy var cellStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [ingredientTextField, quantityTextField, unitsTextField])
     stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -24,7 +24,9 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   let ingredientTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.backgroundColor = .green
+    textField.borderStyle = .none
+    textField.textAlignment = .center
+    textField.placeholder = "재료"
     return textField
   }()
 
@@ -33,10 +35,9 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.borderStyle = .none
     textField.textAlignment = .center
-    textField.placeholder = "300"
+    textField.placeholder = "양"
     textField.keyboardType = .numberPad
     textField.addTarget(self, action: #selector(editedTextField(_:)), for: .editingChanged)
-    textField.backgroundColor = .yellow
     return textField
   }()
 
@@ -44,11 +45,9 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.borderStyle = .none
-    textField.placeholder = "그램"
     textField.textAlignment = .center
     textField.configToolbar()
     textField.tintColor = .clear
-    textField.backgroundColor = .red
     return textField
   }()
 
@@ -56,31 +55,31 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     let pickerView = UIPickerView()
     return pickerView
   }()
-  
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setView()
     layout()
     configPickerView()
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
     contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6))
   }
-  
+
   required init?(coder: NSCoder) {
     super.init(coder: coder)
   }
 
   // MARK: - layout
-  
+
   func setView() {
     contentView.layer.cornerRadius = 10
-    contentView.backgroundColor = .magenta
+    contentView.backgroundColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
     contentView.addSubview(cellStackView)
   }
-  
+
   func layout() {
     NSLayoutConstraint.activate([
       cellStackView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
@@ -113,7 +112,7 @@ extension DiaryIngredientsTableViewCell: UIPickerViewDelegate, UIPickerViewDataS
     unitsPickerView.dataSource = self
     unitsTextField.inputView = unitsPickerView
     unitsPickerView.selectedRow(inComponent: 0)
-    unitsTextField.text = units[0]
+    unitsTextField.text = staticUnits[0]
   }
 
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -121,14 +120,14 @@ extension DiaryIngredientsTableViewCell: UIPickerViewDelegate, UIPickerViewDataS
   }
 
   func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    return units.count
+    return staticUnits.count
   }
 
   func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return units[row]
+    return staticUnits[row]
   }
 
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    unitsTextField.text = units[row]
+    unitsTextField.text = staticUnits[row]
   }
 }
