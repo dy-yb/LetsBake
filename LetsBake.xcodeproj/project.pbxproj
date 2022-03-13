@@ -34,15 +34,12 @@
 		6182F3192769FFE4001848E0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F3182769FFE4001848E0 /* UIColor.swift */; };
 		6182F31B276A1765001848E0 /* DiaryIngredientsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F31A276A1765001848E0 /* DiaryIngredientsTableViewCell.swift */; };
 		6194401027C4F6AB008B7DD2 /* UIPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6194400F27C4F6AB008B7DD2 /* UIPickerView.swift */; };
-<<<<<<< HEAD
 		6194401227CB85B9008B7DD2 /* UIPHPickerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6194401127CB85B9008B7DD2 /* UIPHPickerConfiguration.swift */; };
 		61B2E42927CC977800CE0948 /* ImageCropHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B2E42827CC977800CE0948 /* ImageCropHandler.swift */; };
 		61B2E42B27CC99C200CE0948 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B2E42A27CC99C200CE0948 /* UIImageView.swift */; };
 		61B2E42D27CC9BCC00CE0948 /* ImageCropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B2E42C27CC9BCC00CE0948 /* ImageCropViewController.swift */; };
-=======
 		61BA816627D5E01500B08955 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61BA816527D5E01500B08955 /* AudioToolbox.framework */; };
 		61BA816A27D7059000B08955 /* tabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BA816927D7059000B08955 /* tabBarController.swift */; };
->>>>>>> main
 		61C8EA1327A287EC003FD11B /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C8EA1227A287EC003FD11B /* Observable.swift */; };
 		96EBEB9F79360C3629DCA791 /* Pods_LetsBake.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F45EA3DC6A3E9A686344595 /* Pods_LetsBake.framework */; };
 /* End PBXBuildFile section */
@@ -78,15 +75,12 @@
 		6182F3182769FFE4001848E0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6182F31A276A1765001848E0 /* DiaryIngredientsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryIngredientsTableViewCell.swift; sourceTree = "<group>"; };
 		6194400F27C4F6AB008B7DD2 /* UIPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPickerView.swift; sourceTree = "<group>"; };
-<<<<<<< HEAD
 		6194401127CB85B9008B7DD2 /* UIPHPickerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPHPickerConfiguration.swift; sourceTree = "<group>"; };
 		61B2E42827CC977800CE0948 /* ImageCropHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropHandler.swift; sourceTree = "<group>"; };
 		61B2E42A27CC99C200CE0948 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		61B2E42C27CC9BCC00CE0948 /* ImageCropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropViewController.swift; sourceTree = "<group>"; };
-=======
 		61BA816527D5E01500B08955 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		61BA816927D7059000B08955 /* tabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabBarController.swift; sourceTree = "<group>"; };
->>>>>>> main
 		61C8EA1227A287EC003FD11B /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		8F45EA3DC6A3E9A686344595 /* Pods_LetsBake.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LetsBake.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F691CB0BC95D2EC2C2FF6992 /* Pods-LetsBake.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsBake.debug.xcconfig"; path = "Target Support Files/Pods-LetsBake/Pods-LetsBake.debug.xcconfig"; sourceTree = "<group>"; };
@@ -270,11 +264,8 @@
 			children = (
 				61C8EA1227A287EC003FD11B /* Observable.swift */,
 				613C593427C227F7003FF3F7 /* StaticData.swift */,
-<<<<<<< HEAD
 				61B2E42827CC977800CE0948 /* ImageCropHandler.swift */,
-=======
 				61BA816927D7059000B08955 /* tabBarController.swift */,
->>>>>>> main
 			);
 			path = Utils;
 			sourceTree = "<group>";
