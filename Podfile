@@ -6,8 +6,6 @@ target 'LetsBake' do
   use_frameworks!
 	pod 'SwiftLint'
 	pod 'RealmSwift'
-	pod 'Firebase/Core'
-	pod 'Firebase/Storage'
   # Pods for LetsBake
 
 end

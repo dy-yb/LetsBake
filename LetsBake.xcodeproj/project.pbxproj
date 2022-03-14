@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		611BD49C27DDEF27007D5C79 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611BD49B27DDEF27007D5C79 /* RealmManager.swift */; };
-		611BD4A027DEFE2D007D5C79 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 611BD49F27DEFE2D007D5C79 /* GoogleService-Info.plist */; };
 		61288CA9279004330062579F /* UISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CA8279004330062579F /* UISlider.swift */; };
 		61288CAB279285A70062579F /* DiaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CAA279285A70062579F /* DiaryDetailViewController.swift */; };
 		61288CAF2797E8380062579F /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CAE2797E8380062579F /* TimerViewModel.swift */; };
@@ -48,7 +47,6 @@
 /* Begin PBXFileReference section */
 		3648401ECB54DBF7FE4CE346 /* Pods-LetsBake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsBake.release.xcconfig"; path = "Target Support Files/Pods-LetsBake/Pods-LetsBake.release.xcconfig"; sourceTree = "<group>"; };
 		611BD49B27DDEF27007D5C79 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
-		611BD49F27DEFE2D007D5C79 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		61288CA8279004330062579F /* UISlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISlider.swift; sourceTree = "<group>"; };
 		61288CAA279285A70062579F /* DiaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewController.swift; sourceTree = "<group>"; };
 		61288CAE2797E8380062579F /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
@@ -134,7 +132,6 @@
 				6182F2DC2755FEB1001848E0 /* Assets.xcassets */,
 				6182F2DE2755FEB1001848E0 /* LaunchScreen.storyboard */,
 				6182F2E12755FEB1001848E0 /* Info.plist */,
-				611BD49F27DEFE2D007D5C79 /* GoogleService-Info.plist */,
 			);
 			path = LetsBake;
 			sourceTree = "<group>";
@@ -354,7 +351,6 @@
 			files = (
 				6182F2E927575087001848E0 /* .swiftlint.yml in Resources */,
 				6182F2E02755FEB1001848E0 /* LaunchScreen.storyboard in Resources */,
-				611BD4A027DEFE2D007D5C79 /* GoogleService-Info.plist in Resources */,
 				6182F2DD2755FEB1001848E0 /* Assets.xcassets in Resources */,
 				6182F2DB2755FEB0001848E0 /* Main.storyboard in Resources */,
 			);
