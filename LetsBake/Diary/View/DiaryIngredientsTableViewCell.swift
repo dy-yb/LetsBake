@@ -30,7 +30,7 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     return textField
   }()
 
-  private lazy var quantityTextField: UITextField = {
+  lazy var quantityTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.borderStyle = .none
@@ -41,7 +41,7 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     return textField
   }()
 
-  private lazy var unitsTextField: UITextField = {
+  lazy var unitsTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
     textField.borderStyle = .none

@@ -7,27 +7,23 @@
 
 import Foundation
 import RealmSwift
-//
-//struct Ingredients: Codable {
-//  let ingredientName: String
-//  let quantity: Int
-//  let unit: String
-//}
 
-class Diary: Object {
+class DiaryModel: Object {
   @Persisted(primaryKey: true) var idx: Int
   @Persisted var title: String
   @Persisted var date: String
   @Persisted var image: String
-//  @Persisted var ingredients: [Ingredients]
+//  @Persisted var ingredients: List<IngredientModel>
   @Persisted var receipe: String
   @Persisted var rating: Int
+  let ingredients = List<Ingredient>()
 
   convenience init(
     idx: Int,
     title: String,
     date: String,
     image: String,
+//    ingredients: List<IngredientModel>,
     receipe: String,
     rating: Int
   ) {
@@ -37,6 +33,7 @@ class Diary: Object {
     self.title = title
     self.date = date
     self.image = image
+//    self.ingredients.append(objectsIn: ingredients)
     self.receipe = receipe
     self.rating = rating
   }
@@ -53,25 +50,22 @@ class Diary: Object {
   }
 }
 
-//
-//class Ingredients: Object {
-//  @Persisted(primaryKey: true) var idx: String?
-//  @Persisted var ingredientName: String
-//  @Persisted var quantity: Int
-//  @Persisted var unit: String
-//
-//  convenience init(
-//    idx: String,
-//    ingredientName: String,
-//    quantity: Int,
-//    unit: String
-//  ){
-//    self.init()
-//
-//    self.idx = idx
-//    self.ingredientName = ingredientName
-//    self.quantity = quantity
-//    self.unit = unit
-//  }
-//
-//}
+// 같은 모양의 object class 생성
+class Ingredient: Object {
+  @Persisted var ingredientName: String
+  @Persisted var quantity: Int
+  @Persisted var unit: String
+  let diary = LinkingObjects(fromType: DiaryModel.self, property: "ingredients")
+
+  convenience init(
+    ingredientName: String,
+    quantity: Int,
+    unit: String
+  ) {
+    self.init()
+
+    self.ingredientName = ingredientName
+    self.quantity = quantity
+    self.unit = unit
+  }
+}

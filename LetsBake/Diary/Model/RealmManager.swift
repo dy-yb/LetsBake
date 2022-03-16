@@ -13,15 +13,14 @@ public class RealmManager {
 
   public func getUrl() -> URL? {
     let url = Realm.Configuration.defaultConfiguration.fileURL
-    print("Realm Database fileUrl: ", url?.absoluteString)
+//    print("Realm Database fileUrl: ", url?.absoluteString)
 
     return url
   }
 
   static func realm() -> Realm? {
     do {
-      print("Realm저장위치=\n\(Realm.Configuration.defaultConfiguration.fileURL!)\n")
-      print(Realm.Configuration.defaultConfiguration.encryptionKey)
+//      print("Realm저장위치=\n\(Realm.Configuration.defaultConfiguration.fileURL!)\n")
       return try Realm()
     } catch {
       print(error.localizedDescription)
@@ -31,7 +30,7 @@ public class RealmManager {
 
   func saveObjects(objc: Object) {
       guard let realm = RealmManager.realm() else { return }
-      try? realm.write ({
+      try? realm.write({
           realm.add(objc)
       })
   }
@@ -42,7 +41,7 @@ public class RealmManager {
 
   static func incrementID() -> Int {
       guard let realm = RealmManager.realm() else { return 0 }
-      return (realm.objects(Diary.self).max(ofProperty: "idx") as Int? ?? 0) + 1
+      return (realm.objects(DiaryModel.self).max(ofProperty: "idx") as Int? ?? 0) + 1
   }
 
 }
