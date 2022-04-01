@@ -7,7 +7,19 @@
 
 import UIKit
 
+protocol DiaryIngredientsTableViewCellDelegate: AnyObject {
+  func getIngredientData(ingredient: Ingredient)
+}
+
 class DiaryIngredientsTableViewCell: UITableViewCell {
+
+  weak var delegate: DiaryIngredientsTableViewCellDelegate?
+  var ingredient = Ingredient(ingredientName: "", quantity: 0, unit: "그램")
+  enum TextFieldTag: Int {
+    case ingredientName = 1
+    case quantity = 2
+    case unit = 3
+  }
 
   // MARK: - UI
 
@@ -27,6 +39,7 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     textField.borderStyle = .none
     textField.textAlignment = .center
     textField.placeholder = "재료"
+    textField.tag = TextFieldTag.ingredientName.rawValue
     return textField
   }()
 
@@ -38,6 +51,7 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     textField.placeholder = "양"
     textField.keyboardType = .numberPad
     textField.addTarget(self, action: #selector(editedTextField(_:)), for: .editingChanged)
+    textField.tag = TextFieldTag.quantity.rawValue
     return textField
   }()
 
@@ -48,6 +62,7 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     textField.textAlignment = .center
     textField.configToolbar()
     textField.tintColor = .clear
+    textField.tag = TextFieldTag.unit.rawValue
     return textField
   }()
 
@@ -75,6 +90,10 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   // MARK: - layout
 
   func setView() {
+    ingredientTextField.delegate = self
+    quantityTextField.delegate = self
+    unitsTextField.delegate = self
+
     contentView.layer.cornerRadius = 10
     contentView.backgroundColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
     contentView.addSubview(cellStackView)
@@ -95,6 +114,7 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
       textField.deleteBackward()
     }
   }
+
   @objc func editedTextField(_ sender: UITextField) {
     checkMaxLength(textField: sender, maxLength: 5)
   }
@@ -102,8 +122,27 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
 
 extension DiaryIngredientsTableViewCell: UITextFieldDelegate {
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    return false
+    if textField.tag == TextFieldTag.unit.rawValue {
+      return false
+    } else {
+    return true
+    }
   }
+
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    guard let data = textField.text else { return }
+
+    if textField.tag == TextFieldTag.ingredientName.rawValue {
+      ingredient.ingredientName = data
+    } else if textField.tag == TextFieldTag.quantity.rawValue {
+      ingredient.quantity = Int(data) ?? 0
+    } else {
+      ingredient.unit = data
+    }
+
+    delegate?.getIngredientData(ingredient: ingredient)
+      print(ingredient)
+    }
 }
 
 extension DiaryIngredientsTableViewCell: UIPickerViewDelegate, UIPickerViewDataSource {

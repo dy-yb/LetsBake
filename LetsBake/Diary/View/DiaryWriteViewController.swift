@@ -455,14 +455,14 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
       return .init()
     }
     diaryIngredientsTableViewCell.selectionStyle = .none
-
-    if let ingredientName = diaryIngredientsTableViewCell.ingredientTextField.text,
-       let quantity = diaryIngredientsTableViewCell.quantityTextField.text,
-       let unit = diaryIngredientsTableViewCell.unitsTextField.text {
-
-      self.ingredients.append(Ingredient(ingredientName: ingredientName, quantity: Int(quantity) ?? 0, unit: unit))
-      debugPrint(ingredientName)
-    }
+    diaryIngredientsTableViewCell.delegate = self
+//    if let ingredientName = diaryIngredientsTableViewCell.ingredientTextField.text,
+//       let quantity = diaryIngredientsTableViewCell.quantityTextField.text,
+//       let unit = diaryIngredientsTableViewCell.unitsTextField.text {
+//
+//      self.ingredients.append(Ingredient(ingredientName: ingredientName, quantity: Int(quantity) ?? 0, unit: unit))
+//      debugPrint(ingredientName)
+//    }
     return diaryIngredientsTableViewCell
   }
 
@@ -480,5 +480,11 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
       tableView.deleteRows(at: [indexPath], with: .fade)
       tableView.endUpdates()
     }
+  }
+}
+
+extension DiaryWriteViewController: DiaryIngredientsTableViewCellDelegate {
+  func getIngredientData(ingredient: Ingredient) {
+    self.ingredients.append(ingredient)
   }
 }
