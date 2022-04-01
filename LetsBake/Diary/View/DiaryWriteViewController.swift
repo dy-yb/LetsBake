@@ -13,7 +13,7 @@ class DiaryWriteViewController: UIViewController {
   // MARK: - Properties
 
   var ingredients: [Ingredient] = []
-  lazy var numberOfIngredients: Int = 3 + self.ingredients.count
+  lazy var numberOfIngredients: Int = 1 + self.ingredients.count
   //  var newDiary: DiaryModel?
   static let cellID = "DiaryIngredientCell"
 
@@ -413,12 +413,10 @@ class DiaryWriteViewController: UIViewController {
 
   @objc func tapDoneButton(_ sender: UIButton) {
     let id = RealmManager.incrementID()
-//    let content = Ingredient(ingredientName: "ingredientsTableView", quantity: <#T##Int#>, unit: <#T##String#>)
     let newDiary = DiaryModel(
       idx: id, title: titleTextField.text ?? "", date: DiaryModel().dateToString(date: datePicker.date), image: "x", receipe: receipeTextView.text ?? "", rating: Int(ratingSlider.value ))
-//    newDiary.ingredients.append(content)
+
     newDiary.ingredients.append(objectsIn: self.ingredients)
-    debugPrint(ingredients)
     debugPrint(newDiary.ingredients)
     RealmManager().saveObjects(objc: newDiary)
   }

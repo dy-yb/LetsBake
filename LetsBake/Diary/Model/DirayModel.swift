@@ -9,13 +9,12 @@ import Foundation
 import RealmSwift
 
 class DiaryModel: Object {
-  @Persisted(primaryKey: true) var idx: Int
-  @Persisted var title: String
-  @Persisted var date: String
-  @Persisted var image: String
-//  @Persisted var ingredients: List<IngredientModel>
-  @Persisted var receipe: String
-  @Persisted var rating: Int
+  @objc var idx: Int = 0
+  @objc var title: String = ""
+  @objc var date: String = ""
+  @objc var image: String = ""
+  @objc var receipe: String = ""
+  @objc var rating: Int = 0
   let ingredients = List<Ingredient>()
 
   convenience init(
@@ -23,7 +22,6 @@ class DiaryModel: Object {
     title: String,
     date: String,
     image: String,
-//    ingredients: List<IngredientModel>,
     receipe: String,
     rating: Int
   ) {
@@ -33,7 +31,6 @@ class DiaryModel: Object {
     self.title = title
     self.date = date
     self.image = image
-//    self.ingredients.append(objectsIn: ingredients)
     self.receipe = receipe
     self.rating = rating
   }
@@ -50,22 +47,17 @@ class DiaryModel: Object {
   }
 }
 
-// 같은 모양의 object class 생성
 class Ingredient: Object {
-  @Persisted var ingredientName: String
-  @Persisted var quantity: Int
-  @Persisted var unit: String
+  @objc dynamic var ingredientName: String = ""
+  @objc dynamic var quantity: Int = 0
+  @objc dynamic var unit: String = ""
   let diary = LinkingObjects(fromType: DiaryModel.self, property: "ingredients")
 
-  convenience init(
-    ingredientName: String,
-    quantity: Int,
-    unit: String
-  ) {
+  convenience init(ingredientName: String, quantity: Int, unit: String) {
     self.init()
-
     self.ingredientName = ingredientName
     self.quantity = quantity
     self.unit = unit
   }
 }
+
