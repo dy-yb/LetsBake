@@ -13,13 +13,18 @@ protocol DiaryIngredientsTableViewCellDelegate: AnyObject {
 
 class DiaryIngredientsTableViewCell: UITableViewCell {
 
-  weak var delegate: DiaryIngredientsTableViewCellDelegate?
-  var ingredient = Ingredient(ingredientName: "", quantity: 0, unit: "그램")
+  // MARK: - Constants
+
   enum TextFieldTag: Int {
     case ingredientName = 1
     case quantity = 2
     case unit = 3
   }
+
+  // MARK: - Properties
+
+  weak var delegate: DiaryIngredientsTableViewCellDelegate?
+  var ingredient = Ingredient(ingredientName: "", quantity: 0, unit: "그램")
 
   // MARK: - UI
 
@@ -30,6 +35,8 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     stackView.alignment = .fill
     stackView.distribution = .fillEqually
     stackView.spacing = 10
+    stackView.layer.cornerRadius = 10
+    stackView.backgroundColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
     return stackView
   }()
 
@@ -71,6 +78,15 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     return pickerView
   }()
 
+  lazy var confirmButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(named: "bt_diary_ingredient"), for: .normal)
+    button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+    button.addTarget(self, action: #selector(confirmButtonDidTap(_:)), for: .touchUpInside)
+    return button
+  }()
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setView()
@@ -94,17 +110,19 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     quantityTextField.delegate = self
     unitsTextField.delegate = self
 
-    contentView.layer.cornerRadius = 10
-    contentView.backgroundColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
     contentView.addSubview(cellStackView)
+    contentView.addSubview(confirmButton)
   }
 
   func layout() {
     NSLayoutConstraint.activate([
+      confirmButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
+      confirmButton.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
+
       cellStackView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
       cellStackView.heightAnchor.constraint(equalToConstant: 30),
-      cellStackView.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -20),
-      cellStackView.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 20)
+      cellStackView.rightAnchor.constraint(equalTo: confirmButton.leftAnchor, constant: -10),
+      cellStackView.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor)
     ])
   }
 
@@ -118,6 +136,19 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   @objc func editedTextField(_ sender: UITextField) {
     checkMaxLength(textField: sender, maxLength: 5)
   }
+
+  @objc func confirmButtonDidTap(_ sender: UIButton) {
+    guard let ingredientName = ingredientTextField.text else { return }
+    guard let quantity = quantityTextField.text else { return }
+    guard let unit = unitsTextField.text else { return }
+
+    UIView.animate(withDuration: 0.5, animations: {
+      self.cellStackView.transform = CGAffineTransform(translationX: 25, y: 0)
+    })
+    self.confirmButton.isHidden = true
+
+    delegate?.getIngredientData(ingredient: Ingredient(ingredientName: ingredientName, quantity: Int(quantity) ?? 0, unit: unit))
+  }
 }
 
 extension DiaryIngredientsTableViewCell: UITextFieldDelegate {
@@ -128,21 +159,6 @@ extension DiaryIngredientsTableViewCell: UITextFieldDelegate {
     return true
     }
   }
-
-  func textFieldDidEndEditing(_ textField: UITextField) {
-    guard let data = textField.text else { return }
-
-    if textField.tag == TextFieldTag.ingredientName.rawValue {
-      ingredient.ingredientName = data
-    } else if textField.tag == TextFieldTag.quantity.rawValue {
-      ingredient.quantity = Int(data) ?? 0
-    } else {
-      ingredient.unit = data
-    }
-
-    delegate?.getIngredientData(ingredient: ingredient)
-      print(ingredient)
-    }
 }
 
 extension DiaryIngredientsTableViewCell: UIPickerViewDelegate, UIPickerViewDataSource {
