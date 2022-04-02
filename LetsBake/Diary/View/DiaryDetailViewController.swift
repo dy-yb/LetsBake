@@ -50,7 +50,6 @@ class DiaryDetailViewController: UIViewController {
   let titleTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.text = "얼그레이 마들렌"
     textField.textAlignment = .right
     textField.tintColor = .clear
     textField.isUserInteractionEnabled = true
@@ -79,7 +78,6 @@ class DiaryDetailViewController: UIViewController {
   let dateTextField: UITextField = {
     let textField = UITextField()
     textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.text = "2022년 2월 26일"
     textField.textAlignment = .right
     textField.tintColor = .clear
     textField.isUserInteractionEnabled = true

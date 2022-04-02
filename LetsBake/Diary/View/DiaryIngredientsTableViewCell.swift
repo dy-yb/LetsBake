@@ -78,12 +78,21 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     return pickerView
   }()
 
-  lazy var confirmButton: UIButton = {
+  lazy var ingredientConfirmButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setImage(UIImage(named: "bt_diary_ingredient"), for: .normal)
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
-    button.addTarget(self, action: #selector(confirmButtonDidTap(_:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(ingredientConfirmButtonDidTap(_:)), for: .touchUpInside)
+    return button
+  }()
+
+  lazy var ingredientDeleteButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(named: "bt_diary_ingredient"), for: .normal)
+    button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
+    button.addTarget(self, action: #selector(ingredientDeleteButtonDidTap(_:)), for: .touchUpInside)
     return button
   }()
 
@@ -111,17 +120,21 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     unitsTextField.delegate = self
 
     contentView.addSubview(cellStackView)
-    contentView.addSubview(confirmButton)
+    contentView.addSubview(ingredientConfirmButton)
+    contentView.addSubview(ingredientDeleteButton)
   }
 
   func layout() {
     NSLayoutConstraint.activate([
-      confirmButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
-      confirmButton.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
+      ingredientConfirmButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
+      ingredientConfirmButton.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
+
+      ingredientDeleteButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
+      ingredientDeleteButton.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
 
       cellStackView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
       cellStackView.heightAnchor.constraint(equalToConstant: 30),
-      cellStackView.rightAnchor.constraint(equalTo: confirmButton.leftAnchor, constant: -10),
+      cellStackView.rightAnchor.constraint(equalTo: ingredientConfirmButton.leftAnchor, constant: -10),
       cellStackView.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor)
     ])
   }
@@ -137,7 +150,7 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     checkMaxLength(textField: sender, maxLength: 5)
   }
 
-  @objc func confirmButtonDidTap(_ sender: UIButton) {
+  @objc func ingredientConfirmButtonDidTap(_ sender: UIButton) {
     guard let ingredientName = ingredientTextField.text else { return }
     guard let quantity = quantityTextField.text else { return }
     guard let unit = unitsTextField.text else { return }
@@ -145,9 +158,12 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     UIView.animate(withDuration: 0.5, animations: {
       self.cellStackView.transform = CGAffineTransform(translationX: 25, y: 0)
     })
-    self.confirmButton.isHidden = true
+    self.ingredientConfirmButton.isHidden = true
 
     delegate?.getIngredientData(ingredient: Ingredient(ingredientName: ingredientName, quantity: Int(quantity) ?? 0, unit: unit))
+  }
+
+  @objc func ingredientDeleteButtonDidTap(_ sender: UIButton) {
   }
 }
 
