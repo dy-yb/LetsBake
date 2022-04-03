@@ -8,7 +8,8 @@
 import UIKit
 
 protocol DiaryIngredientsTableViewCellDelegate: AnyObject {
-  func getIngredientData(ingredient: Ingredient)
+  func addIngredientData(ingredient: Ingredient)
+  func deleteIngredient()
 }
 
 class DiaryIngredientsTableViewCell: UITableViewCell {
@@ -81,7 +82,7 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   lazy var ingredientConfirmButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(named: "bt_diary_ingredient"), for: .normal)
+    button.setImage(UIImage(named: "bt_diary_ingredient_confirm"), for: .normal)
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
     button.addTarget(self, action: #selector(ingredientConfirmButtonDidTap(_:)), for: .touchUpInside)
     return button
@@ -90,9 +91,10 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   lazy var ingredientDeleteButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(named: "bt_diary_ingredient"), for: .normal)
+    button.setImage(UIImage(named: "bt_diary_ingredient_delete"), for: .normal)
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
     button.addTarget(self, action: #selector(ingredientDeleteButtonDidTap(_:)), for: .touchUpInside)
+    button.isHidden = true
     return button
   }()
 
@@ -140,6 +142,7 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   }
 
   // MARK: - functions
+  
   func checkMaxLength(textField: UITextField, maxLength: Int) {
     if textField.text?.count ?? 0 > maxLength {
       textField.deleteBackward()
@@ -155,15 +158,16 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     guard let quantity = quantityTextField.text else { return }
     guard let unit = unitsTextField.text else { return }
 
-    UIView.animate(withDuration: 0.5, animations: {
-      self.cellStackView.transform = CGAffineTransform(translationX: 25, y: 0)
-    })
     self.ingredientConfirmButton.isHidden = true
+    self.ingredientDeleteButton.isHidden = false
+    self.quantityTextField.isEnabled = false
+    self.ingredientTextField.isEnabled = false
 
-    delegate?.getIngredientData(ingredient: Ingredient(ingredientName: ingredientName, quantity: Int(quantity) ?? 0, unit: unit))
+    delegate?.addIngredientData(ingredient: Ingredient(ingredientName: ingredientName, quantity: Int(quantity) ?? 0, unit: unit))
   }
 
   @objc func ingredientDeleteButtonDidTap(_ sender: UIButton) {
+    delegate?.deleteIngredient()
   }
 }
 

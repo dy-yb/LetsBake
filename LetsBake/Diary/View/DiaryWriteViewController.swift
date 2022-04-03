@@ -117,7 +117,7 @@ class DiaryWriteViewController: UIViewController {
   lazy var addPhotoButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(named: "bt_diary_ingredient"), for: .normal)
+    button.setImage(UIImage(named: "bt_diary_add"), for: .normal)
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
     button.addTarget(self, action: #selector(pickImage), for: .touchUpInside)
     return button
@@ -149,7 +149,7 @@ class DiaryWriteViewController: UIViewController {
   lazy var addIngredintButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(named: "bt_diary_ingredient"), for: .normal)
+    button.setImage(UIImage(named: "bt_diary_add"), for: .normal)
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
     button.addTarget(self, action: #selector(addIngredients), for: .touchUpInside)
     return button
@@ -332,7 +332,7 @@ class DiaryWriteViewController: UIViewController {
       ingredientsTableView.leftAnchor.constraint(equalTo: ingredientsInputView.leftAnchor),
 
       addIngredintButton.bottomAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: -25),
-      addIngredintButton.rightAnchor.constraint(equalTo: ingredientsInputView.rightAnchor, constant: -10),
+      addIngredintButton.centerXAnchor.constraint(equalTo: ingredientsInputView.centerXAnchor),
 
       receipeInputView.topAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: 20),
       receipeInputView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30),
@@ -456,35 +456,20 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
     }
     diaryIngredientsTableViewCell.selectionStyle = .none
     diaryIngredientsTableViewCell.delegate = self
-//    if let ingredientName = diaryIngredientsTableViewCell.ingredientTextField.text,
-//       let quantity = diaryIngredientsTableViewCell.quantityTextField.text,
-//       let unit = diaryIngredientsTableViewCell.unitsTextField.text {
-//
-//      self.ingredients.append(Ingredient(ingredientName: ingredientName, quantity: Int(quantity) ?? 0, unit: unit))
-//      debugPrint(ingredientName)
-//    }
+
     return diaryIngredientsTableViewCell
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return tableView.rowHeight
   }
-
-  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-    return .delete
-  }
-
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    if editingStyle == .delete {
-      tableView.beginUpdates()
-      tableView.deleteRows(at: [indexPath], with: .fade)
-      tableView.endUpdates()
-    }
-  }
 }
 
 extension DiaryWriteViewController: DiaryIngredientsTableViewCellDelegate {
-  func getIngredientData(ingredient: Ingredient) {
+  func deleteIngredient() {
+  }
+
+  func addIngredientData(ingredient: Ingredient) {
     self.ingredients.append(ingredient)
   }
 }
