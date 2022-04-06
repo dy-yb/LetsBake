@@ -237,8 +237,8 @@ class DiaryWriteViewController: UIViewController {
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-     self.view.endEditing(true)
-   }
+    self.view.endEditing(true)
+  }
 
   // MARK: - Layout
 
@@ -420,6 +420,13 @@ class DiaryWriteViewController: UIViewController {
     debugPrint(newDiary.ingredients)
     RealmManager().saveObjects(objc: newDiary)
   }
+
+  @objc func ingredientDeleteButtonDidTap(_ sender: UIButton) {
+    let point = sender.convert(CGPoint.zero, to: self.ingredientsTableView)
+    guard let indexPath = self.ingredientsTableView.indexPathForRow(at: point) else { return }
+    self.ingredients.remove(at: indexPath.row)
+    self.ingredientsTableView.deleteRows(at: [indexPath], with: .automatic)
+  }
 }
 
 extension DiaryWriteViewController: PHPickerViewControllerDelegate {
@@ -455,6 +462,7 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
       return .init()
     }
     diaryIngredientsTableViewCell.selectionStyle = .none
+    diaryIngredientsTableViewCell.ingredientDeleteButton.addTarget(self, action: #selector(ingredientDeleteButtonDidTap(_:)), for: .touchUpInside)
     diaryIngredientsTableViewCell.delegate = self
 
     return diaryIngredientsTableViewCell
@@ -466,9 +474,6 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension DiaryWriteViewController: DiaryIngredientsTableViewCellDelegate {
-  func deleteIngredient() {
-  }
-
   func addIngredientData(ingredient: Ingredient) {
     self.ingredients.append(ingredient)
   }

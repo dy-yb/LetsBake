@@ -9,7 +9,6 @@ import UIKit
 
 protocol DiaryIngredientsTableViewCellDelegate: AnyObject {
   func addIngredientData(ingredient: Ingredient)
-  func deleteIngredient()
 }
 
 class DiaryIngredientsTableViewCell: UITableViewCell {
@@ -93,7 +92,6 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setImage(UIImage(named: "bt_diary_ingredient_delete"), for: .normal)
     button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
-    button.addTarget(self, action: #selector(ingredientDeleteButtonDidTap(_:)), for: .touchUpInside)
     button.isHidden = true
     return button
   }()
@@ -165,10 +163,6 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
 
     delegate?.addIngredientData(ingredient: Ingredient(ingredientName: ingredientName, quantity: Int(quantity) ?? 0, unit: unit))
   }
-
-  @objc func ingredientDeleteButtonDidTap(_ sender: UIButton) {
-    delegate?.deleteIngredient()
-  }
 }
 
 extension DiaryIngredientsTableViewCell: UITextFieldDelegate {
@@ -176,7 +170,7 @@ extension DiaryIngredientsTableViewCell: UITextFieldDelegate {
     if textField.tag == TextFieldTag.unit.rawValue {
       return false
     } else {
-    return true
+      return true
     }
   }
 }
