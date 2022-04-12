@@ -7,100 +7,28 @@
 
 import UIKit
 
-protocol DiaryIngredientsTableViewCellDelegate: AnyObject {
-  func addIngredientData(ingredient: Ingredient)
-}
-
 class DiaryIngredientsTableViewCell: UITableViewCell {
-
-  // MARK: - Constants
-
-  enum TextFieldTag: Int {
-    case ingredientName = 1
-    case quantity = 2
-    case unit = 3
-  }
 
   // MARK: - Properties
 
-  weak var delegate: DiaryIngredientsTableViewCellDelegate?
-  var ingredient = Ingredient(ingredientName: "", quantity: 0, unit: "그램")
-
-  // MARK: - UI
-
-  lazy var cellStackView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [ingredientTextField, quantityTextField, unitsTextField])
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    stackView.axis = .horizontal
-    stackView.alignment = .fill
-    stackView.distribution = .fillEqually
-    stackView.spacing = 10
-    stackView.layer.cornerRadius = 10
-    stackView.backgroundColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
-    return stackView
+  let ingredientView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
+    view.layer.cornerRadius = 10
+    return view
   }()
 
-  let ingredientTextField: UITextField = {
-    let textField = UITextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.borderStyle = .none
-    textField.textAlignment = .center
-    textField.placeholder = "재료"
-    textField.tag = TextFieldTag.ingredientName.rawValue
-    return textField
-  }()
-
-  lazy var quantityTextField: UITextField = {
-    let textField = UITextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.borderStyle = .none
-    textField.textAlignment = .center
-    textField.placeholder = "양"
-    textField.keyboardType = .numberPad
-    textField.addTarget(self, action: #selector(editedTextField(_:)), for: .editingChanged)
-    textField.tag = TextFieldTag.quantity.rawValue
-    return textField
-  }()
-
-  lazy var unitsTextField: UITextField = {
-    let textField = UITextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.borderStyle = .none
-    textField.textAlignment = .center
-    textField.configToolbar()
-    textField.tintColor = .clear
-    textField.tag = TextFieldTag.unit.rawValue
-    return textField
-  }()
-
-  private let unitsPickerView: UIPickerView = {
-    let pickerView = UIPickerView()
-    return pickerView
-  }()
-
-  lazy var ingredientConfirmButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(named: "bt_diary_ingredient_confirm"), for: .normal)
-    button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
-    button.addTarget(self, action: #selector(ingredientConfirmButtonDidTap(_:)), for: .touchUpInside)
-    return button
-  }()
-
-  lazy var ingredientDeleteButton: UIButton = {
-    let button = UIButton()
-    button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(named: "bt_diary_ingredient_delete"), for: .normal)
-    button.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
-    button.isHidden = true
-    return button
+  let ingredientLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
   }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setView()
     layout()
-    configPickerView()
   }
 
   override func layoutSubviews() {
@@ -115,88 +43,19 @@ class DiaryIngredientsTableViewCell: UITableViewCell {
   // MARK: - layout
 
   func setView() {
-    ingredientTextField.delegate = self
-    quantityTextField.delegate = self
-    unitsTextField.delegate = self
-
-    contentView.addSubview(cellStackView)
-    contentView.addSubview(ingredientConfirmButton)
-    contentView.addSubview(ingredientDeleteButton)
+    contentView.addSubview(ingredientView)
+    ingredientView.addSubview(ingredientLabel)
   }
 
   func layout() {
     NSLayoutConstraint.activate([
-      ingredientConfirmButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
-      ingredientConfirmButton.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
+      ingredientView.heightAnchor.constraint(equalToConstant: 30),
+      ingredientView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 2),
+      ingredientView.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -5),
+      ingredientView.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: -1),
 
-      ingredientDeleteButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
-      ingredientDeleteButton.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
-
-      cellStackView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
-      cellStackView.heightAnchor.constraint(equalToConstant: 30),
-      cellStackView.rightAnchor.constraint(equalTo: ingredientConfirmButton.leftAnchor, constant: -10),
-      cellStackView.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor)
+      ingredientLabel.centerXAnchor.constraint(equalTo: ingredientView.centerXAnchor),
+      ingredientLabel.centerYAnchor.constraint(equalTo: ingredientView.centerYAnchor)
     ])
-  }
-
-  // MARK: - functions
-  
-  func checkMaxLength(textField: UITextField, maxLength: Int) {
-    if textField.text?.count ?? 0 > maxLength {
-      textField.deleteBackward()
-    }
-  }
-
-  @objc func editedTextField(_ sender: UITextField) {
-    checkMaxLength(textField: sender, maxLength: 5)
-  }
-
-  @objc func ingredientConfirmButtonDidTap(_ sender: UIButton) {
-    guard let ingredientName = ingredientTextField.text else { return }
-    guard let quantity = quantityTextField.text else { return }
-    guard let unit = unitsTextField.text else { return }
-
-    self.ingredientConfirmButton.isHidden = true
-    self.ingredientDeleteButton.isHidden = false
-    self.quantityTextField.isEnabled = false
-    self.ingredientTextField.isEnabled = false
-
-    delegate?.addIngredientData(ingredient: Ingredient(ingredientName: ingredientName, quantity: Int(quantity) ?? 0, unit: unit))
-  }
-}
-
-extension DiaryIngredientsTableViewCell: UITextFieldDelegate {
-  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    if textField.tag == TextFieldTag.unit.rawValue {
-      return false
-    } else {
-      return true
-    }
-  }
-}
-
-extension DiaryIngredientsTableViewCell: UIPickerViewDelegate, UIPickerViewDataSource {
-  func configPickerView() {
-    unitsPickerView.delegate = self
-    unitsPickerView.dataSource = self
-    unitsTextField.inputView = unitsPickerView
-    unitsPickerView.selectedRow(inComponent: 0)
-    unitsTextField.text = staticUnits[0]
-  }
-
-  func numberOfComponents(in pickerView: UIPickerView) -> Int {
-    return 1
-  }
-
-  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-    return staticUnits.count
-  }
-
-  func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-    return staticUnits[row]
-  }
-
-  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-    unitsTextField.text = staticUnits[row]
   }
 }

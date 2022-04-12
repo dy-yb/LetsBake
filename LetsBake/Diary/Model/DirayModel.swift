@@ -48,16 +48,11 @@ class DiaryModel: Object {
 }
 
 class Ingredient: Object {
-  @objc dynamic var ingredientName: String = ""
-  @objc dynamic var quantity: Int = 0
-  @objc dynamic var unit: String = ""
+  @objc dynamic var ingredient: String = ""
   let diary = LinkingObjects(fromType: DiaryModel.self, property: "ingredients")
 
-  convenience init(ingredientName: String, quantity: Int, unit: String) {
+  convenience init(ingredient: String) {
     self.init()
-    self.ingredientName = ingredientName
-    self.quantity = quantity
-    self.unit = unit
+    self.ingredient = ingredient
   }
 }
-

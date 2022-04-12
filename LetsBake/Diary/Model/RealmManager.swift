@@ -24,7 +24,8 @@ public class RealmManager {
   func saveObjects(objc: Object) {
       guard let realm = RealmManager.realm() else { return }
       try? realm.write({
-          realm.add(objc)
+//        realm.deleteAll()
+        realm.add(objc)
       })
   }
 

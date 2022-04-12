@@ -13,8 +13,6 @@ class DiaryWriteViewController: UIViewController {
   // MARK: - Properties
 
   var ingredients: [Ingredient] = []
-  lazy var numberOfIngredients: Int = 1 + self.ingredients.count
-  //  var newDiary: DiaryModel?
   static let cellID = "DiaryIngredientCell"
 
   // MARK: - UI
@@ -307,7 +305,6 @@ class DiaryWriteViewController: UIViewController {
 
       photoInputLabel.topAnchor.constraint(equalTo: photoInputView.topAnchor),
       photoInputLabel.leftAnchor.constraint(equalTo: photoInputView.leftAnchor),
-      photoInputLabel.heightAnchor.constraint(equalToConstant: 20),
 
       photoImageView.topAnchor.constraint(equalTo: photoInputLabel.bottomAnchor, constant: 10),
       photoImageView.leftAnchor.constraint(equalTo: photoInputView.leftAnchor),
@@ -324,15 +321,14 @@ class DiaryWriteViewController: UIViewController {
 
       ingredientsInputLabel.topAnchor.constraint(equalTo: ingredientsInputView.topAnchor),
       ingredientsInputLabel.leftAnchor.constraint(equalTo: ingredientsInputView.leftAnchor),
-      ingredientsInputLabel.heightAnchor.constraint(equalToConstant: 20),
 
       ingredientsTableView.topAnchor.constraint(equalTo: ingredientsInputLabel.bottomAnchor, constant: 10),
       ingredientsTableView.rightAnchor.constraint(equalTo: ingredientsInputView.rightAnchor),
       ingredientsTableView.bottomAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: -40),
       ingredientsTableView.leftAnchor.constraint(equalTo: ingredientsInputView.leftAnchor),
 
-      addIngredintButton.bottomAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: -25),
-      addIngredintButton.centerXAnchor.constraint(equalTo: ingredientsInputView.centerXAnchor),
+      addIngredintButton.bottomAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 5),
+      addIngredintButton.centerXAnchor.constraint(equalTo: ingredientsTableView.centerXAnchor),
 
       receipeInputView.topAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: 20),
       receipeInputView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30),
@@ -392,8 +388,19 @@ class DiaryWriteViewController: UIViewController {
   }
 
   @objc func addIngredients(_ sender: Any) {
-    numberOfIngredients += 1
-    self.ingredientsTableView.reloadData()
+    let alert = UIAlertController(title: "재료 입력", message: nil, preferredStyle: .alert)
+    let registerButton = UIAlertAction(title: "등록", style: .default, handler: { [weak self] _ in
+      guard let ingredient = alert.textFields?[0].text else { return }
+      self?.ingredients.append(Ingredient(ingredient: ingredient))
+      self?.ingredientsTableView.reloadData()
+    })
+    let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+    alert.addAction(cancelButton)
+    alert.addAction(registerButton)
+    alert.addTextField(configurationHandler: { textField in
+      textField.placeholder = "ex) 밀가루 500g, 계란 세 알"
+    })
+    self.present(alert, animated: true, completion: nil)
   }
 
   @objc func tapSlider(_ sender: UISlider) {
@@ -454,7 +461,7 @@ extension DiaryWriteViewController: PHPickerViewControllerDelegate {
 
 extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return numberOfIngredients
+    return self.ingredients.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -462,19 +469,12 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
       return .init()
     }
     diaryIngredientsTableViewCell.selectionStyle = .none
-    diaryIngredientsTableViewCell.ingredientDeleteButton.addTarget(self, action: #selector(ingredientDeleteButtonDidTap(_:)), for: .touchUpInside)
-    diaryIngredientsTableViewCell.delegate = self
+    diaryIngredientsTableViewCell.ingredientLabel.text = ingredients[indexPath.row].ingredient
 
     return diaryIngredientsTableViewCell
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return tableView.rowHeight
-  }
-}
-
-extension DiaryWriteViewController: DiaryIngredientsTableViewCellDelegate {
-  func addIngredientData(ingredient: Ingredient) {
-    self.ingredients.append(ingredient)
   }
 }
