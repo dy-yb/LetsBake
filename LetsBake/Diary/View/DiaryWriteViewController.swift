@@ -324,10 +324,10 @@ class DiaryWriteViewController: UIViewController {
 
       ingredientsTableView.topAnchor.constraint(equalTo: ingredientsInputLabel.bottomAnchor, constant: 10),
       ingredientsTableView.rightAnchor.constraint(equalTo: ingredientsInputView.rightAnchor),
-      ingredientsTableView.bottomAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: -40),
+      ingredientsTableView.bottomAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: -45),
       ingredientsTableView.leftAnchor.constraint(equalTo: ingredientsInputView.leftAnchor),
 
-      addIngredintButton.bottomAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 5),
+      addIngredintButton.bottomAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 35),
       addIngredintButton.centerXAnchor.constraint(equalTo: ingredientsTableView.centerXAnchor),
 
       receipeInputView.topAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: 20),
@@ -476,5 +476,11 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return tableView.rowHeight
+  }
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    if editingStyle == .delete {
+      ingredients.remove(at: indexPath.row)
+      tableView.deleteRows(at: [indexPath], with: .fade)
+    }
   }
 }
