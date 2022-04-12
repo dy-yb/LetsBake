@@ -86,13 +86,13 @@ class DiaryWriteViewController: UIViewController {
     return datePicker
   }()
 
-  let photoInputView: UIView = {
+  let imageInputView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
-  let photoInputLabel: UILabel = {
+  let imageInputLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "사진"
@@ -100,7 +100,9 @@ class DiaryWriteViewController: UIViewController {
     return label
   }()
 
-  lazy var photoImageView: UIImageView = {
+  let imagePicker = UIImagePickerController()
+
+  lazy var imageView: UIImageView = {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.isHidden = true
@@ -224,12 +226,15 @@ class DiaryWriteViewController: UIViewController {
     setRatingImageView()
     setView()
     layout()
+    imagePicker.sourceType = .photoLibrary
+    imagePicker.allowsEditing = true
+    imagePicker.delegate = self
   }
 
   override func viewDidAppear(_ animated: Bool) {
     titleInputStackView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
     dateInputStackView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
-    photoInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
+    imageInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
     ingredientsInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
     receipeInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
   }
@@ -253,7 +258,7 @@ class DiaryWriteViewController: UIViewController {
     scrollView.addSubview(contentView)
     contentView.addSubview(titleInputStackView)
     contentView.addSubview(dateInputStackView)
-    contentView.addSubview(photoInputView)
+    contentView.addSubview(imageInputView)
     contentView.addSubview(ingredientsInputLabel)
     contentView.addSubview(ingredientsInputView)
     contentView.addSubview(receipeInputView)
@@ -261,9 +266,9 @@ class DiaryWriteViewController: UIViewController {
     contentView.addSubview(ratingStarStackView)
     contentView.addSubview(ratingSlider)
 
-    photoInputView.addSubview(photoInputLabel)
-    photoInputView.addSubview(photoImageView)
-    photoInputView.addSubview(addPhotoButton)
+    imageInputView.addSubview(imageInputLabel)
+    imageInputView.addSubview(imageView)
+    imageInputView.addSubview(addPhotoButton)
 
     ingredientsInputView.addSubview(ingredientsInputLabel)
     ingredientsInputView.addSubview(ingredientsTableView)
@@ -298,23 +303,23 @@ class DiaryWriteViewController: UIViewController {
       dateInputStackView.leftAnchor.constraint(equalTo: titleInputStackView.leftAnchor),
       dateInputStackView.heightAnchor.constraint(equalToConstant: 60),
 
-      photoInputView.topAnchor.constraint(equalTo: dateInputStackView.bottomAnchor, constant: 25),
-      photoInputView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -30),
-      photoInputView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 30),
-      photoInputView.heightAnchor.constraint(equalToConstant: 220),
+      imageInputView.topAnchor.constraint(equalTo: dateInputStackView.bottomAnchor, constant: 25),
+      imageInputView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -30),
+      imageInputView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 30),
+      imageInputView.heightAnchor.constraint(equalToConstant: 220),
 
-      photoInputLabel.topAnchor.constraint(equalTo: photoInputView.topAnchor),
-      photoInputLabel.leftAnchor.constraint(equalTo: photoInputView.leftAnchor),
+      imageInputLabel.topAnchor.constraint(equalTo: imageInputView.topAnchor),
+      imageInputLabel.leftAnchor.constraint(equalTo: imageInputView.leftAnchor),
 
-      photoImageView.topAnchor.constraint(equalTo: photoInputLabel.bottomAnchor, constant: 10),
-      photoImageView.leftAnchor.constraint(equalTo: photoInputView.leftAnchor),
-      photoImageView.rightAnchor.constraint(equalTo: photoInputView.rightAnchor),
-      photoImageView.bottomAnchor.constraint(equalTo: photoInputView.bottomAnchor, constant: -30),
+      imageView.topAnchor.constraint(equalTo: imageInputLabel.bottomAnchor, constant: 10),
+      imageView.leftAnchor.constraint(equalTo: imageInputView.leftAnchor),
+      imageView.rightAnchor.constraint(equalTo: imageInputView.rightAnchor),
+      imageView.bottomAnchor.constraint(equalTo: imageInputView.bottomAnchor, constant: -30),
 
-      addPhotoButton.centerXAnchor.constraint(equalTo: photoInputView.centerXAnchor),
-      addPhotoButton.centerYAnchor.constraint(equalTo: photoInputView.centerYAnchor),
+      addPhotoButton.centerXAnchor.constraint(equalTo: imageInputView.centerXAnchor),
+      addPhotoButton.centerYAnchor.constraint(equalTo: imageInputView.centerYAnchor),
 
-      ingredientsInputView.topAnchor.constraint(equalTo: photoInputView.bottomAnchor, constant: 25),
+      ingredientsInputView.topAnchor.constraint(equalTo: imageInputView.bottomAnchor, constant: 25),
       ingredientsInputView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -30),
       ingredientsInputView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 30),
       ingredientsInputView.heightAnchor.constraint(equalToConstant: 220),
@@ -373,14 +378,7 @@ class DiaryWriteViewController: UIViewController {
   }
 
   @objc func pickImage() {
-    var configuration = PHPickerConfiguration()
-    configuration.selectionLimit = 1
-    configuration.filter = .images
-    configuration.preferredAssetRepresentationMode = .automatic
-    let photoPicker = PHPickerViewController(configuration: configuration)
-    photoPicker.delegate = self
-
-    self.present(photoPicker, animated: true, completion: nil)
+    self.present(self.imagePicker, animated: true)
   }
 
   @objc func hadleDatePicker(_ sender: UIDatePicker) {
@@ -436,26 +434,19 @@ class DiaryWriteViewController: UIViewController {
   }
 }
 
-extension DiaryWriteViewController: PHPickerViewControllerDelegate {
-  func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-    // 선택완료 혹은 취소하면 뷰 dismiss.
-    picker.dismiss(animated: true, completion: nil)
+extension DiaryWriteViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    var image: UIImage?
 
-    // itemProvider 를 가져온다.
-    let itemProvider = results.first?.itemProvider
-    if let itemProvider = itemProvider,
-       // itemProvider 에서 지정한 타입으로 로드할 수 있는지 체크
-       itemProvider.canLoadObject(ofClass: UIImage.self) {
-      // loadObject() 메서드는 completionHandler 로 NSItemProviderReading 과 error 를 준다.
-      itemProvider.loadObject(ofClass: UIImage.self) { image, error in
-        // itemProvider 는 background asnyc 작업이기 때문에 UI 와 관련된 업데이트는 꼭 main 쓰레드에서 실행해줘야 합니다.
-        DispatchQueue.main.sync {
-          self.photoImageView.image = image as? UIImage
-          self.addPhotoButton.isHidden = true
-          self.photoImageView.isHidden = false
-        }
-      }
+    if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+      image = pickedImage
+    } else if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+      image = pickedImage
     }
+    self.imageView.image = image
+    imagePicker.dismiss(animated: true, completion: nil)
+    self.addPhotoButton.isHidden = true
+    self.imageView.isHidden = false
   }
 }
 
