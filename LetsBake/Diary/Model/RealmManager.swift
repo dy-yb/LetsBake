@@ -13,7 +13,7 @@ public class RealmManager {
 
   static func realm() -> Realm? {
     do {
-//      print("Realm저장위치=\n\(Realm.Configuration.defaultConfiguration.fileURL!)\n")
+      print("Realm저장위치=\n\(Realm.Configuration.defaultConfiguration.fileURL!)\n")
       return try Realm()
     } catch {
       print(error.localizedDescription)

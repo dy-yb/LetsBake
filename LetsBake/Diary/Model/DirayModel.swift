@@ -12,7 +12,7 @@ class DiaryModel: Object {
   @objc var idx: Int = 0
   @objc var title: String = ""
   @objc var date: String = ""
-  @objc var image: String = ""
+//  @objc var image: String = ""
   @objc var receipe: String = ""
   @objc var rating: Int = 0
   let ingredients = List<Ingredient>()
@@ -21,7 +21,7 @@ class DiaryModel: Object {
     idx: Int,
     title: String,
     date: String,
-    image: String,
+//    image: String,
     receipe: String,
     rating: Int
   ) {
@@ -30,7 +30,7 @@ class DiaryModel: Object {
     self.idx = idx
     self.title = title
     self.date = date
-    self.image = image
+//    self.image = image
     self.receipe = receipe
     self.rating = rating
   }

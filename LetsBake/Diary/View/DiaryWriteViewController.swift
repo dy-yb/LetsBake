@@ -107,7 +107,8 @@ class DiaryWriteViewController: UIViewController {
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.isHidden = true
     imageView.layer.cornerRadius = 10
-    imageView.contentMode = .scaleToFill
+    imageView.clipsToBounds = true
+    imageView.contentMode = .scaleAspectFill
     imageView.backgroundColor = .lightGray
     imageView.isUserInteractionEnabled = true
     imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(pickImage)))
@@ -226,9 +227,6 @@ class DiaryWriteViewController: UIViewController {
     setRatingImageView()
     setView()
     layout()
-    imagePicker.sourceType = .photoLibrary
-    imagePicker.allowsEditing = true
-    imagePicker.delegate = self
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -251,6 +249,10 @@ class DiaryWriteViewController: UIViewController {
     ingredientsTableView.rowHeight = UITableView.automaticDimension
     ingredientsTableView.dataSource = self
     ingredientsTableView.delegate = self
+
+    imagePicker.sourceType = .photoLibrary
+    imagePicker.allowsEditing = true
+    imagePicker.delegate = self
 
     view.addSubview(scrollView)
     view.addSubview(doneButton)
@@ -418,8 +420,13 @@ class DiaryWriteViewController: UIViewController {
 
   @objc func tapDoneButton(_ sender: UIButton) {
     let id = RealmManager.incrementID()
+    let imageFileManager = ImageFileManager()
+    guard let image = imageView.image else { return }
     let newDiary = DiaryModel(
-      idx: id, title: titleTextField.text ?? "", date: DiaryModel().dateToString(date: datePicker.date), image: "x", receipe: receipeTextView.text ?? "", rating: Int(ratingSlider.value ))
+      idx: id, title: titleTextField.text ?? "", date: DiaryModel().dateToString(date: datePicker.date), receipe: receipeTextView.text ?? "", rating: Int(ratingSlider.value ))
+
+    imageFileManager.saveImageToDocumentDirectory(imageName: "\(newDiary.idx).png", image: image)
+//    print("Simulator - Apps Documents Directory: \(String(describing: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last))")
 
     newDiary.ingredients.append(objectsIn: self.ingredients)
     debugPrint(newDiary.ingredients)
