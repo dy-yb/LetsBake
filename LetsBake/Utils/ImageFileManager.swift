@@ -35,4 +35,16 @@ class ImageFileManager {
       print("이미지를 저장하지 못했습니다.")
     }
   }
+
+  func loadImageFromDocumentDirectgory(imageName: String) -> UIImage? {
+    let documentDirectory = FileManager.SearchPathDirectory.documentDirectory
+    let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+    let path = NSSearchPathForDirectoriesInDomains(documentDirectory, userDomainMask, true)
+
+    if let directoryPath = path.first {
+      let imageURL = URL(fileURLWithPath: directoryPath).appendingPathComponent(imageName)
+      return UIImage(contentsOfFile: imageURL.path)
+    }
+    return nil
+  }
 }
