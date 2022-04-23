@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import RealmSwift
 
 class DiaryCollectionViewController: UIViewController {
   // MARK: - Properties
   
   static let cellID = "DiaryCollectionViewCell"
-  
+  var savedDiary: Results<DiaryModel>?
+
   // MARK: - UI
   
   lazy var rightPlusButton: UIBarButtonItem = {
@@ -38,8 +40,9 @@ class DiaryCollectionViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    setView()
-    layout()
+    self.setView()
+    self.layout()
+    self.loadDiary()
   }
   
   // MARK: - Layout
@@ -61,6 +64,16 @@ class DiaryCollectionViewController: UIViewController {
       diaryCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ])
   }
+
+  // MARK: - Functions
+
+  func loadDiary() {
+//    let diary = DiaryModel.self
+    let realm = RealmManager().realm
+    savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
+//    print(savedDiary[0].value(forKey: "title"))
+    self.diaryCollectionView.reloadData()
+  }
   
   @objc func writeDiary(_ send: Any) {
     self.hidesBottomBarWhenPushed = true
@@ -76,11 +89,15 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryCollectionViewController.cellID, for: indexPath) as? DiaryCollectionViewCell else {
       return UICollectionViewCell()
     }
+    if let diary = savedDiary?[indexPath.row] {
+      print(diary)
+      cell.configure(diary: diary)
+    }
     return cell
   }
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 10
+    return savedDiary?.count ?? 0
   }
 }
 
