@@ -13,6 +13,7 @@ class DiaryDetailViewController: UIViewController {
 
   var numberOfIngredients: Int = 3
   static let cellID = "DiaryIngredientCell"
+  var selectedDiary = DiaryModel(idx: 1, title: "2341", date: "", receipe: "", rating: 1)
 
   // MARK: - UI
 
@@ -177,6 +178,8 @@ class DiaryDetailViewController: UIViewController {
     setRatingImageView()
     setView()
     layout()
+    self.loadDiary()
+
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -296,6 +299,18 @@ class DiaryDetailViewController: UIViewController {
     ])
   }
 
+  func loadDiary() {
+    let realm = RealmManager().realm
+    let savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
+
+    setData(savedDiary: savedDiary?[1])
+  }
+  func setData(savedDiary: DiaryModel?) {
+    print("309 \(savedDiary)")
+    print("310 \(savedDiary?.title)")
+    self.titleTextField.text = savedDiary?.title
+    self.dateTextField.text = savedDiary?.date
+  }
   func setRatingImageView() {
     for index in 0..<5 {
       let imageView = UIImageView()
@@ -326,6 +341,7 @@ extension DiaryDetailViewController: UITableViewDataSource, UITableViewDelegate 
     guard let diaryIngredientsTableViewCell = tableView.dequeueReusableCell(withIdentifier: DiaryWriteViewController.cellID, for: indexPath) as? DiaryIngredientsTableViewCell else {
       return .init()
     }
+    //    diaryIngredientsTableViewCell.ingredientLabel.text = selectedDiary?.ingredients[indexPath.row].ingredient
     return diaryIngredientsTableViewCell
   }
 
