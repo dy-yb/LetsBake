@@ -41,7 +41,7 @@ class DiaryModel: Object {
 
   func dateToString(date: Date) -> String {
     let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy년 MM월 dd일 a hh시 mm분"
+    formatter.dateFormat = "yyyy/MM/dd a hh:mm"
     formatter.locale = Locale(identifier: "ko_KR")
     return formatter.string(from: date)
   }

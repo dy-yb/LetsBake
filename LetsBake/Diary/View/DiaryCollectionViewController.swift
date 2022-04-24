@@ -68,11 +68,8 @@ class DiaryCollectionViewController: UIViewController {
   // MARK: - Functions
 
   func loadDiary() {
-//    let diary = DiaryModel.self
     let realm = RealmManager().realm
     savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
-//    print(savedDiary[0].value(forKey: "title"))
-    self.diaryCollectionView.reloadData()
   }
   
   @objc func writeDiary(_ send: Any) {
