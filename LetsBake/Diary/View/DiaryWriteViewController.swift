@@ -420,20 +420,19 @@ class DiaryWriteViewController: UIViewController {
   }
 
   @objc func tapDoneButton(_ sender: UIButton) {
-    let id = RealmManager.incrementID()
     let imageFileManager = ImageFileManager()
+    let id = RealmManager.incrementID()
 
     let newDiary = DiaryModel(
       idx: id, title: titleTextField.text ?? "", date: DiaryModel().dateToString(date: datePicker.date), receipe: receipeTextView.text ?? "", rating: Int(ratingSlider.value ))
 
-    //    print("Simulator - Apps Documents Directory: \(String(describing: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last))")
-
-    newDiary.ingredients.append(objectsIn: self.ingredients)
-    debugPrint(newDiary.ingredients)
-    RealmManager().saveObjects(objc: newDiary)
-
     guard let image = imageView.image else { return }
     imageFileManager.saveImageToDocumentDirectory(imageName: "\(newDiary.idx).png", image: image)
+
+    newDiary.ingredients.append(objectsIn: self.ingredients)
+    RealmManager().saveObjects(objc: newDiary)
+    
+    self.navigationController?.popViewController(animated: true)
   }
 
   @objc func ingredientDeleteButtonDidTap(_ sender: UIButton) {

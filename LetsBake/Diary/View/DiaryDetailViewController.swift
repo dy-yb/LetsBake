@@ -175,6 +175,7 @@ class DiaryDetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     navigationItem.title = "일지 보기"
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editDiary(_:)))
     setRatingImageView()
     setView()
     layout()
@@ -305,12 +306,18 @@ class DiaryDetailViewController: UIViewController {
 
     setData(savedDiary: savedDiary?[1])
   }
+
+  @objc func editDiary(_ sender: UIButton) {
+
+  }
+
   func setData(savedDiary: DiaryModel?) {
     print("309 \(savedDiary)")
     print("310 \(savedDiary?.title)")
     self.titleTextField.text = savedDiary?.title
     self.dateTextField.text = savedDiary?.date
   }
+
   func setRatingImageView() {
     for index in 0..<5 {
       let imageView = UIImageView()
