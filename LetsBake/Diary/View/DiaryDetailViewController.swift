@@ -183,7 +183,6 @@ class DiaryDetailViewController: UIViewController {
     super.viewDidLoad()
     navigationItem.title = "일지 보기"
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tapEditButton(_:)))
-    self.setRatingImageView()
     self.setView()
     self.layout()
     self.loadDiary()
@@ -309,12 +308,14 @@ class DiaryDetailViewController: UIViewController {
   func loadDiary() {
     let realm = RealmManager().realm
     let savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
-    
-    setData(savedDiary: savedDiary?[self.indexPath?.row ?? 0])
+    selectedDiary = savedDiary?[self.indexPath?.row ?? 0]
+    setData(savedDiary: selectedDiary)
+    self.setRatingImageView(rating: selectedDiary?.rating ?? 0)
   }
 
   @objc func tapEditButton(_ sender: UIButton) {
     let diaryWriteViewController = DiaryWriteViewController()
+    diaryWriteViewController.diaryEditorMode = .edit(self.indexPath, self.selectedDiary)
     navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
   }
 
@@ -322,13 +323,17 @@ class DiaryDetailViewController: UIViewController {
     print("309 \(savedDiary)")
     print("310 \(savedDiary?.title)")
     self.titleTextField.text = savedDiary?.title
-    self.dateTextField.text = savedDiary?.date
+    self.dateTextField.text = savedDiary?.dateToString(date: savedDiary?.date)
+    self.receipeTextView.text = savedDiary?.receipe
   }
-
-  func setRatingImageView() {
+  
+  func setRatingImageView(rating: Int) {
     for index in 0..<5 {
       let imageView = UIImageView()
       imageView.image = UIImage(named: "ic_rating_off")
+      if index < rating {
+        imageView.image = UIImage(named: "ic_rating_on")
+      }
       imageView.tag = index
       ratingStarStackView.addArrangedSubview(imageView)
       starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
@@ -355,7 +360,7 @@ extension DiaryDetailViewController: UITableViewDataSource, UITableViewDelegate 
     guard let diaryIngredientsTableViewCell = tableView.dequeueReusableCell(withIdentifier: DiaryWriteViewController.cellID, for: indexPath) as? DiaryIngredientsTableViewCell else {
       return .init()
     }
-    //    diaryIngredientsTableViewCell.ingredientLabel.text = selectedDiary?.ingredients[indexPath.row].ingredient
+    diaryIngredientsTableViewCell.ingredientLabel.text = selectedDiary?.ingredients[indexPath.row].ingredient
     return diaryIngredientsTableViewCell
   }
 

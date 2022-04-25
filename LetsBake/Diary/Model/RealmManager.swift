@@ -23,7 +23,6 @@ public class RealmManager {
   func saveObjects(objc: Object) {
       guard let realm = RealmManager.realm() else { return }
       try? realm.write({
-//        realm.deleteAll()
         print("Realm저장위치=\n\(Realm.Configuration.defaultConfiguration.fileURL!)\n")
         realm.add(objc)
       })

@@ -11,8 +11,7 @@ import RealmSwift
 class DiaryModel: Object {
   @objc var idx: Int = 0
   @objc var title: String = ""
-  @objc var date: String = ""
-//  @objc var image: String = ""
+  @objc var date: Date = Date()
   @objc var receipe: String = ""
   @objc var rating: Int = 0
   let ingredients = List<Ingredient>()
@@ -20,8 +19,7 @@ class DiaryModel: Object {
   convenience init(
     idx: Int,
     title: String,
-    date: String,
-//    image: String,
+    date: Date,
     receipe: String,
     rating: Int
   ) {
@@ -30,7 +28,6 @@ class DiaryModel: Object {
     self.idx = idx
     self.title = title
     self.date = date
-//    self.image = image
     self.receipe = receipe
     self.rating = rating
   }
@@ -39,11 +36,11 @@ class DiaryModel: Object {
     return "idx"
   }
 
-  func dateToString(date: Date) -> String {
+  func dateToString(date: Date?) -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy/MM/dd a hh:mm"
     formatter.locale = Locale(identifier: "ko_KR")
-    return formatter.string(from: date)
+    return formatter.string(from: date ?? Date())
   }
 }
 

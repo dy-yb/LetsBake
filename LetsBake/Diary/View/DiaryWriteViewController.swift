@@ -10,15 +10,18 @@ import PhotosUI
 
 enum DiaryEditorMode {
   case new
-  case edit(IndexPath, DiaryModel)
+  case edit(IndexPath?, DiaryModel?)
 }
 
 class DiaryWriteViewController: UIViewController {
 
   // MARK: - Properties
 
-  var ingredients: [Ingredient] = []
   static let cellID = "DiaryIngredientCell"
+  var diaryEditorMode: DiaryEditorMode = .new
+  var indexPath: IndexPath?
+  var selectedDiary: DiaryModel?
+  var ingredients: [Ingredient] = []
   
 
   // MARK: - UI
@@ -232,6 +235,7 @@ class DiaryWriteViewController: UIViewController {
     setRatingImageView()
     setView()
     layout()
+    loadDiary()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -374,6 +378,18 @@ class DiaryWriteViewController: UIViewController {
     ])
   }
 
+  func loadDiary() {
+    switch self.diaryEditorMode {
+    case .edit(_, selectedDiary):
+      self.titleTextField.text = selectedDiary?.title
+      self.datePicker.date = selectedDiary?.date ?? Date()
+      self.receipeTextView.text = selectedDiary?.receipe
+      setRatingImageView()
+    default:
+      break
+    }
+  }
+
   func setRatingImageView() {
     for index in 0..<5 {
       let imageView = UIImageView()
@@ -424,15 +440,15 @@ class DiaryWriteViewController: UIViewController {
     let id = RealmManager.incrementID()
 
     let newDiary = DiaryModel(
-      idx: id, title: titleTextField.text ?? "", date: DiaryModel().dateToString(date: datePicker.date), receipe: receipeTextView.text ?? "", rating: Int(ratingSlider.value ))
-
-    guard let image = imageView.image else { return }
-    imageFileManager.saveImageToDocumentDirectory(imageName: "\(newDiary.idx).png", image: image)
+      idx: id, title: titleTextField.text ?? "", date: datePicker.date, receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
 
     newDiary.ingredients.append(objectsIn: self.ingredients)
     RealmManager().saveObjects(objc: newDiary)
-    
+
     self.navigationController?.popViewController(animated: true)
+
+    guard let image = imageView.image else { return }
+    imageFileManager.saveImageToDocumentDirectory(imageName: "\(newDiary.idx).png", image: image)
   }
 
   @objc func ingredientDeleteButtonDidTap(_ sender: UIButton) {
