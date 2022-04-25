@@ -8,6 +8,11 @@
 import UIKit
 import PhotosUI
 
+enum DiaryEditorMode {
+  case new
+  case edit(IndexPath, DiaryModel)
+}
+
 class DiaryWriteViewController: UIViewController {
 
   // MARK: - Properties
@@ -83,7 +88,6 @@ class DiaryWriteViewController: UIViewController {
     datePicker.preferredDatePickerStyle = .compact
     datePicker.datePickerMode = .dateAndTime
     datePicker.locale = Locale(identifier: "ko-KR")
-    datePicker.addTarget(self, action: #selector(hadleDatePicker(_:)), for: .valueChanged)
     return datePicker
   }()
 
@@ -382,10 +386,6 @@ class DiaryWriteViewController: UIViewController {
 
   @objc func pickImage() {
     self.present(self.imagePicker, animated: true)
-  }
-
-  @objc func hadleDatePicker(_ sender: UIDatePicker) {
-    print(sender.date)
   }
 
   @objc func addIngredients(_ sender: Any) {

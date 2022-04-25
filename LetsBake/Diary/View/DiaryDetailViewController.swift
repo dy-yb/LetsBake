@@ -7,13 +7,20 @@
 
 import UIKit
 
+protocol DiaryDetailViewDelegate: AnyObject {
+  func didSelectDelete(indexPath: IndexPath)
+}
+
 class DiaryDetailViewController: UIViewController {
 
   // MARK: - Properties
 
-  var numberOfIngredients: Int = 3
   static let cellID = "DiaryIngredientCell"
-  var selectedDiary = DiaryModel(idx: 1, title: "2341", date: "", receipe: "", rating: 1)
+
+  var ingredients: [String] = []
+  var indexPath: IndexPath?
+  var selectedDiary: DiaryModel?
+  weak var delegate: DiaryDetailViewDelegate?
 
   // MARK: - UI
 
@@ -175,12 +182,11 @@ class DiaryDetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     navigationItem.title = "일지 보기"
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editDiary(_:)))
-    setRatingImageView()
-    setView()
-    layout()
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tapEditButton(_:)))
+    self.setRatingImageView()
+    self.setView()
+    self.layout()
     self.loadDiary()
-
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -303,12 +309,13 @@ class DiaryDetailViewController: UIViewController {
   func loadDiary() {
     let realm = RealmManager().realm
     let savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
-
-    setData(savedDiary: savedDiary?[1])
+    
+    setData(savedDiary: savedDiary?[self.indexPath?.row ?? 0])
   }
 
-  @objc func editDiary(_ sender: UIButton) {
-
+  @objc func tapEditButton(_ sender: UIButton) {
+    let diaryWriteViewController = DiaryWriteViewController()
+    navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
   }
 
   func setData(savedDiary: DiaryModel?) {
@@ -341,7 +348,7 @@ extension DiaryDetailViewController: UITextFieldDelegate, UITextViewDelegate {
 
 extension DiaryDetailViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return numberOfIngredients
+    return ingredients.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -87,7 +87,6 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
       return UICollectionViewCell()
     }
     if let diary = savedDiary?[indexPath.row] {
-      print(diary)
       cell.configure(diary: diary)
     }
     return cell
@@ -101,6 +100,10 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
 extension DiaryCollectionViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let diaryDetailView = DiaryDetailViewController()
+    let selectedDiary = self.savedDiary?[indexPath.row]
+    diaryDetailView.selectedDiary = selectedDiary
+    diaryDetailView.indexPath = indexPath
+    diaryDetailView.delegate = self
     navigationController?.pushViewController(diaryDetailView, animated: true)
   }
 }
@@ -123,5 +126,11 @@ extension DiaryCollectionViewController: UICollectionViewDelegateFlowLayout {
   // collectionView internal margin
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
     return UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
+  }
+}
+
+extension DiaryCollectionViewController: DiaryDetailViewDelegate {
+  func didSelectDelete(indexPath: IndexPath) {
+  
   }
 }
