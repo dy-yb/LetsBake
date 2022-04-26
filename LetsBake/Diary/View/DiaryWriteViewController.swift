@@ -23,7 +23,6 @@ class DiaryWriteViewController: UIViewController {
   var selectedDiary: DiaryModel?
   var ingredients: [Ingredient] = []
   
-
   // MARK: - UI
 
   lazy var scrollView: UIScrollView = {

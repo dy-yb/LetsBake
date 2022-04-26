@@ -32,6 +32,13 @@ public class RealmManager {
       return realm?.objects(type)
   }
 
+  func deleteObjcets(objc: Object) {
+    guard let realm = RealmManager.realm() else { return }
+    try? realm.write({
+      realm.delete(objc)
+    })
+  }
+
   static func incrementID() -> Int {
       guard let realm = RealmManager.realm() else { return 0 }
       return (realm.objects(DiaryModel.self).max(ofProperty: "idx") as Int? ?? 0) + 1
