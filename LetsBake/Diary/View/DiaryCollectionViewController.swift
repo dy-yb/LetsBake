@@ -8,6 +8,10 @@
 import UIKit
 import RealmSwift
 
+protocol DiaryColletionViewDelegate: AnyObject {
+  func removeModeEnabled()
+}
+
 enum CollectionViewMode {
   case view
   case remove
@@ -17,40 +21,22 @@ class DiaryCollectionViewController: UIViewController {
   // MARK: - Properties
   
   static let cellID = "DiaryCollectionViewCell"
+  weak var delegate: DiaryColletionViewDelegate?
   var savedDiary: Results<DiaryModel>?
-//  var selectedIndexPath: [IndexPath : Bool] = [:]
   var collectionViewMode: CollectionViewMode = .view
-//  {
-//    didSet {
-//      switch collectionViewMode {
-//      case .view:
-//        for (key, value) in selectedIndexPath {
-//          if value {
-//            self.diaryCollectionView.deselectItem(at: key, animated: true)
-//          }
-//        }
-//        selectedIndexPath.removeAll()
-//
-//      case .remove:
-//        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(deleteDiary(_:)) )
-//        self.diaryCollectionView.allowsMultipleSelection = true
-//      }
-//    }
-//  }
 
   // MARK: - UI
 
-  lazy var longPressGesture: UILongPressGestureRecognizer = {
-    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture))
-    longPressGesture.minimumPressDuration = 1.0
-    return longPressGesture
-  }()
-
   lazy var rightPlusButton: UIBarButtonItem = {
     let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(writeDiary(_:)))
-    button.tag = 1
     return button
   }()
+
+  lazy var leftDeleteButton: UIBarButtonItem = {
+    let button = UIBarButtonItem(title: "삭제", style: .done, target: self, action: #selector(deleteDiary(_:)))
+    return button
+  }()
+
   
   let diaryCollectionView: UICollectionView = {
     let flowLayout = UICollectionViewFlowLayout.init()
@@ -71,6 +57,7 @@ class DiaryCollectionViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.setView()
+    self.setNavigationBar()
     self.layout()
     self.loadDiary()
   }
@@ -79,9 +66,7 @@ class DiaryCollectionViewController: UIViewController {
 
   func setView() {
     self.view.backgroundColor = .white
-    self.view.gestureRecognizers = [longPressGesture]
-    self.navigationItem.title = "Diary"
-    self.navigationItem.rightBarButtonItem = self.rightPlusButton
+
     self.diaryCollectionView.dataSource = self
     self.diaryCollectionView.delegate = self
     self.view.addSubview(diaryCollectionView)
@@ -94,6 +79,18 @@ class DiaryCollectionViewController: UIViewController {
       diaryCollectionView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
       diaryCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ])
+  }
+
+  func setNavigationBar() {
+    self.navigationItem.rightBarButtonItem = self.rightPlusButton
+    self.navigationItem.leftBarButtonItem = self.leftDeleteButton
+    switch collectionViewMode {
+    case .view:
+      self.navigationItem.title = "베이킹 일지"
+    case .remove:
+      self.navigationItem.title = "베이킹 일지 삭제"
+      self.leftDeleteButton.title = "완료"
+    }
   }
 
   // MARK: - Functions
@@ -109,19 +106,14 @@ class DiaryCollectionViewController: UIViewController {
     print("called")
   }
 
+  @objc func changeToViewMode(_ sender: UIBarButtonItem) {
+    self.collectionViewMode = .view
+    self.diaryCollectionView.reloadData()
+  }
+
   @objc func deleteDiary(_ sender: Any) {
-//    var willDeleteDiaryIndexPath: [IndexPath] = []
-//
-//    for (key, value) in selectedIndexPath {
-//      if value {
-//        willDeleteDiaryIndexPath.append(key)
-//      }
-//    }
-//    RealmManager().deleteObjcets(objc: savedDiary)
-////    for i in willDeleteDiaryIndexPath.sorted(by: { $0.item > $1.item }) {
-////
-////    }
-//
+    self.collectionViewMode = .remove
+    self.delegate?.removeModeEnabled()
   }
 }
 
@@ -140,12 +132,6 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return savedDiary?.count ?? 0
-  }
-}
-
-extension DiaryCollectionViewController {
-  @objc func handleLongPressGesture() {
-    self.collectionViewMode = .remove
   }
 }
 
