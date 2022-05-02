@@ -8,10 +8,6 @@
 import UIKit
 import RealmSwift
 
-protocol DiaryColletionViewDelegate: AnyObject {
-  func removeModeEnabled()
-}
-
 enum CollectionViewMode {
   case view
   case remove
@@ -21,20 +17,19 @@ class DiaryCollectionViewController: UIViewController {
   // MARK: - Properties
   
   static let cellID = "DiaryCollectionViewCell"
-  weak var delegate: DiaryColletionViewDelegate?
   var savedDiary: Results<DiaryModel>?
   var collectionViewMode: CollectionViewMode = .view
 
   // MARK: - UI
 
-  lazy var rightPlusButton: UIBarButtonItem = {
-    let button = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(writeDiary(_:)))
-    return button
+  lazy var rightBarButtonItem: UIBarButtonItem = {
+    let barButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(clickRightBarButtonItem(_:)))
+    return barButtonItem
   }()
 
-  lazy var leftDeleteButton: UIBarButtonItem = {
-    let button = UIBarButtonItem(title: "삭제", style: .done, target: self, action: #selector(deleteDiary(_:)))
-    return button
+  lazy var leftBarButtonItem: UIBarButtonItem = {
+    let barButtonItem = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(clickLeftBarButtonItem(_:)))
+    return barButtonItem
   }()
 
   let diaryCollectionView: UICollectionView = {
@@ -80,41 +75,41 @@ class DiaryCollectionViewController: UIViewController {
   }
 
   func setNavigationBar() {
-    self.navigationItem.rightBarButtonItem = self.rightPlusButton
-    self.navigationItem.leftBarButtonItem = self.leftDeleteButton
-    switch collectionViewMode {
-    case .view:
-      self.navigationItem.title = "베이킹 일지"
-    case .remove:
-      self.navigationItem.title = "베이킹 일지 삭제"
-      self.leftDeleteButton.title = "완료"
-    }
+    self.navigationItem.title = "베이킹 일지"
+    self.navigationItem.rightBarButtonItem = self.rightBarButtonItem
+    self.navigationItem.leftBarButtonItem = self.leftBarButtonItem
   }
 
   // MARK: - Functions
 
   func loadDiary() {
     let realm = RealmManager().realm
-//    savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
-    guard let diary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date") else { return }
-    savedDiary = diary
-    print(savedDiary)
+    self.savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
   }
 
-  @objc func writeDiary(_ send: Any) {
-    self.hidesBottomBarWhenPushed = true
-    self.navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
-    print("called")
+  @objc func clickRightBarButtonItem(_ send: Any) {
+    switch collectionViewMode {
+    case .view:
+      self.hidesBottomBarWhenPushed = true
+      self.navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
+      print("called")
+    case .remove:
+      self.collectionViewMode = .view
+      self.rightBarButtonItem.title = "추가"
+      self.leftBarButtonItem.title = "삭제"
+    }
   }
 
-  @objc func changeToViewMode(_ sender: UIBarButtonItem) {
-    self.collectionViewMode = .view
-    self.diaryCollectionView.reloadData()
-  }
-
-  @objc func deleteDiary(_ sender: Any) {
-    self.collectionViewMode = .remove
-    self.delegate?.removeModeEnabled()
+  @objc func clickLeftBarButtonItem(_ sender: UIBarButtonItem) {
+    switch collectionViewMode {
+    case .view:
+      self.collectionViewMode = .remove
+      self.rightBarButtonItem.title = "완료"
+      self.leftBarButtonItem.title = nil
+    case .remove:
+      self.collectionViewMode = .view
+      self.leftBarButtonItem.title = "삭제"
+    }
   }
 }
 
