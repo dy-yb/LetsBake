@@ -37,7 +37,6 @@ class DiaryCollectionViewController: UIViewController {
     return button
   }()
 
-  
   let diaryCollectionView: UICollectionView = {
     let flowLayout = UICollectionViewFlowLayout.init()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -59,14 +58,13 @@ class DiaryCollectionViewController: UIViewController {
     self.setView()
     self.setNavigationBar()
     self.layout()
-    self.loadDiary()
   }
   
   // MARK: - Layout
 
   func setView() {
     self.view.backgroundColor = .white
-
+    self.loadDiary()
     self.diaryCollectionView.dataSource = self
     self.diaryCollectionView.delegate = self
     self.view.addSubview(diaryCollectionView)
@@ -97,7 +95,10 @@ class DiaryCollectionViewController: UIViewController {
 
   func loadDiary() {
     let realm = RealmManager().realm
-    savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
+//    savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
+    guard let diary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date") else { return }
+    savedDiary = diary
+    print(savedDiary)
   }
 
   @objc func writeDiary(_ send: Any) {
@@ -126,6 +127,8 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
     }
     if let diary = savedDiary?[indexPath.row] {
       cell.configure(diary: diary)
+      cell.titleLabel.text = diary.title
+      print(diary.title)
     }
     return cell
   }
@@ -141,7 +144,7 @@ extension DiaryCollectionViewController: UICollectionViewDelegate {
     case .view:
       let diaryDetailView = DiaryDetailViewController()
       let selectedDiary = self.savedDiary?[indexPath.row]
-      diaryDetailView.selectedDiary = selectedDiary
+      diaryDetailView.setData(selectedDiary: selectedDiary)
       diaryDetailView.indexPath = indexPath
       diaryDetailView.delegate = self
       navigationController?.pushViewController(diaryDetailView, animated: true)
@@ -180,6 +183,5 @@ extension DiaryCollectionViewController: UICollectionViewDelegateFlowLayout {
 
 extension DiaryCollectionViewController: DiaryDetailViewDelegate {
   func didSelectDelete(indexPath: IndexPath) {
-  
   }
 }

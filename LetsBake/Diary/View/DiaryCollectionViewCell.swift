@@ -71,10 +71,8 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 
   func configure(diary: DiaryModel) {
     self.titleLabel.text = diary.title
-
 //    self.dateLabel.text = diary.date
-    print(diary)
-    print("date\(diary.date)")
+    print("date\(diary.title)")
   }
   
   func layout() {
@@ -99,7 +97,5 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 extension DiaryCollectionViewCell: DiaryColletionViewDelegate {
   func removeModeEnabled() {
     self.deleteButton.isHidden = false
-    
-    print("hi")
   }
 }

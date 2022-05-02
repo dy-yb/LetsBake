@@ -18,7 +18,7 @@ class DiaryDetailViewController: UIViewController {
   static let cellID = "DiaryIngredientCell"
 
   var ingredients: [String] = []
-  var indexPath: IndexPath?
+  var indexPath: IndexPath = [0,0]
   var selectedDiary: DiaryModel?
   weak var delegate: DiaryDetailViewDelegate?
 
@@ -185,7 +185,6 @@ class DiaryDetailViewController: UIViewController {
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tapEditButton(_:)))
     self.setView()
     self.layout()
-    self.loadDiary()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -238,7 +237,7 @@ class DiaryDetailViewController: UIViewController {
 
       contentView.widthAnchor.constraint(equalToConstant: scrollView.frame.width),
       // 작은 화면에서 스크롤 안되는 문제 해결 해야함
-      contentView.heightAnchor.constraint(equalToConstant: scrollView.frame.height+300),
+      contentView.heightAnchor.constraint(equalToConstant: scrollView.frame.height + 300),
       contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
       contentView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
       contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
@@ -305,26 +304,18 @@ class DiaryDetailViewController: UIViewController {
     ])
   }
 
-  func loadDiary() {
-    let realm = RealmManager().realm
-    let savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
-    selectedDiary = savedDiary?[self.indexPath?.row ?? 0]
-    setData(savedDiary: selectedDiary)
-    self.setRatingImageView(rating: selectedDiary?.rating ?? 0)
-  }
-
   @objc func tapEditButton(_ sender: UIButton) {
     let diaryWriteViewController = DiaryWriteViewController()
     diaryWriteViewController.diaryEditorMode = .edit(self.indexPath, self.selectedDiary)
     navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
   }
 
-  func setData(savedDiary: DiaryModel?) {
-    print("309 \(savedDiary)")
-    print("310 \(savedDiary?.title)")
-    self.titleTextField.text = savedDiary?.title
-    self.dateTextField.text = savedDiary?.dateToString(date: savedDiary?.date)
-    self.receipeTextView.text = savedDiary?.receipe
+  func setData(selectedDiary: DiaryModel?) {
+    print("309 \(selectedDiary)")
+    print("310 \(selectedDiary?.title)")
+    self.titleTextField.text = selectedDiary?.title
+    self.dateTextField.text = selectedDiary?.dateToString(date: selectedDiary?.date)
+    self.receipeTextView.text = selectedDiary?.receipe
   }
   
   func setRatingImageView(rating: Int) {
