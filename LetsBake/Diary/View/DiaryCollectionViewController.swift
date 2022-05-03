@@ -7,6 +7,7 @@
 
 import UIKit
 import RealmSwift
+import CoreMedia
 
 enum CollectionViewMode {
   case view
@@ -111,6 +112,13 @@ class DiaryCollectionViewController: UIViewController {
       self.leftBarButtonItem.title = "삭제"
     }
   }
+
+  func tapDeleteAlertAction(indexPath: IndexPath) {
+    if let savedDiary = savedDiary {
+      RealmManager().deleteObjcets(objc: savedDiary[indexPath.row])
+    }
+    self.diaryCollectionView.deleteItems(at: [indexPath])
+  }
 }
 
 // MARK: - Extensions
@@ -137,15 +145,17 @@ extension DiaryCollectionViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     switch collectionViewMode {
     case .view:
-      let diaryDetailView = DiaryDetailViewController()
       let selectedDiary = self.savedDiary?[indexPath.row]
+      let diaryDetailView = DiaryDetailViewController()
       diaryDetailView.setData(selectedDiary: selectedDiary)
       diaryDetailView.indexPath = indexPath
       diaryDetailView.delegate = self
       navigationController?.pushViewController(diaryDetailView, animated: true)
     case .remove:
       let alert = UIAlertController(title: "삭제하기", message: "해당 다이어리를 삭제하시겠어요?", preferredStyle: .alert)
-      let deleteAction = UIAlertAction(title: "삭제", style: .default, handler: nil)
+      let deleteAction = UIAlertAction(title: "삭제", style: .default, handler: { _ in 
+        self.tapDeleteAlertAction(indexPath: indexPath)
+      })
       let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)
       alert.addAction(cancelAction)
       alert.addAction(deleteAction)

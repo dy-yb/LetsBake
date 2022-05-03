@@ -93,9 +93,3 @@ class DiaryCollectionViewCell: UICollectionViewCell {
     ])
   }
 }
-
-extension DiaryCollectionViewCell: DiaryColletionViewDelegate {
-  func removeModeEnabled() {
-    self.deleteButton.isHidden = false
-  }
-}
