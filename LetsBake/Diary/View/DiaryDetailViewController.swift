@@ -8,7 +8,8 @@
 import UIKit
 
 protocol DiaryDetailViewDelegate: AnyObject {
-  func didSelectDelete(indexPath: IndexPath)
+//  func didSelectDelete(indexPath: IndexPath)
+  func editDiary(selectedDiary: DiaryModel)
 }
 
 class DiaryDetailViewController: UIViewController {
@@ -18,7 +19,7 @@ class DiaryDetailViewController: UIViewController {
   static let cellID = "DiaryIngredientCell"
 
   var ingredients: [String] = []
-  var indexPath: IndexPath = [0,0]
+  var indexPath: IndexPath = [0, 0]
   var selectedDiary: DiaryModel?
   weak var delegate: DiaryDetailViewDelegate?
 
@@ -182,7 +183,7 @@ class DiaryDetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     navigationItem.title = "일지 보기"
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tapEditButton(_:)))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "수정", style: .plain, target: self, action: #selector(tapEditButton(_:)))
     self.setView()
     self.layout()
   }
@@ -305,9 +306,11 @@ class DiaryDetailViewController: UIViewController {
   }
 
   @objc func tapEditButton(_ sender: UIButton) {
-    let diaryWriteViewController = DiaryWriteViewController()
-    diaryWriteViewController.diaryEditorMode = .edit(self.indexPath, self.selectedDiary)
-    navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
+    if let selectedDiary = selectedDiary {
+      delegate?.editDiary(selectedDiary: selectedDiary)
+      self.hidesBottomBarWhenPushed = true
+      navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
+    }
   }
 
   func setData(selectedDiary: DiaryModel?) {

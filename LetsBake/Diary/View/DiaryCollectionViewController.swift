@@ -7,7 +7,6 @@
 
 import UIKit
 import RealmSwift
-import CoreMedia
 
 enum CollectionViewMode {
   case view
@@ -149,7 +148,7 @@ extension DiaryCollectionViewController: UICollectionViewDelegate {
       let diaryDetailView = DiaryDetailViewController()
       diaryDetailView.setData(selectedDiary: selectedDiary)
       diaryDetailView.indexPath = indexPath
-      diaryDetailView.delegate = self
+//      diaryDetailView.delegate = self
       navigationController?.pushViewController(diaryDetailView, animated: true)
     case .remove:
       let alert = UIAlertController(title: "삭제하기", message: "해당 다이어리를 삭제하시겠어요?", preferredStyle: .alert)
@@ -185,8 +184,8 @@ extension DiaryCollectionViewController: UICollectionViewDelegateFlowLayout {
     return UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
   }
 }
-
-extension DiaryCollectionViewController: DiaryDetailViewDelegate {
-  func didSelectDelete(indexPath: IndexPath) {
-  }
-}
+//
+//extension DiaryCollectionViewController: DiaryDetailViewDelegate {
+//  func didSelectDelete(indexPath: IndexPath) {
+//  }
+//}

@@ -10,7 +10,7 @@ import PhotosUI
 
 enum DiaryEditorMode {
   case new
-  case edit(IndexPath?, DiaryModel?)
+  case edit
 }
 
 class DiaryWriteViewController: UIViewController {
@@ -245,6 +245,10 @@ class DiaryWriteViewController: UIViewController {
     receipeInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
   }
 
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+  }
+
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     self.view.endEditing(true)
   }
@@ -379,7 +383,7 @@ class DiaryWriteViewController: UIViewController {
 
   func loadDiary() {
     switch self.diaryEditorMode {
-    case .edit(_, selectedDiary):
+    case .edit:
       self.titleTextField.text = selectedDiary?.title
       self.datePicker.date = selectedDiary?.date ?? Date()
       self.receipeTextView.text = selectedDiary?.receipe
@@ -435,19 +439,29 @@ class DiaryWriteViewController: UIViewController {
   }
 
   @objc func tapDoneButton(_ sender: UIButton) {
-    let imageFileManager = ImageFileManager()
-    let id = RealmManager.incrementID()
+    switch diaryEditorMode {
+    case .new:
+      let imageFileManager = ImageFileManager()
+      let id = RealmManager.incrementID()
 
-    let newDiary = DiaryModel(
-      idx: id, title: titleTextField.text ?? "", date: datePicker.date, receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
+      let newDiary = DiaryModel(
+        idx: id, title: titleTextField.text ?? "", date: datePicker.date, receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
 
-    newDiary.ingredients.append(objectsIn: self.ingredients)
-    RealmManager().saveObjects(objc: newDiary)
+      newDiary.ingredients.append(objectsIn: self.ingredients)
+      RealmManager().saveObjects(objc: newDiary)
 
-    self.navigationController?.popViewController(animated: true)
+      self.navigationController?.popViewController(animated: true)
 
-    guard let image = imageView.image else { return }
-    imageFileManager.saveImageToDocumentDirectory(imageName: "\(newDiary.idx).png", image: image)
+      guard let image = imageView.image else { return }
+      imageFileManager.saveImageToDocumentDirectory(imageName: "\(newDiary.idx).png", image: image)
+    case .edit:
+      print("asdff")
+      if let selectedDiary = selectedDiary {
+        let editedDiary = DiaryModel(
+          idx: selectedDiary.idx, title: titleTextField.text ?? "", date: datePicker.date, receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
+        RealmManager().updateObjects(type: DiaryModel.self, objc: editedDiary)
+      }
+    }
   }
 
   @objc func ingredientDeleteButtonDidTap(_ sender: UIButton) {
@@ -497,5 +511,11 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
       ingredients.remove(at: indexPath.row)
       tableView.deleteRows(at: [indexPath], with: .fade)
     }
+  }
+}
+
+extension DiaryWriteViewController: DiaryDetailViewDelegate {
+  func editDiary(selectedDiary: DiaryModel) {
+    self.selectedDiary = selectedDiary
   }
 }
