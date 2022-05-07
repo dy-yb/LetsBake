@@ -9,11 +9,11 @@ import Foundation
 import RealmSwift
 
 class DiaryModel: Object {
-  @objc var idx: Int = 0
-  @objc var title: String = ""
-  @objc var date: Date = Date()
-  @objc var receipe: String = ""
-  @objc var rating: Int = 0
+  @objc dynamic var idx: Int = 0
+  @objc dynamic var title: String = ""
+  @objc dynamic var date: Date = Date()
+  @objc dynamic var receipe: String = ""
+  @objc dynamic var rating: Int = 0
   let ingredients = List<Ingredient>()
 
   convenience init(

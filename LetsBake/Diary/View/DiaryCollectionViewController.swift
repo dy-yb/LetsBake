@@ -46,6 +46,7 @@ class DiaryCollectionViewController: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     self.tabBarController?.tabBar.isHidden = false
+    self.diaryCollectionView.reloadData()
   }
   
   override func viewDidLoad() {
@@ -84,7 +85,8 @@ class DiaryCollectionViewController: UIViewController {
 
   func loadDiary() {
     let realm = RealmManager().realm
-    self.savedDiary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date")
+    guard let diary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date") else { return }
+    self.savedDiary = diary
   }
 
   @objc func clickRightBarButtonItem(_ send: Any) {
@@ -129,8 +131,6 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
     }
     if let diary = savedDiary?[indexPath.row] {
       cell.configure(diary: diary)
-      cell.titleLabel.text = diary.title
-      print(diary.title)
     }
     return cell
   }
@@ -148,7 +148,6 @@ extension DiaryCollectionViewController: UICollectionViewDelegate {
       let diaryDetailView = DiaryDetailViewController()
       diaryDetailView.setData(selectedDiary: selectedDiary)
       diaryDetailView.indexPath = indexPath
-//      diaryDetailView.delegate = self
       navigationController?.pushViewController(diaryDetailView, animated: true)
     case .remove:
       let alert = UIAlertController(title: "삭제하기", message: "해당 다이어리를 삭제하시겠어요?", preferredStyle: .alert)
@@ -184,8 +183,3 @@ extension DiaryCollectionViewController: UICollectionViewDelegateFlowLayout {
     return UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
   }
 }
-//
-//extension DiaryCollectionViewController: DiaryDetailViewDelegate {
-//  func didSelectDelete(indexPath: IndexPath) {
-//  }
-//}

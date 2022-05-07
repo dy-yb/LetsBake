@@ -71,8 +71,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
 
   func configure(diary: DiaryModel) {
     self.titleLabel.text = diary.title
-//    self.dateLabel.text = diary.date
-    print("date\(diary.title)")
+    self.dateLabel.text = diary.dateToString(date: diary.date)
   }
   
   func layout() {

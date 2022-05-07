@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol DiaryDetailViewDelegate: AnyObject {
 //  func didSelectDelete(indexPath: IndexPath)
@@ -18,7 +19,7 @@ class DiaryDetailViewController: UIViewController {
 
   static let cellID = "DiaryIngredientCell"
 
-  var ingredients: [String] = []
+  var ingredients: List<Ingredient>?
   var indexPath: IndexPath = [0, 0]
   var selectedDiary: DiaryModel?
   weak var delegate: DiaryDetailViewDelegate?
@@ -314,18 +315,20 @@ class DiaryDetailViewController: UIViewController {
   }
 
   func setData(selectedDiary: DiaryModel?) {
-    print("309 \(selectedDiary)")
-    print("310 \(selectedDiary?.title)")
     self.titleTextField.text = selectedDiary?.title
     self.dateTextField.text = selectedDiary?.dateToString(date: selectedDiary?.date)
     self.receipeTextView.text = selectedDiary?.receipe
+    print(selectedDiary?.receipe)
+    self.ingredients = selectedDiary?.ingredients
+    self.setRatingImageView(rating: selectedDiary?.rating)
   }
   
-  func setRatingImageView(rating: Int) {
+  func setRatingImageView(rating: Int?) {
+    guard let rating = rating else { return }
     for index in 0..<5 {
       let imageView = UIImageView()
       imageView.image = UIImage(named: "ic_rating_off")
-      if index < rating {
+      if index < rating-1 {
         imageView.image = UIImage(named: "ic_rating_on")
       }
       imageView.tag = index
@@ -347,14 +350,14 @@ extension DiaryDetailViewController: UITextFieldDelegate, UITextViewDelegate {
 
 extension DiaryDetailViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return ingredients.count
+    return ingredients?.count ?? 0
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let diaryIngredientsTableViewCell = tableView.dequeueReusableCell(withIdentifier: DiaryWriteViewController.cellID, for: indexPath) as? DiaryIngredientsTableViewCell else {
       return .init()
     }
-    diaryIngredientsTableViewCell.ingredientLabel.text = selectedDiary?.ingredients[indexPath.row].ingredient
+    diaryIngredientsTableViewCell.ingredientLabel.text = ingredients?[indexPath.row].ingredient
     return diaryIngredientsTableViewCell
   }
 
