@@ -9,7 +9,6 @@ import UIKit
 import RealmSwift
 
 protocol DiaryDetailViewDelegate: AnyObject {
-//  func didSelectDelete(indexPath: IndexPath)
   func editDiary(selectedDiary: DiaryModel)
 }
 
@@ -308,17 +307,18 @@ class DiaryDetailViewController: UIViewController {
 
   @objc func tapEditButton(_ sender: UIButton) {
     if let selectedDiary = selectedDiary {
-      delegate?.editDiary(selectedDiary: selectedDiary)
+      let diaryWriteViewController = DiaryWriteViewController()
+      diaryWriteViewController.editDiary(selectedDiary: selectedDiary)
       self.hidesBottomBarWhenPushed = true
-      navigationController?.pushViewController(DiaryWriteViewController(), animated: true)
+      navigationController?.pushViewController(diaryWriteViewController, animated: true)
     }
   }
 
   func setData(selectedDiary: DiaryModel?) {
+    self.selectedDiary = selectedDiary
     self.titleTextField.text = selectedDiary?.title
     self.dateTextField.text = selectedDiary?.dateToString(date: selectedDiary?.date)
     self.receipeTextView.text = selectedDiary?.receipe
-    print(selectedDiary?.receipe)
     self.ingredients = selectedDiary?.ingredients
     self.setRatingImageView(rating: selectedDiary?.rating)
   }

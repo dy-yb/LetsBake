@@ -32,10 +32,10 @@ public class RealmManager {
       return realm?.objects(type)
   }
 
-  func updateObjects(type: Object.Type, objc: Object) {
+  func updateObjects(objc: Object) {
     guard let realm = RealmManager.realm() else { return }
     try? realm.write({
-      realm.create(type, value: objc, update: .modified)
+      realm.add(objc, update: .modified)
     })
   }
 

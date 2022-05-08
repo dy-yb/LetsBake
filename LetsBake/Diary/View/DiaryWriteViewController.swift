@@ -234,7 +234,6 @@ class DiaryWriteViewController: UIViewController {
     setRatingImageView()
     setView()
     layout()
-    loadDiary()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -381,17 +380,14 @@ class DiaryWriteViewController: UIViewController {
     ])
   }
 
-  func loadDiary() {
-    switch self.diaryEditorMode {
-    case .edit:
-      self.titleTextField.text = selectedDiary?.title
-      self.datePicker.date = selectedDiary?.date ?? Date()
-      self.receipeTextView.text = selectedDiary?.receipe
-      setRatingImageView()
-    default:
-      break
-    }
-  }
+//  func setData(selectedDiary: DiaryModel?) {
+//    self.selectedDiary = selectedDiary
+//    self.titleTextField.text = selectedDiary?.title
+//    self.dateTextField.text = selectedDiary?.dateToString(date: selectedDiary?.date)
+//    self.receipeTextView.text = selectedDiary?.receipe
+//    self.ingredients = selectedDiary?.ingredients
+//    self.setRatingImageView(rating: selectedDiary?.rating)
+//  }
 
   func setRatingImageView() {
     for index in 0..<5 {
@@ -450,18 +446,16 @@ class DiaryWriteViewController: UIViewController {
       newDiary.ingredients.append(objectsIn: self.ingredients)
       RealmManager().saveObjects(objc: newDiary)
 
-      self.navigationController?.popViewController(animated: true)
-
       guard let image = imageView.image else { return }
       imageFileManager.saveImageToDocumentDirectory(imageName: "\(newDiary.idx).png", image: image)
     case .edit:
-      print("asdff")
       if let selectedDiary = selectedDiary {
         let editedDiary = DiaryModel(
           idx: selectedDiary.idx, title: titleTextField.text ?? "", date: datePicker.date, receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
-        RealmManager().updateObjects(type: DiaryModel.self, objc: editedDiary)
+        RealmManager().updateObjects(objc: editedDiary)
       }
     }
+    self.navigationController?.popViewController(animated: true)
   }
 
   @objc func ingredientDeleteButtonDidTap(_ sender: UIButton) {
@@ -516,6 +510,10 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension DiaryWriteViewController: DiaryDetailViewDelegate {
   func editDiary(selectedDiary: DiaryModel) {
+    self.diaryEditorMode = .edit
     self.selectedDiary = selectedDiary
+    self.titleTextField.text = selectedDiary.title
+    self.datePicker.date = selectedDiary.date
+    self.receipeTextView.text = selectedDiary.receipe
   }
 }
