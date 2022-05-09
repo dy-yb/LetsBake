@@ -27,7 +27,6 @@ class DiaryCollectionViewCell: UICollectionViewCell {
   let dateLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-//    label.text = "2022.01.04"
     label.font = .systemFont(ofSize: 15)
     label.backgroundColor = .white
     return label
@@ -36,7 +35,6 @@ class DiaryCollectionViewCell: UICollectionViewCell {
   let titleLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-//    label.text = "레몬 케이크"
     label.font = .boldSystemFont(ofSize: 19)
     label.backgroundColor = .white
     return label

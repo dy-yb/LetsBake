@@ -34,7 +34,7 @@ class TabBarController: UITabBarController {
       selectedImage: UIImage(named: "ic_timer_50_on"))
   ]
 
-  let diaryView = DiaryCollectionViewController()
+  let diaryView = DiaryListViewController()
   let exchangerView = ExchangerViewController()
   let timerView = TimerViewController()
 

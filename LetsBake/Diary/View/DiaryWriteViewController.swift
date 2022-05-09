@@ -14,7 +14,7 @@ enum DiaryEditorMode {
 }
 
 class DiaryWriteViewController: UIViewController {
-
+  
   // MARK: - Properties
 
   static let cellID = "DiaryIngredientCell"
@@ -380,15 +380,6 @@ class DiaryWriteViewController: UIViewController {
     ])
   }
 
-//  func setData(selectedDiary: DiaryModel?) {
-//    self.selectedDiary = selectedDiary
-//    self.titleTextField.text = selectedDiary?.title
-//    self.dateTextField.text = selectedDiary?.dateToString(date: selectedDiary?.date)
-//    self.receipeTextView.text = selectedDiary?.receipe
-//    self.ingredients = selectedDiary?.ingredients
-//    self.setRatingImageView(rating: selectedDiary?.rating)
-//  }
-
   func setRatingImageView() {
     for index in 0..<5 {
       let imageView = UIImageView()
@@ -448,6 +439,7 @@ class DiaryWriteViewController: UIViewController {
 
       guard let image = imageView.image else { return }
       imageFileManager.saveImageToDocumentDirectory(imageName: "\(newDiary.idx).png", image: image)
+
     case .edit:
       if let selectedDiary = selectedDiary {
         let editedDiary = DiaryModel(

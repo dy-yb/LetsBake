@@ -13,7 +13,8 @@ enum CollectionViewMode {
   case remove
 }
 
-class DiaryCollectionViewController: UIViewController {
+class DiaryListViewController: UIViewController {
+  
   // MARK: - Properties
   
   static let cellID = "DiaryCollectionViewCell"
@@ -37,7 +38,7 @@ class DiaryCollectionViewController: UIViewController {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     flowLayout.scrollDirection = .vertical
     collectionView.translatesAutoresizingMaskIntoConstraints = false
-    collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: DiaryCollectionViewController.cellID)
+    collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: DiaryListViewController.cellID)
     collectionView.allowsSelection = true
     return collectionView
   }()
@@ -124,9 +125,9 @@ class DiaryCollectionViewController: UIViewController {
 
 // MARK: - Extensions
 
-extension DiaryCollectionViewController: UICollectionViewDataSource {
+extension DiaryListViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryCollectionViewController.cellID, for: indexPath) as? DiaryCollectionViewCell else {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryListViewController.cellID, for: indexPath) as? DiaryCollectionViewCell else {
       return UICollectionViewCell()
     }
     if let diary = savedDiary?[indexPath.row] {
@@ -140,7 +141,7 @@ extension DiaryCollectionViewController: UICollectionViewDataSource {
   }
 }
 
-extension DiaryCollectionViewController: UICollectionViewDelegate {
+extension DiaryListViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     switch collectionViewMode {
     case .view:
@@ -163,7 +164,7 @@ extension DiaryCollectionViewController: UICollectionViewDelegate {
   }
 }
 
-extension DiaryCollectionViewController: UICollectionViewDelegateFlowLayout {
+extension DiaryListViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     return CGSize(width: (view.frame.width - 50), height: (view.frame.width - 50) / 2)
   }
