@@ -9,7 +9,7 @@ import UIKit
 import RealmSwift
 
 protocol DiaryDetailViewDelegate: AnyObject {
-  func editDiary(selectedDiary: DiaryModel)
+  func updateDiaryDetailView(editedDiary: DiaryModel)
 }
 
 class DiaryDetailViewController: UIViewController {
@@ -21,7 +21,6 @@ class DiaryDetailViewController: UIViewController {
   var ingredients: List<Ingredient>?
   var indexPath: IndexPath = [0, 0]
   var selectedDiary: DiaryModel?
-  weak var delegate: DiaryDetailViewDelegate?
 
   // MARK: - UI
 
@@ -178,8 +177,6 @@ class DiaryDetailViewController: UIViewController {
     return label
   }()
 
-  private var starImageViews: [UIImageView] = []
-
   override func viewDidLoad() {
     super.viewDidLoad()
     navigationItem.title = "일지 보기"
@@ -200,6 +197,7 @@ class DiaryDetailViewController: UIViewController {
 
   func setView() {
     view.backgroundColor = .white
+    
     ingredientsTableView.rowHeight = UITableView.automaticDimension
     ingredientsTableView.dataSource = self
     ingredientsTableView.delegate = self
@@ -308,7 +306,8 @@ class DiaryDetailViewController: UIViewController {
   @objc func tapEditButton(_ sender: UIButton) {
     if let selectedDiary = selectedDiary {
       let diaryWriteViewController = DiaryWriteViewController()
-      diaryWriteViewController.editDiary(selectedDiary: selectedDiary)
+      diaryWriteViewController.setSeletedDiary(selectedDiary: selectedDiary)
+      diaryWriteViewController.delegate = self
       self.hidesBottomBarWhenPushed = true
       navigationController?.pushViewController(diaryWriteViewController, animated: true)
     }
@@ -324,16 +323,16 @@ class DiaryDetailViewController: UIViewController {
   }
   
   func setRatingImageView(rating: Int?) {
+    ratingStarStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
     guard let rating = rating else { return }
     for index in 0..<5 {
       let imageView = UIImageView()
       imageView.image = UIImage(named: "ic_rating_off")
-      if index < rating-1 {
+      if index < rating {
         imageView.image = UIImage(named: "ic_rating_on")
       }
       imageView.tag = index
       ratingStarStackView.addArrangedSubview(imageView)
-      starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
     }
   }
 }
@@ -363,5 +362,11 @@ extension DiaryDetailViewController: UITableViewDataSource, UITableViewDelegate 
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return tableView.rowHeight
+  }
+}
+
+extension DiaryDetailViewController: DiaryDetailViewDelegate {
+  func updateDiaryDetailView(editedDiary: DiaryModel) {
+    setData(selectedDiary: editedDiary)
   }
 }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import PhotosUI
 
 enum DiaryEditorMode {
   case new
@@ -17,6 +16,7 @@ class DiaryWriteViewController: UIViewController {
   
   // MARK: - Properties
 
+  weak var delegate: DiaryDetailViewDelegate?
   static let cellID = "DiaryIngredientCell"
   var diaryEditorMode: DiaryEditorMode = .new
   var indexPath: IndexPath?
@@ -231,9 +231,10 @@ class DiaryWriteViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     navigationItem.title = "일지 작성"
-    setRatingImageView()
-    setView()
-    layout()
+    self.hideKeyboardWhenTappedAround()
+    self.setRatingImageView()
+    self.setView()
+    self.layout()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -242,14 +243,6 @@ class DiaryWriteViewController: UIViewController {
     imageInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
     ingredientsInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
     receipeInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
-  }
-
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-  }
-
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    self.view.endEditing(true)
   }
 
   // MARK: - Layout
@@ -299,7 +292,6 @@ class DiaryWriteViewController: UIViewController {
       scrollView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
 
       contentView.widthAnchor.constraint(equalToConstant: scrollView.frame.width),
-      // 작은 화면에서 스크롤 안되는 문제 해결 해야함
       contentView.heightAnchor.constraint(equalToConstant: scrollView.frame.height+350),
       contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
       contentView.rightAnchor.constraint(equalTo: scrollView.rightAnchor),
@@ -384,10 +376,40 @@ class DiaryWriteViewController: UIViewController {
     for index in 0..<5 {
       let imageView = UIImageView()
       imageView.image = UIImage(named: "ic_rating_off")
+      if let rating = selectedDiary?.rating {
+        if index < rating {
+          imageView.image = UIImage(named: "ic_rating_on")
+        }
+      }
       imageView.tag = index
       ratingStarStackView.addArrangedSubview(imageView)
       starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
     }
+  }
+
+  @objc func tapSlider(_ sender: UISlider) {
+    var intValue = Int(ceil(sender.value))
+
+    for index in 0..<5 {
+      if intValue == 1 {
+        intValue -= 1
+        starImageViews[index].image = UIImage(named: "ic_rating_on")
+      } else if index < intValue {
+        starImageViews[index].image = UIImage(named: "ic_rating_on")
+      } else {
+        starImageViews[index].image = UIImage(named: "ic_rating_off")
+      }
+    }
+  }
+
+  func setSeletedDiary(selectedDiary: DiaryModel) {
+    self.diaryEditorMode = .edit
+    self.selectedDiary = selectedDiary
+    self.titleTextField.text = selectedDiary.title
+    self.datePicker.date = selectedDiary.date
+    self.ingredients = Array(selectedDiary.ingredients)
+    self.receipeTextView.text = selectedDiary.receipe
+//    self.setRatingImageView(rating: selectedDiary.rating)
   }
 
   @objc func pickImage() {
@@ -410,21 +432,6 @@ class DiaryWriteViewController: UIViewController {
     self.present(alert, animated: true, completion: nil)
   }
 
-  @objc func tapSlider(_ sender: UISlider) {
-    var intValue = Int(ceil(sender.value))
-
-    for index in 0..<5 {
-      if intValue == 1 {
-        intValue -= 1
-        starImageViews[index].image = UIImage(named: "ic_rating_on")
-      } else if index < intValue {
-        starImageViews[index].image = UIImage(named: "ic_rating_on")
-      } else {
-        starImageViews[index].image = UIImage(named: "ic_rating_off")
-      }
-    }
-  }
-
   @objc func tapDoneButton(_ sender: UIButton) {
     switch diaryEditorMode {
     case .new:
@@ -439,12 +446,15 @@ class DiaryWriteViewController: UIViewController {
 
       guard let image = imageView.image else { return }
       imageFileManager.saveImageToDocumentDirectory(imageName: "\(newDiary.idx).png", image: image)
+      print(FileManager.default.urls(for: .documentDirectory,
+      in: .userDomainMask).last)
 
     case .edit:
       if let selectedDiary = selectedDiary {
         let editedDiary = DiaryModel(
           idx: selectedDiary.idx, title: titleTextField.text ?? "", date: datePicker.date, receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
         RealmManager().updateObjects(objc: editedDiary)
+        self.delegate?.updateDiaryDetailView(editedDiary: editedDiary)
       }
     }
     self.navigationController?.popViewController(animated: true)
@@ -497,15 +507,5 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
       ingredients.remove(at: indexPath.row)
       tableView.deleteRows(at: [indexPath], with: .fade)
     }
-  }
-}
-
-extension DiaryWriteViewController: DiaryDetailViewDelegate {
-  func editDiary(selectedDiary: DiaryModel) {
-    self.diaryEditorMode = .edit
-    self.selectedDiary = selectedDiary
-    self.titleTextField.text = selectedDiary.title
-    self.datePicker.date = selectedDiary.date
-    self.receipeTextView.text = selectedDiary.receipe
   }
 }

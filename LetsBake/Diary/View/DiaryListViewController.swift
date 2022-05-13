@@ -86,7 +86,7 @@ class DiaryListViewController: UIViewController {
 
   func loadDiary() {
     let realm = RealmManager().realm
-    guard let diary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date") else { return }
+    guard let diary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date", ascending: false) else { return }
     self.savedDiary = diary
   }
 
