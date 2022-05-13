@@ -22,6 +22,8 @@ class DiaryWriteViewController: UIViewController {
   var indexPath: IndexPath?
   var selectedDiary: DiaryModel?
   var ingredients: [Ingredient] = []
+  var photoPath: String?
+  let imageFileManager = ImageFileManager()
   
   // MARK: - UI
 
@@ -409,7 +411,7 @@ class DiaryWriteViewController: UIViewController {
     self.datePicker.date = selectedDiary.date
     self.ingredients = Array(selectedDiary.ingredients)
     self.receipeTextView.text = selectedDiary.receipe
-//    self.setRatingImageView(rating: selectedDiary.rating)
+    //    self.setRatingImageView(rating: selectedDiary.rating)
   }
 
   @objc func pickImage() {
@@ -432,27 +434,35 @@ class DiaryWriteViewController: UIViewController {
     self.present(alert, animated: true, completion: nil)
   }
 
+  func imageSave() {
+    let creationDate = Date()
+
+    guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {return}
+    let imageURL = documentDirectory.appendingPathComponent("\(creationDate)")
+    self.photoPath = "\(imageURL)"
+
+    guard let image = imageView.image else { return }
+    guard let photoPath = photoPath else { return }
+    imageFileManager.saveImageToDocumentDirectory(imageURL: imageURL, imageName: photoPath, image: image)
+  }
+
   @objc func tapDoneButton(_ sender: UIButton) {
     switch diaryEditorMode {
     case .new:
-      let imageFileManager = ImageFileManager()
-      let id = RealmManager.incrementID()
+      self.imageSave()
 
+      let id = RealmManager.incrementID()
       let newDiary = DiaryModel(
-        idx: id, title: titleTextField.text ?? "", date: datePicker.date, receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
+        idx: id, title: titleTextField.text ?? "", date: datePicker.date, photo: photoPath ?? "", receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
 
       newDiary.ingredients.append(objectsIn: self.ingredients)
       RealmManager().saveObjects(objc: newDiary)
 
-      guard let image = imageView.image else { return }
-      imageFileManager.saveImageToDocumentDirectory(imageName: "\(newDiary.idx).png", image: image)
-      print(FileManager.default.urls(for: .documentDirectory,
-      in: .userDomainMask).last)
-
     case .edit:
+      // 삭제하고 다시 만들기?
       if let selectedDiary = selectedDiary {
         let editedDiary = DiaryModel(
-          idx: selectedDiary.idx, title: titleTextField.text ?? "", date: datePicker.date, receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
+          idx: selectedDiary.idx, title: titleTextField.text ?? "", date: datePicker.date, photo: photoPath ?? "", receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
         RealmManager().updateObjects(objc: editedDiary)
         self.delegate?.updateDiaryDetailView(editedDiary: editedDiary)
       }
