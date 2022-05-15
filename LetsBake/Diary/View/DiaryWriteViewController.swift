@@ -410,6 +410,9 @@ class DiaryWriteViewController: UIViewController {
     self.titleTextField.text = selectedDiary.title
     self.datePicker.date = selectedDiary.date
     self.ingredients = Array(selectedDiary.ingredients)
+    if selectedDiary.photo != "" {
+      self.imageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: selectedDiary.photo)
+    }
     self.receipeTextView.text = selectedDiary.receipe
   }
 
@@ -435,15 +438,10 @@ class DiaryWriteViewController: UIViewController {
 
   func imageSave(image: UIImage) {
     let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-dd-hh:mm:ss:SSSS"
+    formatter.dateFormat = "yyyy-MM-dd-hh-mm-ss-SSSS"
     let creationDate = formatter.string(from: Date())
 
-    guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {return}
-    let imageURL = documentDirectory.appendingPathComponent("\(creationDate).png")
-    self.photoPath = "\(imageURL)"
-
-    guard let photoPath = photoPath else { return }
-    imageFileManager.saveImageToDocumentDirectory(imageURL: imageURL, imageName: photoPath, image: image)
+    self.photoPath = imageFileManager.saveImageToDocumentDirectory(imageName: creationDate, image: image)
   }
 
   @objc func tapDoneButton(_ sender: UIButton) {

@@ -118,6 +118,7 @@ class DiaryListViewController: UIViewController {
   func tapDeleteAlertAction(indexPath: IndexPath) {
     if let savedDiary = savedDiary {
       RealmManager().deleteObjcets(objc: savedDiary[indexPath.row])
+      ImageFileManager().deleteImageFromDocumentDirectory(imageName: savedDiary[indexPath.row].photo)
     }
     self.diaryCollectionView.deleteItems(at: [indexPath])
   }
@@ -152,7 +153,7 @@ extension DiaryListViewController: UICollectionViewDelegate {
       navigationController?.pushViewController(diaryDetailView, animated: true)
     case .remove:
       let alert = UIAlertController(title: "삭제하기", message: "해당 다이어리를 삭제하시겠어요?", preferredStyle: .alert)
-      let deleteAction = UIAlertAction(title: "삭제", style: .default, handler: { _ in 
+      let deleteAction = UIAlertAction(title: "삭제", style: .default, handler: { _ in
         self.tapDeleteAlertAction(indexPath: indexPath)
       })
       let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: nil)

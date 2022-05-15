@@ -21,11 +21,6 @@ class DiaryDetailViewController: UIViewController {
   var ingredients: List<Ingredient>?
   var indexPath: IndexPath = [0, 0]
   var selectedDiary: DiaryModel?
-//  var photo: UIImage? {
-//    didSet {
-//      photo = ImageFileManager().loadImageFromDocumentDirectgory(imageName: self.selectedDiary?.photo)
-//    }
-//  }
 
   // MARK: - UI
 
@@ -114,7 +109,9 @@ class DiaryDetailViewController: UIViewController {
   let photoImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.contentMode = .scaleAspectFill
     imageView.layer.cornerRadius = 10
+    imageView.clipsToBounds = true
     imageView.backgroundColor = .lightGray
     return imageView
   }()
