@@ -21,11 +21,6 @@ class DiaryDetailViewController: UIViewController {
   var ingredients: List<Ingredient>?
   var indexPath: IndexPath = [0, 0]
   var selectedDiary: DiaryModel?
-//  var photo: UIImage? {
-//    didSet {
-//      photo = ImageFileManager().loadImageFromDocumentDirectgory(imageName: self.selectedDiary?.photo)
-//    }
-//  }
 
   // MARK: - UI
 

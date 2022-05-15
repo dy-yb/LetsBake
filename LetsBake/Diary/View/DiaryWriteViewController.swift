@@ -435,15 +435,10 @@ class DiaryWriteViewController: UIViewController {
 
   func imageSave(image: UIImage) {
     let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-dd-hh:mm:ss:SSSS"
+    formatter.dateFormat = "yyyy-MM-dd-hh-mm-ss-SSSS"
     let creationDate = formatter.string(from: Date())
 
-    guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {return}
-    let imageURL = documentDirectory.appendingPathComponent("\(creationDate).png")
-    self.photoPath = "\(imageURL)"
-
-    guard let photoPath = photoPath else { return }
-    imageFileManager.saveImageToDocumentDirectory(imageURL: imageURL, imageName: photoPath, image: image)
+    self.photoPath = imageFileManager.saveImageToDocumentDirectory(imageName: creationDate, image: image)
   }
 
   @objc func tapDoneButton(_ sender: UIButton) {
