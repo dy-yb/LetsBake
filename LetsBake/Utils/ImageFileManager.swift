@@ -31,22 +31,18 @@ class ImageFileManager {
     }
   }
 
-  func loadImageFromDocumentDirectgory(imageName: String) -> UIImage? {
-    let documentDirectory = FileManager.SearchPathDirectory.documentDirectory
-    let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
-    let path = NSSearchPathForDirectoriesInDomains(documentDirectory, userDomainMask, true)
+  func loadImageFromDocumentDirectgory(imageName: String?) -> UIImage? {
+    guard let imageName = imageName else { return nil }
 
-    if let directoryPath = path.first {
-      let imageURL = URL(fileURLWithPath: directoryPath).appendingPathComponent(imageName)
+    if let imageURL = URL(string: imageName) {
+      print(imageURL)
       return UIImage(contentsOfFile: imageURL.path)
     }
     return nil
   }
 
   func deleteImageFromDocumentDirectory(imageName: String) {
-    guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {return}
-
-    let imageURL = documentDirectory.appendingPathComponent(imageName)
+    guard let imageURL = URL(string: imageName) else { return }
 
     if FileManager.default.fileExists(atPath: imageURL.path) {
       do {

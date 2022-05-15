@@ -411,7 +411,6 @@ class DiaryWriteViewController: UIViewController {
     self.datePicker.date = selectedDiary.date
     self.ingredients = Array(selectedDiary.ingredients)
     self.receipeTextView.text = selectedDiary.receipe
-    //    self.setRatingImageView(rating: selectedDiary.rating)
   }
 
   @objc func pickImage() {
@@ -434,14 +433,15 @@ class DiaryWriteViewController: UIViewController {
     self.present(alert, animated: true, completion: nil)
   }
 
-  func imageSave() {
-    let creationDate = Date()
+  func imageSave(image: UIImage) {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd-hh:mm:ss:SSSS"
+    let creationDate = formatter.string(from: Date())
 
     guard let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {return}
-    let imageURL = documentDirectory.appendingPathComponent("\(creationDate)")
+    let imageURL = documentDirectory.appendingPathComponent("\(creationDate).png")
     self.photoPath = "\(imageURL)"
 
-    guard let image = imageView.image else { return }
     guard let photoPath = photoPath else { return }
     imageFileManager.saveImageToDocumentDirectory(imageURL: imageURL, imageName: photoPath, image: image)
   }
@@ -449,7 +449,9 @@ class DiaryWriteViewController: UIViewController {
   @objc func tapDoneButton(_ sender: UIButton) {
     switch diaryEditorMode {
     case .new:
-      self.imageSave()
+      if let image = imageView.image {
+        self.imageSave(image: image)
+      }
 
       let id = RealmManager.incrementID()
       let newDiary = DiaryModel(
@@ -459,8 +461,13 @@ class DiaryWriteViewController: UIViewController {
       RealmManager().saveObjects(objc: newDiary)
 
     case .edit:
-      // 삭제하고 다시 만들기?
       if let selectedDiary = selectedDiary {
+        imageFileManager.deleteImageFromDocumentDirectory(imageName: selectedDiary.photo)
+
+        if let image = imageView.image {
+          self.imageSave(image: image)
+        }
+
         let editedDiary = DiaryModel(
           idx: selectedDiary.idx, title: titleTextField.text ?? "", date: datePicker.date, photo: photoPath ?? "", receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
         RealmManager().updateObjects(objc: editedDiary)

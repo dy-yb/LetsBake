@@ -21,6 +21,11 @@ class DiaryDetailViewController: UIViewController {
   var ingredients: List<Ingredient>?
   var indexPath: IndexPath = [0, 0]
   var selectedDiary: DiaryModel?
+//  var photo: UIImage? {
+//    didSet {
+//      photo = ImageFileManager().loadImageFromDocumentDirectgory(imageName: self.selectedDiary?.photo)
+//    }
+//  }
 
   // MARK: - UI
 
@@ -319,6 +324,7 @@ class DiaryDetailViewController: UIViewController {
     self.dateTextField.text = selectedDiary?.dateToString(date: selectedDiary?.date)
     self.receipeTextView.text = selectedDiary?.receipe
     self.ingredients = selectedDiary?.ingredients
+    self.photoImageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: selectedDiary?.photo)
     self.setRatingImageView(rating: selectedDiary?.rating)
   }
   
