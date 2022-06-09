@@ -109,7 +109,9 @@ class DiaryDetailViewController: UIViewController {
   let photoImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.contentMode = .scaleAspectFill
     imageView.layer.cornerRadius = 10
+    imageView.clipsToBounds = true
     imageView.backgroundColor = .lightGray
     return imageView
   }()
@@ -319,6 +321,7 @@ class DiaryDetailViewController: UIViewController {
     self.dateTextField.text = selectedDiary?.dateToString(date: selectedDiary?.date)
     self.receipeTextView.text = selectedDiary?.receipe
     self.ingredients = selectedDiary?.ingredients
+    self.photoImageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: selectedDiary?.photo)
     self.setRatingImageView(rating: selectedDiary?.rating)
   }
   

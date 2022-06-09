@@ -10,8 +10,6 @@ import UIKit
 
 class DiaryCollectionViewCell: UICollectionViewCell {
   
-  // MARK: - Properties
-  
   // MARK: - UI
   
   let thumbnailImageView: UIImageView = {
@@ -70,6 +68,7 @@ class DiaryCollectionViewCell: UICollectionViewCell {
   func configure(diary: DiaryModel) {
     self.titleLabel.text = diary.title
     self.dateLabel.text = diary.dateToString(date: diary.date)
+    self.thumbnailImageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: diary.photo)
   }
   
   func layout() {
