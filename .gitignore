@@ -88,3 +88,8 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+# Realm watchos library
+
+Pods/Realm/core/realm-monorepo.xcframework/watchos-arm64_i386_x86_64-simulator/librealm-monorepo.a
+Pods/Realm/core/realm-monorepo.xcframework/watchos-armv7k_arm64_32/librealm-monorepo.a

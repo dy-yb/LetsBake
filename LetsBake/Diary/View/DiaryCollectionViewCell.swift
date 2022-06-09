@@ -10,8 +10,6 @@ import UIKit
 
 class DiaryCollectionViewCell: UICollectionViewCell {
   
-  // MARK: - Properties
-  
   // MARK: - UI
   
   let thumbnailImageView: UIImageView = {
@@ -27,7 +25,6 @@ class DiaryCollectionViewCell: UICollectionViewCell {
   let dateLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "2022.01.04"
     label.font = .systemFont(ofSize: 15)
     label.backgroundColor = .white
     return label
@@ -36,12 +33,19 @@ class DiaryCollectionViewCell: UICollectionViewCell {
   let titleLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "레몬 케이크"
     label.font = .boldSystemFont(ofSize: 19)
     label.backgroundColor = .white
     return label
   }()
-  
+
+  let deleteButton: UIButton = {
+    let button = UIButton()
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(named: "bt_diary_delete"), for: .normal)
+    button.isHidden = true
+    return button
+  }()
+
   override init(frame: CGRect) {
     super.init(frame: .zero)
     setView()
@@ -53,22 +57,30 @@ class DiaryCollectionViewCell: UICollectionViewCell {
   }
   
   func setView() {
-    contentView.backgroundColor = .lightGray
     contentView.layer.cornerRadius = 10
-    
+
     contentView.addSubview(thumbnailImageView)
+    contentView.addSubview(deleteButton)
     contentView.addSubview(dateLabel)
     contentView.addSubview(titleLabel)
-    
+  }
+
+  func configure(diary: DiaryModel) {
+    self.titleLabel.text = diary.title
+    self.dateLabel.text = diary.dateToString(date: diary.date)
+    self.thumbnailImageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: diary.photo)
   }
   
   func layout() {
     NSLayoutConstraint.activate([
-      thumbnailImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+      thumbnailImageView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 5),
       thumbnailImageView.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor),
       thumbnailImageView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor),
       thumbnailImageView.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
-      
+
+      deleteButton.topAnchor.constraint(equalTo: thumbnailImageView.topAnchor, constant: -5),
+      deleteButton.rightAnchor.constraint(equalTo: thumbnailImageView.rightAnchor, constant: 5),
+
       titleLabel.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -10),
       titleLabel.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 10),
       

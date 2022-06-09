@@ -13,9 +13,9 @@ final class ExchangerViewController: UIViewController {
   
   // MARK: - Properties
   
-  private var ingredient: String = ingredients[0]
-  private var inputUnit: String = units[0]
-  private var resultUnit: String = units[0]
+  private var ingredient: String = staticIngredients[0]
+  private var inputUnit: String = staticUnits[0]
+  private var resultUnit: String = staticUnits[0]
   private var inputQuantity: Double = 0
   
   enum ExchangerTextFieldTag: Int {
@@ -200,12 +200,6 @@ final class ExchangerViewController: UIViewController {
     }
   }
   
-  private func checkMaxLength(textField: UITextField, maxLength: Int) {
-    if textField.text?.count ?? 0 > maxLength {
-      textField.deleteBackward()
-    }
-  }
-  
   @objc func editedTextField(_ sender: UITextField) {
     switch sender.tag {
     case ExchangerTextFieldTag.ingredient.rawValue:
@@ -213,7 +207,7 @@ final class ExchangerViewController: UIViewController {
     case ExchangerTextFieldTag.inputUnit.rawValue:
       inputUnit = sender.text ?? ""
     case ExchangerTextFieldTag.inputQuantity.rawValue:
-      checkMaxLength(textField: sender, maxLength: 5)
+      sender.checkMaxLength(textField: sender, maxLength: 5)
       guard let quantity = sender.text else { return }
       inputQuantity = Double(quantity) ?? 0
     case ExchangerTextFieldTag.resultUnit.rawValue:
@@ -239,19 +233,19 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     ingredientsPickerView.dataSource = self
     ingredientsTextField.inputView = ingredientsPickerView
     ingredientsPickerView.selectedRow(inComponent: 0)
-    ingredientsTextField.text = ingredients[0]
+    ingredientsTextField.text = staticIngredients[0]
     
     inputUnitsPickerView.delegate = self
     inputUnitsPickerView.dataSource = self
     inputUnitsTextField.inputView = inputUnitsPickerView
     inputUnitsPickerView.selectedRow(inComponent: 0)
-    inputUnitsTextField.text = units[0]
+    inputUnitsTextField.text = staticUnits[0]
     
     resultUnitsPickerView.delegate = self
     resultUnitsPickerView.dataSource = self
     resultUnitsTextField.inputView = resultUnitsPickerView
     resultUnitsPickerView.selectedRow(inComponent: 0)
-    resultUnitsTextField.text = units[0]
+    resultUnitsTextField.text = staticUnits[0]
   }
   
   func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -263,9 +257,9 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     
     switch pickerView {
     case ingredientsPickerView:
-      numOfComponent = ingredients.count
+      numOfComponent = staticIngredients.count
     case inputUnitsPickerView, resultUnitsPickerView:
-      numOfComponent = units.count
+      numOfComponent = staticUnits.count
     default:
       break;
     }
@@ -277,11 +271,11 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
     
     switch pickerView {
     case ingredientsPickerView:
-      titleRow = ingredients[row]
+      titleRow = staticIngredients[row]
     case inputUnitsPickerView:
-      titleRow = units[row]
+      titleRow = staticUnits[row]
     case resultUnitsPickerView:
-      titleRow = units[row]
+      titleRow = staticUnits[row]
     default:
       break;
     }
@@ -291,11 +285,11 @@ extension ExchangerViewController: UIPickerViewDelegate, UIPickerViewDataSource 
   func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
     switch pickerView {
     case ingredientsPickerView:
-      self.ingredientsTextField.text = ingredients[row]
+      self.ingredientsTextField.text = staticIngredients[row]
     case inputUnitsPickerView:
-      self.inputUnitsTextField.text = units[row]
+      self.inputUnitsTextField.text = staticUnits[row]
     case resultUnitsPickerView:
-      self.resultUnitsTextField.text = units[row]
+      self.resultUnitsTextField.text = staticUnits[row]
     default:
       break;
     }

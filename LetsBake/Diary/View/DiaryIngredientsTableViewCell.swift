@@ -8,48 +8,49 @@
 import UIKit
 
 class DiaryIngredientsTableViewCell: UITableViewCell {
-  
-  // MARK: - UI
-  
-  let cellStackView: UIView = {
+
+  // MARK: - Properties
+
+  let ingredientView: UIView = {
     let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
+    view.layer.cornerRadius = 10
     return view
   }()
-  
-  let ingredientTextField: UITextField = {
-    let textField = UITextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.backgroundColor = .green
-    return textField
+
+  let ingredientLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
   }()
-  
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     setView()
     layout()
   }
-  
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6))
-  }
-  
+
   required init?(coder: NSCoder) {
     super.init(coder: coder)
   }
-  
+
+  // MARK: - layout
+
   func setView() {
-    contentView.layer.cornerRadius = 10
-    contentView.backgroundColor = .magenta
-    contentView.addSubview(ingredientTextField)
+    contentView.addSubview(ingredientView)
+    ingredientView.addSubview(ingredientLabel)
   }
-  
+
   func layout() {
     NSLayoutConstraint.activate([
-      ingredientTextField.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
-      ingredientTextField.heightAnchor.constraint(equalToConstant: 30),
-      ingredientTextField.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -20),
-      ingredientTextField.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: 20)
+      ingredientView.heightAnchor.constraint(equalToConstant: 30),
+      ingredientView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 2),
+      ingredientView.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor, constant: -5),
+      ingredientView.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor, constant: -1),
+
+      ingredientLabel.centerXAnchor.constraint(equalTo: ingredientView.centerXAnchor),
+      ingredientLabel.centerYAnchor.constraint(equalTo: ingredientView.centerYAnchor)
     ])
   }
 }

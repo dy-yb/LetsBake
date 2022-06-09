@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		611BD49C27DDEF27007D5C79 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611BD49B27DDEF27007D5C79 /* RealmManager.swift */; };
 		61288CA9279004330062579F /* UISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CA8279004330062579F /* UISlider.swift */; };
 		61288CAB279285A70062579F /* DiaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CAA279285A70062579F /* DiaryDetailViewController.swift */; };
 		61288CAF2797E8380062579F /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CAE2797E8380062579F /* TimerViewModel.swift */; };
 		61288CB12797E8430062579F /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CB02797E8430062579F /* TimerModel.swift */; };
 		613C593527C227F7003FF3F7 /* StaticData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C593427C227F7003FF3F7 /* StaticData.swift */; };
+		615D1AD127D08F9F00F315A1 /* DiaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615D1AD027D08F9F00F315A1 /* DiaryViewModel.swift */; };
+		615D1AD327D08FB200F315A1 /* DirayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615D1AD227D08FB200F315A1 /* DirayModel.swift */; };
+		615DAC912806832600B83238 /* ImageFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615DAC902806832600B83238 /* ImageFileManager.swift */; };
+		617FA11C282E307A00C947DE /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617FA11B282E307A00C947DE /* UIViewController.swift */; };
 		6182F2D42755FEB0001848E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2D32755FEB0001848E0 /* AppDelegate.swift */; };
 		6182F2D62755FEB0001848E0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2D52755FEB0001848E0 /* SceneDelegate.swift */; };
 		6182F2D82755FEB0001848E0 /* ExchangerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2D72755FEB0001848E0 /* ExchangerViewController.swift */; };
@@ -22,7 +27,7 @@
 		6182F2EF275F6C13001848E0 /* ExchangeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2EE275F6C13001848E0 /* ExchangeModel.swift */; };
 		6182F2F12761C467001848E0 /* ExchangerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2F02761C467001848E0 /* ExchangerViewModel.swift */; };
 		6182F2F52761C4AE001848E0 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2F42761C4AE001848E0 /* TimerViewController.swift */; };
-		6182F2F72761C4BC001848E0 /* DiaryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2F62761C4BC001848E0 /* DiaryCollectionViewController.swift */; };
+		6182F2F72761C4BC001848E0 /* DiaryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2F62761C4BC001848E0 /* DiaryListViewController.swift */; };
 		6182F2FA2761C799001848E0 /* UITabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F2F92761C799001848E0 /* UITabBar.swift */; };
 		6182F303276215FA001848E0 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F302276215FA001848E0 /* UIView.swift */; };
 		6182F30527623226001848E0 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F30427623226001848E0 /* UITextField.swift */; };
@@ -31,6 +36,8 @@
 		6182F3192769FFE4001848E0 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F3182769FFE4001848E0 /* UIColor.swift */; };
 		6182F31B276A1765001848E0 /* DiaryIngredientsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6182F31A276A1765001848E0 /* DiaryIngredientsTableViewCell.swift */; };
 		6194401027C4F6AB008B7DD2 /* UIPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6194400F27C4F6AB008B7DD2 /* UIPickerView.swift */; };
+		6194401227CB85B9008B7DD2 /* UIPHPickerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6194401127CB85B9008B7DD2 /* UIPHPickerConfiguration.swift */; };
+		61B2E42B27CC99C200CE0948 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61B2E42A27CC99C200CE0948 /* UIImageView.swift */; };
 		61BA816627D5E01500B08955 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61BA816527D5E01500B08955 /* AudioToolbox.framework */; };
 		61BA816A27D7059000B08955 /* tabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BA816927D7059000B08955 /* tabBarController.swift */; };
 		61C8EA1327A287EC003FD11B /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C8EA1227A287EC003FD11B /* Observable.swift */; };
@@ -39,11 +46,16 @@
 
 /* Begin PBXFileReference section */
 		3648401ECB54DBF7FE4CE346 /* Pods-LetsBake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsBake.release.xcconfig"; path = "Target Support Files/Pods-LetsBake/Pods-LetsBake.release.xcconfig"; sourceTree = "<group>"; };
+		611BD49B27DDEF27007D5C79 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		61288CA8279004330062579F /* UISlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISlider.swift; sourceTree = "<group>"; };
 		61288CAA279285A70062579F /* DiaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewController.swift; sourceTree = "<group>"; };
 		61288CAE2797E8380062579F /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		61288CB02797E8430062579F /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 		613C593427C227F7003FF3F7 /* StaticData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticData.swift; sourceTree = "<group>"; };
+		615D1AD027D08F9F00F315A1 /* DiaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryViewModel.swift; sourceTree = "<group>"; };
+		615D1AD227D08FB200F315A1 /* DirayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirayModel.swift; sourceTree = "<group>"; };
+		615DAC902806832600B83238 /* ImageFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFileManager.swift; sourceTree = "<group>"; };
+		617FA11B282E307A00C947DE /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		6182F2D02755FEB0001848E0 /* LetsBake.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LetsBake.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6182F2D32755FEB0001848E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6182F2D52755FEB0001848E0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -56,7 +68,7 @@
 		6182F2EE275F6C13001848E0 /* ExchangeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeModel.swift; sourceTree = "<group>"; };
 		6182F2F02761C467001848E0 /* ExchangerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangerViewModel.swift; sourceTree = "<group>"; };
 		6182F2F42761C4AE001848E0 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
-		6182F2F62761C4BC001848E0 /* DiaryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryCollectionViewController.swift; sourceTree = "<group>"; };
+		6182F2F62761C4BC001848E0 /* DiaryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryListViewController.swift; sourceTree = "<group>"; };
 		6182F2F92761C799001848E0 /* UITabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBar.swift; sourceTree = "<group>"; };
 		6182F302276215FA001848E0 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		6182F30427623226001848E0 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
@@ -65,6 +77,8 @@
 		6182F3182769FFE4001848E0 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		6182F31A276A1765001848E0 /* DiaryIngredientsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryIngredientsTableViewCell.swift; sourceTree = "<group>"; };
 		6194400F27C4F6AB008B7DD2 /* UIPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPickerView.swift; sourceTree = "<group>"; };
+		6194401127CB85B9008B7DD2 /* UIPHPickerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIPHPickerConfiguration.swift; sourceTree = "<group>"; };
+		61B2E42A27CC99C200CE0948 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		61BA816527D5E01500B08955 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		61BA816927D7059000B08955 /* tabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabBarController.swift; sourceTree = "<group>"; };
 		61C8EA1227A287EC003FD11B /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
@@ -141,7 +155,7 @@
 		6182F2EC275F6AE2001848E0 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6182F2F62761C4BC001848E0 /* DiaryCollectionViewController.swift */,
+				6182F2F62761C4BC001848E0 /* DiaryListViewController.swift */,
 				6182F3162768C405001848E0 /* DiaryCollectionViewCell.swift */,
 				6182F30E27678817001848E0 /* DiaryWriteViewController.swift */,
 				6182F31A276A1765001848E0 /* DiaryIngredientsTableViewCell.swift */,
@@ -159,6 +173,9 @@
 				6182F3182769FFE4001848E0 /* UIColor.swift */,
 				61288CA8279004330062579F /* UISlider.swift */,
 				6194400F27C4F6AB008B7DD2 /* UIPickerView.swift */,
+				6194401127CB85B9008B7DD2 /* UIPHPickerConfiguration.swift */,
+				61B2E42A27CC99C200CE0948 /* UIImageView.swift */,
+				617FA11B282E307A00C947DE /* UIViewController.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -228,6 +245,7 @@
 		6182F30C27678749001848E0 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				615D1AD027D08F9F00F315A1 /* DiaryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -235,6 +253,8 @@
 		6182F30D27678752001848E0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				615D1AD227D08FB200F315A1 /* DirayModel.swift */,
+				611BD49B27DDEF27007D5C79 /* RealmManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -245,6 +265,7 @@
 				61C8EA1227A287EC003FD11B /* Observable.swift */,
 				613C593427C227F7003FF3F7 /* StaticData.swift */,
 				61BA816927D7059000B08955 /* tabBarController.swift */,
+				615DAC902806832600B83238 /* ImageFileManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -279,6 +300,7 @@
 				6182F2CC2755FEB0001848E0 /* Sources */,
 				6182F2CD2755FEB0001848E0 /* Frameworks */,
 				6182F2CE2755FEB0001848E0 /* Resources */,
+				B1A7088378494C2D1208BC97 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -376,6 +398,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B1A7088378494C2D1208BC97 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LetsBake/Pods-LetsBake-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LetsBake/Pods-LetsBake-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LetsBake/Pods-LetsBake-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -383,6 +422,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				615D1AD127D08F9F00F315A1 /* DiaryViewModel.swift in Sources */,
+				6194401227CB85B9008B7DD2 /* UIPHPickerConfiguration.swift in Sources */,
 				613C593527C227F7003FF3F7 /* StaticData.swift in Sources */,
 				6182F2D82755FEB0001848E0 /* ExchangerViewController.swift in Sources */,
 				6182F2F12761C467001848E0 /* ExchangerViewModel.swift in Sources */,
@@ -394,13 +435,18 @@
 				6182F2F52761C4AE001848E0 /* TimerViewController.swift in Sources */,
 				6182F31B276A1765001848E0 /* DiaryIngredientsTableViewCell.swift in Sources */,
 				61288CA9279004330062579F /* UISlider.swift in Sources */,
+				611BD49C27DDEF27007D5C79 /* RealmManager.swift in Sources */,
+				617FA11C282E307A00C947DE /* UIViewController.swift in Sources */,
 				6182F3172768C405001848E0 /* DiaryCollectionViewCell.swift in Sources */,
 				61C8EA1327A287EC003FD11B /* Observable.swift in Sources */,
-				6182F2F72761C4BC001848E0 /* DiaryCollectionViewController.swift in Sources */,
+				6182F2F72761C4BC001848E0 /* DiaryListViewController.swift in Sources */,
 				6182F2D42755FEB0001848E0 /* AppDelegate.swift in Sources */,
+				61B2E42B27CC99C200CE0948 /* UIImageView.swift in Sources */,
 				61288CAF2797E8380062579F /* TimerViewModel.swift in Sources */,
 				6182F30F27678817001848E0 /* DiaryWriteViewController.swift in Sources */,
 				61288CAB279285A70062579F /* DiaryDetailViewController.swift in Sources */,
+				615D1AD327D08FB200F315A1 /* DirayModel.swift in Sources */,
+				615DAC912806832600B83238 /* ImageFileManager.swift in Sources */,
 				6182F2D62755FEB0001848E0 /* SceneDelegate.swift in Sources */,
 				61288CB12797E8430062579F /* TimerModel.swift in Sources */,
 				6182F2FA2761C799001848E0 /* UITabBar.swift in Sources */,

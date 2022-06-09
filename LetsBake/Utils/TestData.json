@@ -1,0 +1,27 @@
+//
+//  TestData.json
+//  LetsBake
+//
+//  Created by Daye on 2022/03/06.
+//
+
+{
+  "title" : "레몬케이크",
+  "date" : "YYYY-MM-DD",
+  "photo" : "레몬케이크+YYYY-MM-DD+image.png",
+  "ingredients" :
+  [
+    {
+      "name" : "밀가루",
+      "quantity" : 800,
+      "unit" : "g"
+    },
+    {
+      "name" : "레몬즙",
+      "quantity" : 30,
+      "unit" : "g"
+    }
+  ],
+    "receipe" : "준비한다. 어쩌구 저쩌구.",
+    "rating" : "4"
+}

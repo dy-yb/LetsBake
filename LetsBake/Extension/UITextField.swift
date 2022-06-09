@@ -9,6 +9,12 @@ import Foundation
 import UIKit
 
 extension UITextField {
+  func checkMaxLength(textField: UITextField, maxLength: Int) {
+    if textField.text?.count ?? 0 > maxLength {
+      textField.deleteBackward()
+    }
+  }
+  
   func setUnderLineToTextField() {
     let border = CALayer()
     border.frame = CGRect(x: 0, y: frame.size.height-1, width: frame.width, height: 1)
