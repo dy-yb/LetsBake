@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 enum CollectionViewMode {
   case view

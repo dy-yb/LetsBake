@@ -5,7 +5,6 @@ use_frameworks!
 target 'LetsBake' do
   # Comment the next line if you don't want to use dynamic frameworks
 	pod 'SwiftLint'
-	pod 'RealmSwift'
   # Pods for LetsBake
 
 end

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 protocol DiaryDetailViewDelegate: AnyObject {
   func updateDiaryDetailView(editedDiary: DiaryModel)

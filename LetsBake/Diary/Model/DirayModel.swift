@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import RealmSwift
 
 class DiaryModel: Object {
   @objc dynamic var idx: Int = 0
