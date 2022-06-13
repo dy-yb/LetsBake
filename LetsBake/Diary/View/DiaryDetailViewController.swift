@@ -17,7 +17,7 @@ class DiaryDetailViewController: UIViewController {
 
   static let cellID = "DiaryIngredientCell"
 
-  var ingredients: List<Ingredient>?
+  var ingredients: [String] = []
   var indexPath: IndexPath = [0, 0]
   var selectedDiary: DiaryModel?
 
@@ -305,23 +305,21 @@ class DiaryDetailViewController: UIViewController {
   }
 
   @objc func tapEditButton(_ sender: UIButton) {
-    if let selectedDiary = selectedDiary {
       let diaryWriteViewController = DiaryWriteViewController()
       diaryWriteViewController.setSeletedDiary(selectedDiary: selectedDiary)
       diaryWriteViewController.delegate = self
       self.hidesBottomBarWhenPushed = true
       navigationController?.pushViewController(diaryWriteViewController, animated: true)
-    }
   }
 
-  func setData(selectedDiary: DiaryModel?) {
+  func setData(selectedDiary: DiaryModel) {
     self.selectedDiary = selectedDiary
-    self.titleTextField.text = selectedDiary?.title
-    self.dateTextField.text = selectedDiary?.dateToString(date: selectedDiary?.date)
-    self.receipeTextView.text = selectedDiary?.receipe
-    self.ingredients = selectedDiary?.ingredients
-    self.photoImageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: selectedDiary?.photo)
-    self.setRatingImageView(rating: selectedDiary?.rating)
+    self.titleTextField.text = selectedDiary.title
+    self.dateTextField.text = selectedDiary.date
+    self.receipeTextView.text = selectedDiary.receipe
+    self.ingredients = selectedDiary.ingredients
+    self.photoImageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: selectedDiary.photo)
+    self.setRatingImageView(rating: selectedDiary.rating)
   }
   
   func setRatingImageView(rating: Int?) {
@@ -351,14 +349,14 @@ extension DiaryDetailViewController: UITextFieldDelegate, UITextViewDelegate {
 
 extension DiaryDetailViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return ingredients?.count ?? 0
+    return ingredients.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let diaryIngredientsTableViewCell = tableView.dequeueReusableCell(withIdentifier: DiaryWriteViewController.cellID, for: indexPath) as? DiaryIngredientsTableViewCell else {
       return .init()
     }
-    diaryIngredientsTableViewCell.ingredientLabel.text = ingredients?[indexPath.row].ingredient
+    diaryIngredientsTableViewCell.ingredientLabel.text = ingredients[indexPath.row]
     return diaryIngredientsTableViewCell
   }
 

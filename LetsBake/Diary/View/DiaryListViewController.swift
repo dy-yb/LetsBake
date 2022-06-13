@@ -17,21 +17,26 @@ class DiaryListViewController: UIViewController {
   // MARK: - Properties
   
   static let cellID = "DiaryCollectionViewCell"
-  var savedDiary: Results<DiaryModel>?
+//  var diaryViewModel: DiaryViewModel?
+  var diaryDataManager = DiaryDataManager.shared
+  
+  lazy var savedDiary: [DiaryModel]? = {
+    return self.diaryDataManager.fetchDiary()
+  }()
   var collectionViewMode: CollectionViewMode = .view
-
+  
   // MARK: - UI
-
+  
   lazy var rightBarButtonItem: UIBarButtonItem = {
     let barButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(clickRightBarButtonItem(_:)))
     return barButtonItem
   }()
-
+  
   lazy var leftBarButtonItem: UIBarButtonItem = {
     let barButtonItem = UIBarButtonItem(title: "삭제", style: .plain, target: self, action: #selector(clickLeftBarButtonItem(_:)))
     return barButtonItem
   }()
-
+  
   let diaryCollectionView: UICollectionView = {
     let flowLayout = UICollectionViewFlowLayout.init()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -57,10 +62,9 @@ class DiaryListViewController: UIViewController {
   }
   
   // MARK: - Layout
-
+  
   func setView() {
     self.view.backgroundColor = .white
-    self.loadDiary()
     self.diaryCollectionView.dataSource = self
     self.diaryCollectionView.delegate = self
     self.view.addSubview(diaryCollectionView)
@@ -74,21 +78,15 @@ class DiaryListViewController: UIViewController {
       diaryCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ])
   }
-
+  
   func setNavigationBar() {
     self.navigationItem.title = "베이킹 일지"
     self.navigationItem.rightBarButtonItem = self.rightBarButtonItem
     self.navigationItem.leftBarButtonItem = self.leftBarButtonItem
   }
-
+  
   // MARK: - Functions
-
-  func loadDiary() {
-    let realm = RealmManager().realm
-    guard let diary = realm?.objects(DiaryModel.self).sorted(byKeyPath: "date", ascending: false) else { return }
-    self.savedDiary = diary
-  }
-
+  
   @objc func clickRightBarButtonItem(_ send: Any) {
     switch collectionViewMode {
     case .view:
@@ -101,7 +99,7 @@ class DiaryListViewController: UIViewController {
       self.leftBarButtonItem.title = "삭제"
     }
   }
-
+  
   @objc func clickLeftBarButtonItem(_ sender: UIBarButtonItem) {
     switch collectionViewMode {
     case .view:
@@ -113,12 +111,12 @@ class DiaryListViewController: UIViewController {
       self.leftBarButtonItem.title = "삭제"
     }
   }
-
+  
   func tapDeleteAlertAction(indexPath: IndexPath) {
-    if let savedDiary = savedDiary {
-      RealmManager().deleteObjcets(objc: savedDiary[indexPath.row])
-      ImageFileManager().deleteImageFromDocumentDirectory(imageName: savedDiary[indexPath.row].photo)
-    }
+    //    if let savedDiary = savedDiary {
+    //      //      RealmManager().deleteObjcets(objc: savedDiary[indexPath.row])
+    //      ImageFileManager().deleteImageFromDocumentDirectory(imageName: savedDiary[indexPath.row].photo)
+    //    }
     self.diaryCollectionView.deleteItems(at: [indexPath])
   }
 }
@@ -130,8 +128,8 @@ extension DiaryListViewController: UICollectionViewDataSource {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DiaryListViewController.cellID, for: indexPath) as? DiaryCollectionViewCell else {
       return UICollectionViewCell()
     }
-    if let diary = savedDiary?[indexPath.row] {
-      cell.configure(diary: diary)
+    if let savedDiary = savedDiary {
+      cell.configure(diary: savedDiary[indexPath.row])
     }
     return cell
   }
@@ -145,11 +143,14 @@ extension DiaryListViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     switch collectionViewMode {
     case .view:
-      let selectedDiary = self.savedDiary?[indexPath.row]
-      let diaryDetailView = DiaryDetailViewController()
-      diaryDetailView.setData(selectedDiary: selectedDiary)
-      diaryDetailView.indexPath = indexPath
-      navigationController?.pushViewController(diaryDetailView, animated: true)
+      if let savedDiary = self.savedDiary {
+        let selectedDiary = savedDiary[indexPath.row]
+        let diaryDetailView = DiaryDetailViewController()
+        diaryDetailView.setData(selectedDiary: selectedDiary)
+        diaryDetailView.indexPath = indexPath
+        navigationController?.pushViewController(diaryDetailView, animated: true)
+        
+      }
     case .remove:
       let alert = UIAlertController(title: "삭제하기", message: "해당 다이어리를 삭제하시겠어요?", preferredStyle: .alert)
       let deleteAction = UIAlertAction(title: "삭제", style: .default, handler: { _ in

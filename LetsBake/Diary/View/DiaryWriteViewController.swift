@@ -17,11 +17,14 @@ class DiaryWriteViewController: UIViewController {
   // MARK: - Properties
 
   weak var delegate: DiaryDetailViewDelegate?
+  //  var diaryViewModel: DiaryViewModel?
+  var diaryDataManager = DiaryDataManager.shared
+
   static let cellID = "DiaryIngredientCell"
   var diaryEditorMode: DiaryEditorMode = .new
   var indexPath: IndexPath?
   var selectedDiary: DiaryModel?
-  var ingredients: [Ingredient] = []
+  var ingredients: [String] = []
   var photoPath: String?
   let imageFileManager = ImageFileManager()
   
@@ -233,8 +236,9 @@ class DiaryWriteViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     navigationItem.title = "일지 작성"
+
     self.hideKeyboardWhenTappedAround()
-    self.setRatingImageView()
+    //    self.setRatingImageView()
     self.setView()
     self.layout()
   }
@@ -374,20 +378,20 @@ class DiaryWriteViewController: UIViewController {
     ])
   }
 
-  func setRatingImageView() {
-    for index in 0..<5 {
-      let imageView = UIImageView()
-      imageView.image = UIImage(named: "ic_rating_off")
-      if let rating = selectedDiary?.rating {
-        if index < rating {
-          imageView.image = UIImage(named: "ic_rating_on")
+    func setRatingImageView() {
+      for index in 0..<5 {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "ic_rating_off")
+        if let rating = selectedDiary?.rating {
+          if index < rating {
+            imageView.image = UIImage(named: "ic_rating_on")
+          }
         }
+        imageView.tag = index
+        ratingStarStackView.addArrangedSubview(imageView)
+        starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
       }
-      imageView.tag = index
-      ratingStarStackView.addArrangedSubview(imageView)
-      starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
     }
-  }
 
   @objc func tapSlider(_ sender: UISlider) {
     var intValue = Int(ceil(sender.value))
@@ -404,16 +408,16 @@ class DiaryWriteViewController: UIViewController {
     }
   }
 
-  func setSeletedDiary(selectedDiary: DiaryModel) {
+  func setSeletedDiary(selectedDiary: DiaryModel?) {
     self.diaryEditorMode = .edit
     self.selectedDiary = selectedDiary
-    self.titleTextField.text = selectedDiary.title
-    self.datePicker.date = selectedDiary.date
-    self.ingredients = Array(selectedDiary.ingredients)
-    if selectedDiary.photo != "" {
-      self.imageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: selectedDiary.photo)
+    self.titleTextField.text = selectedDiary?.title ?? ""
+    self.datePicker.date = selectedDiary?.stringToDate(stringDate: selectedDiary?.date ?? "") ?? Date()
+    self.ingredients = selectedDiary?.ingredients ?? []
+    if selectedDiary?.photo != "" {
+      self.imageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: selectedDiary?.photo)
     }
-    self.receipeTextView.text = selectedDiary.receipe
+    self.receipeTextView.text = selectedDiary?.receipe ?? ""
   }
 
   @objc func pickImage() {
@@ -424,7 +428,7 @@ class DiaryWriteViewController: UIViewController {
     let alert = UIAlertController(title: "재료 입력", message: nil, preferredStyle: .alert)
     let registerButton = UIAlertAction(title: "등록", style: .default, handler: { [weak self] _ in
       guard let ingredient = alert.textFields?[0].text else { return }
-      self?.ingredients.append(Ingredient(ingredient: ingredient))
+      self?.ingredients.append(ingredient)
       self?.ingredientsTableView.reloadData()
     })
     let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: nil)
@@ -441,7 +445,9 @@ class DiaryWriteViewController: UIViewController {
     formatter.dateFormat = "yyyy-MM-dd-hh-mm-ss-SSSS"
     let creationDate = formatter.string(from: Date())
 
-    self.photoPath = imageFileManager.saveImageToDocumentDirectory(imageName: creationDate, image: image)
+    self.photoPath = imageFileManager.saveImageToDocumentDirectory(
+      imageName: creationDate,
+      image: image)
   }
 
   @objc func tapDoneButton(_ sender: UIButton) {
@@ -451,12 +457,14 @@ class DiaryWriteViewController: UIViewController {
         self.imageSave(image: image)
       }
 
-      let id = RealmManager.incrementID()
       let newDiary = DiaryModel(
-        idx: id, title: titleTextField.text ?? "", date: datePicker.date, photo: photoPath ?? "", receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
+        title: titleTextField.text ?? "",
+        date: self.diaryDataManager.dateToString(date: datePicker.date),
+        photo: photoPath ?? "", receipe: receipeTextView.text ?? "",
+        rating: Int(ceil(ratingSlider.value)),
+        ingredients: self.ingredients)
 
-      newDiary.ingredients.append(objectsIn: self.ingredients)
-      RealmManager().saveObjects(objc: newDiary)
+      self.diaryDataManager.createDiary(diary: newDiary)
 
     case .edit:
       if let selectedDiary = selectedDiary {
@@ -467,9 +475,15 @@ class DiaryWriteViewController: UIViewController {
         }
 
         let editedDiary = DiaryModel(
-          idx: selectedDiary.idx, title: titleTextField.text ?? "", date: datePicker.date, photo: photoPath ?? "", receipe: receipeTextView.text ?? "", rating: Int(ceil(ratingSlider.value)))
-        RealmManager().updateObjects(objc: editedDiary)
-        self.delegate?.updateDiaryDetailView(editedDiary: editedDiary)
+          title: titleTextField.text ?? "",
+          date: self.diaryDataManager.dateToString(date: datePicker.date) ?? "",
+          photo: photoPath ?? "",
+          receipe: receipeTextView.text ?? "",
+          rating: Int(ceil(ratingSlider.value)),
+          ingredients: [])
+
+        //        RealmManager().updateObjects(objc: editedDiary)
+        //        self.delegate?.updateDiaryDetailView(editedDiary: editedDiary)
       }
     }
     self.navigationController?.popViewController(animated: true)
@@ -509,7 +523,7 @@ extension DiaryWriteViewController: UITableViewDataSource, UITableViewDelegate {
       return .init()
     }
     diaryIngredientsTableViewCell.selectionStyle = .none
-    diaryIngredientsTableViewCell.ingredientLabel.text = ingredients[indexPath.row].ingredient
+    diaryIngredientsTableViewCell.ingredientLabel.text = ingredients[indexPath.row]
 
     return diaryIngredientsTableViewCell
   }

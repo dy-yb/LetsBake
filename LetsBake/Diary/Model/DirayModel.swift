@@ -7,51 +7,19 @@
 
 import Foundation
 
-class DiaryModel: Object {
-  @objc dynamic var idx: Int = 0
-  @objc dynamic var title: String = ""
-  @objc dynamic var date: Date = Date()
-  @objc dynamic var photo: String = ""
-  @objc dynamic var receipe: String = ""
-  @objc dynamic var rating: Int = 0
-  let ingredients = List<Ingredient>()
+struct DiaryModel {
+  var title: String
+  var date: String
+  var photo: String
+  var receipe: String
+  var rating: Int
+  var ingredients: [String]
 
-  convenience init(
-    idx: Int,
-    title: String,
-    date: Date,
-    photo: String,
-    receipe: String,
-    rating: Int
-  ) {
-    self.init()
-
-    self.idx = idx
-    self.title = title
-    self.date = date
-    self.photo = photo
-    self.receipe = receipe
-    self.rating = rating
-  }
-
-  override static func primaryKey() -> String? {
-    return "idx"
-  }
-
-  func dateToString(date: Date?) -> String {
+  func stringToDate(stringDate: String) -> Date {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy/MM/dd a hh:mm"
     formatter.locale = Locale(identifier: "ko_KR")
-    return formatter.string(from: date ?? Date())
+    return formatter.date(from: stringDate) ?? Date()
   }
-}
 
-class Ingredient: Object {
-  @objc dynamic var ingredient: String = ""
-  let diary = LinkingObjects(fromType: DiaryModel.self, property: "ingredients")
-
-  convenience init(ingredient: String) {
-    self.init()
-    self.ingredient = ingredient
-  }
 }

@@ -17,6 +17,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     let tabBar = TabBarController()
 
+//    let diaryViewModel = DiaryViewModel()
+//    TabBarController().diaryView.diaryViewModel = diaryViewModel
+
     let timerModel = Time(hour: 0, minute: 0, second: 0)
     let timerViewModel = TimerViewModel(timerModel: timerModel)
     TabBarController().timerView.timerViewModel = timerViewModel

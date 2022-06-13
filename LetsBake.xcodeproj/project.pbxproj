@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		61215ACE28534413003FDCAA /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 61215ACC28534413003FDCAA /* Model.xcdatamodeld */; };
+		61215AD72856EC54003FDCAA /* DiaryDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61215AD62856EC54003FDCAA /* DiaryDataManager.swift */; };
 		61288CA9279004330062579F /* UISlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CA8279004330062579F /* UISlider.swift */; };
 		61288CAB279285A70062579F /* DiaryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CAA279285A70062579F /* DiaryDetailViewController.swift */; };
 		61288CAF2797E8380062579F /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61288CAE2797E8380062579F /* TimerViewModel.swift */; };
@@ -45,6 +47,8 @@
 
 /* Begin PBXFileReference section */
 		3648401ECB54DBF7FE4CE346 /* Pods-LetsBake.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LetsBake.release.xcconfig"; path = "Target Support Files/Pods-LetsBake/Pods-LetsBake.release.xcconfig"; sourceTree = "<group>"; };
+		61215ACD28534413003FDCAA /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		61215AD62856EC54003FDCAA /* DiaryDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDataManager.swift; sourceTree = "<group>"; };
 		61288CA8279004330062579F /* UISlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISlider.swift; sourceTree = "<group>"; };
 		61288CAA279285A70062579F /* DiaryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiaryDetailViewController.swift; sourceTree = "<group>"; };
 		61288CAE2797E8380062579F /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 		6182F2D22755FEB0001848E0 /* LetsBake */ = {
 			isa = PBXGroup;
 			children = (
+				61215ACC28534413003FDCAA /* Model.xcdatamodeld */,
 				61F84F5E27BA3592001B8EDE /* Utils */,
 				6182F2F82761C780001848E0 /* Extension */,
 				6182F308276786FA001848E0 /* Diary */,
@@ -209,6 +214,7 @@
 		6182F308276786FA001848E0 /* Diary */ = {
 			isa = PBXGroup;
 			children = (
+				61215AD62856EC54003FDCAA /* DiaryDataManager.swift */,
 				6182F30D27678752001848E0 /* Model */,
 				6182F30C27678749001848E0 /* ViewModel */,
 				6182F2EC275F6AE2001848E0 /* View */,
@@ -404,6 +410,7 @@
 				615D1AD127D08F9F00F315A1 /* DiaryViewModel.swift in Sources */,
 				6194401227CB85B9008B7DD2 /* UIPHPickerConfiguration.swift in Sources */,
 				613C593527C227F7003FF3F7 /* StaticData.swift in Sources */,
+				61215AD72856EC54003FDCAA /* DiaryDataManager.swift in Sources */,
 				6182F2D82755FEB0001848E0 /* ExchangerViewController.swift in Sources */,
 				6182F2F12761C467001848E0 /* ExchangerViewModel.swift in Sources */,
 				61BA816A27D7059000B08955 /* tabBarController.swift in Sources */,
@@ -429,6 +436,7 @@
 				61288CB12797E8430062579F /* TimerModel.swift in Sources */,
 				6182F2FA2761C799001848E0 /* UITabBar.swift in Sources */,
 				6182F30527623226001848E0 /* UITextField.swift in Sources */,
+				61215ACE28534413003FDCAA /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -650,6 +658,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		61215ACC28534413003FDCAA /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				61215ACD28534413003FDCAA /* Model.xcdatamodel */,
+			);
+			currentVersion = 61215ACD28534413003FDCAA /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6182F2C82755FEB0001848E0 /* Project object */;
 }

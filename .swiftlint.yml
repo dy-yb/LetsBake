@@ -3,6 +3,9 @@ disabled_rules:
 - line_length
 - trailing_semicolon
 - cyclomatic_complexity
+- force_cast
+- force_try
+- type_body_length
 
 excluded:
   - Pods
