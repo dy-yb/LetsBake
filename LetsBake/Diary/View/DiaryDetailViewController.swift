@@ -315,8 +315,8 @@ class DiaryDetailViewController: UIViewController {
   func setData(selectedDiary: DiaryModel) {
     self.selectedDiary = selectedDiary
     self.titleTextField.text = selectedDiary.title
-    self.dateTextField.text = selectedDiary.date
-    self.receipeTextView.text = selectedDiary.receipe
+    self.dateTextField.text = selectedDiary.dateToString(date: selectedDiary.date)
+    self.receipeTextView.text = selectedDiary.recipe
     self.ingredients = selectedDiary.ingredients
     self.photoImageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: selectedDiary.photo)
     self.setRatingImageView(rating: selectedDiary.rating)

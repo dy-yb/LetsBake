@@ -14,7 +14,7 @@ protocol DiaryViewModelProtocol {
 
 class DiaryViewModel {
 
-  var diaryDataManager = DiaryDataManager.shared
+  var diaryDataManager = CoreDataManager.shared
 
   func dateToString(date: Date?) -> String {
     let formatter = DateFormatter()

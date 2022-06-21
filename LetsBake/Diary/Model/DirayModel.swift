@@ -9,9 +9,12 @@ import Foundation
 
 struct DiaryModel {
   var title: String
-  var date: String
+  var creationDate: String {
+    return dateToString(date: Date())
+  }
+  var date: Date
   var photo: String
-  var receipe: String
+  var recipe: String
   var rating: Int
   var ingredients: [String]
 
@@ -21,5 +24,11 @@ struct DiaryModel {
     formatter.locale = Locale(identifier: "ko_KR")
     return formatter.date(from: stringDate) ?? Date()
   }
-
+  
+  func dateToString(date: Date?) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy/MM/dd a hh:mm"
+    formatter.locale = Locale(identifier: "ko_KR")
+    return formatter.string(from: date ?? Date())
+  }
 }

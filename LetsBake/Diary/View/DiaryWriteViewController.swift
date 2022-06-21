@@ -18,7 +18,7 @@ class DiaryWriteViewController: UIViewController {
 
   weak var delegate: DiaryDetailViewDelegate?
   //  var diaryViewModel: DiaryViewModel?
-  var diaryDataManager = DiaryDataManager.shared
+  var diaryDataManager = CoreDataManager.shared
 
   static let cellID = "DiaryIngredientCell"
   var diaryEditorMode: DiaryEditorMode = .new
@@ -168,13 +168,13 @@ class DiaryWriteViewController: UIViewController {
     return button
   }()
 
-  let receipeInputView: UIView = {
+  let recipeInputView: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
-  let receipeInputLabel: UILabel = {
+  let recipeInputLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "상세 레시피"
@@ -182,7 +182,7 @@ class DiaryWriteViewController: UIViewController {
     return label
   }()
 
-  let receipeTextView: UITextView = {
+  let recipeTextView: UITextView = {
     let textView = UITextView()
     textView.translatesAutoresizingMaskIntoConstraints = false
     textView.backgroundColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
@@ -248,7 +248,7 @@ class DiaryWriteViewController: UIViewController {
     dateInputStackView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
     imageInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
     ingredientsInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
-    receipeInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
+    recipeInputView.layer.addBorder([.bottom], color: .darkGray, width: 1.0)
   }
 
   // MARK: - Layout
@@ -273,7 +273,7 @@ class DiaryWriteViewController: UIViewController {
     contentView.addSubview(imageInputView)
     contentView.addSubview(ingredientsInputLabel)
     contentView.addSubview(ingredientsInputView)
-    contentView.addSubview(receipeInputView)
+    contentView.addSubview(recipeInputView)
     contentView.addSubview(ratingLabel)
     contentView.addSubview(ratingStarStackView)
     contentView.addSubview(ratingSlider)
@@ -286,8 +286,8 @@ class DiaryWriteViewController: UIViewController {
     ingredientsInputView.addSubview(ingredientsTableView)
     ingredientsInputView.addSubview(addIngredintButton)
 
-    receipeInputView.addSubview(receipeInputLabel)
-    receipeInputView.addSubview(receipeTextView)
+    recipeInputView.addSubview(recipeInputLabel)
+    recipeInputView.addSubview(recipeTextView)
   }
 
   func layout() {
@@ -346,20 +346,20 @@ class DiaryWriteViewController: UIViewController {
       addIngredintButton.bottomAnchor.constraint(equalTo: ingredientsTableView.bottomAnchor, constant: 35),
       addIngredintButton.centerXAnchor.constraint(equalTo: ingredientsTableView.centerXAnchor),
 
-      receipeInputView.topAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: 20),
-      receipeInputView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30),
-      receipeInputView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 30),
-      receipeInputView.heightAnchor.constraint(equalToConstant: 400),
+      recipeInputView.topAnchor.constraint(equalTo: ingredientsInputView.bottomAnchor, constant: 20),
+      recipeInputView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -30),
+      recipeInputView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 30),
+      recipeInputView.heightAnchor.constraint(equalToConstant: 400),
 
-      receipeInputLabel.topAnchor.constraint(equalTo: receipeInputView.topAnchor),
-      receipeInputLabel.leftAnchor.constraint(equalTo: receipeTextView.leftAnchor),
+      recipeInputLabel.topAnchor.constraint(equalTo: recipeInputView.topAnchor),
+      recipeInputLabel.leftAnchor.constraint(equalTo: recipeTextView.leftAnchor),
 
-      receipeTextView.topAnchor.constraint(equalTo: receipeInputLabel.bottomAnchor, constant: 10),
-      receipeTextView.leftAnchor.constraint(equalTo: receipeInputView.leftAnchor),
-      receipeTextView.rightAnchor.constraint(equalTo: receipeInputView.rightAnchor),
-      receipeTextView.bottomAnchor.constraint(equalTo: receipeInputView.bottomAnchor, constant: -30),
+      recipeTextView.topAnchor.constraint(equalTo: recipeInputLabel.bottomAnchor, constant: 10),
+      recipeTextView.leftAnchor.constraint(equalTo: recipeInputView.leftAnchor),
+      recipeTextView.rightAnchor.constraint(equalTo: recipeInputView.rightAnchor),
+      recipeTextView.bottomAnchor.constraint(equalTo: recipeInputView.bottomAnchor, constant: -30),
 
-      ratingLabel.topAnchor.constraint(equalTo: receipeInputView.bottomAnchor, constant: 20),
+      ratingLabel.topAnchor.constraint(equalTo: recipeInputView.bottomAnchor, constant: 20),
       ratingLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 30),
 
       ratingSlider.topAnchor.constraint(equalTo: ratingLabel.bottomAnchor, constant: 10),
@@ -412,12 +412,12 @@ class DiaryWriteViewController: UIViewController {
     self.diaryEditorMode = .edit
     self.selectedDiary = selectedDiary
     self.titleTextField.text = selectedDiary?.title ?? ""
-    self.datePicker.date = selectedDiary?.stringToDate(stringDate: selectedDiary?.date ?? "") ?? Date()
+    self.datePicker.date = selectedDiary?.date ?? Date()
     self.ingredients = selectedDiary?.ingredients ?? []
     if selectedDiary?.photo != "" {
       self.imageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: selectedDiary?.photo)
     }
-    self.receipeTextView.text = selectedDiary?.receipe ?? ""
+    self.recipeTextView.text = selectedDiary?.recipe ?? ""
   }
 
   @objc func pickImage() {
@@ -459,12 +459,12 @@ class DiaryWriteViewController: UIViewController {
 
       let newDiary = DiaryModel(
         title: titleTextField.text ?? "",
-        date: self.diaryDataManager.dateToString(date: datePicker.date),
-        photo: photoPath ?? "", receipe: receipeTextView.text ?? "",
+        date: datePicker.date,
+        photo: photoPath ?? "", recipe: recipeTextView.text ?? "",
         rating: Int(ceil(ratingSlider.value)),
         ingredients: self.ingredients)
 
-      self.diaryDataManager.createDiary(diary: newDiary)
+//      self.diaryDataManager.createDiary(diary: newDiary)
 
     case .edit:
       if let selectedDiary = selectedDiary {
@@ -476,9 +476,9 @@ class DiaryWriteViewController: UIViewController {
 
         let editedDiary = DiaryModel(
           title: titleTextField.text ?? "",
-          date: self.diaryDataManager.dateToString(date: datePicker.date) ?? "",
+          date: datePicker.date,
           photo: photoPath ?? "",
-          receipe: receipeTextView.text ?? "",
+          recipe: recipeTextView.text ?? "",
           rating: Int(ceil(ratingSlider.value)),
           ingredients: [])
 

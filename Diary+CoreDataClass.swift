@@ -2,13 +2,14 @@
 //  Diary+CoreDataClass.swift
 //  
 //
-//  Created by Daye on 2022/06/12.
+//  Created by Daye on 2022/06/21.
 //
 //
 
 import Foundation
 import CoreData
 
-@objc(Diary)
+
 public class Diary: NSManagedObject {
+
 }

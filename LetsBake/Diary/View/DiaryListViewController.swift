@@ -18,7 +18,7 @@ class DiaryListViewController: UIViewController {
   
   static let cellID = "DiaryCollectionViewCell"
 //  var diaryViewModel: DiaryViewModel?
-  var diaryDataManager = DiaryDataManager.shared
+  var diaryDataManager = CoreDataManager.shared
   
   lazy var savedDiary: [DiaryModel]? = {
     return self.diaryDataManager.fetchDiary()
@@ -113,10 +113,10 @@ class DiaryListViewController: UIViewController {
   }
   
   func tapDeleteAlertAction(indexPath: IndexPath) {
-    //    if let savedDiary = savedDiary {
-    //      //      RealmManager().deleteObjcets(objc: savedDiary[indexPath.row])
-    //      ImageFileManager().deleteImageFromDocumentDirectory(imageName: savedDiary[indexPath.row].photo)
-    //    }
+        if let savedDiary = savedDiary {
+//          diaryDataManager.deleteDiary(diary: savedDiary[indexPath.row])
+          ImageFileManager().deleteImageFromDocumentDirectory(imageName: savedDiary[indexPath.row].photo)
+        }
     self.diaryCollectionView.deleteItems(at: [indexPath])
   }
 }
