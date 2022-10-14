@@ -2,10 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Diary+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:Diary+CoreDataProperties.swift">
+      location = "group:Model.xcdatamodeld">
    </FileRef>
    <FileRef
       location = "group:LetsBake.xcodeproj">

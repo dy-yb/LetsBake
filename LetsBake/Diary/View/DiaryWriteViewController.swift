@@ -378,20 +378,20 @@ class DiaryWriteViewController: UIViewController {
     ])
   }
 
-    func setRatingImageView() {
-      for index in 0..<5 {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "ic_rating_off")
-        if let rating = selectedDiary?.rating {
-          if index < rating {
-            imageView.image = UIImage(named: "ic_rating_on")
-          }
+  func setRatingImageView() {
+    for index in 0..<5 {
+      let imageView = UIImageView()
+      imageView.image = UIImage(named: "ic_rating_off")
+      if let rating = selectedDiary?.rating {
+        if index < rating {
+          imageView.image = UIImage(named: "ic_rating_on")
         }
-        imageView.tag = index
-        ratingStarStackView.addArrangedSubview(imageView)
-        starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
       }
+      imageView.tag = index
+      ratingStarStackView.addArrangedSubview(imageView)
+      starImageViews.append(ratingStarStackView.subviews[index] as? UIImageView ?? UIImageView())
     }
+  }
 
   @objc func tapSlider(_ sender: UISlider) {
     var intValue = Int(ceil(sender.value))
@@ -417,7 +417,7 @@ class DiaryWriteViewController: UIViewController {
     if selectedDiary?.photo != "" {
       self.imageView.image = ImageFileManager().loadImageFromDocumentDirectgory(imageName: selectedDiary?.photo)
     }
-    self.recipeTextView.text = selectedDiary?.recipe ?? ""
+    self.recipeTextView.text = selectedDiary?.receipe ?? ""
   }
 
   @objc func pickImage() {
@@ -460,11 +460,12 @@ class DiaryWriteViewController: UIViewController {
       let newDiary = DiaryModel(
         title: titleTextField.text ?? "",
         date: datePicker.date,
-        photo: photoPath ?? "", recipe: recipeTextView.text ?? "",
+        photo: photoPath ?? "",
+        receipe: recipeTextView.text ?? "",
         rating: Int(ceil(ratingSlider.value)),
         ingredients: self.ingredients)
 
-//      self.diaryDataManager.createDiary(diary: newDiary)
+      self.diaryDataManager.saveDiary(diary: newDiary)
 
     case .edit:
       if let selectedDiary = selectedDiary {
@@ -478,12 +479,12 @@ class DiaryWriteViewController: UIViewController {
           title: titleTextField.text ?? "",
           date: datePicker.date,
           photo: photoPath ?? "",
-          recipe: recipeTextView.text ?? "",
+          receipe: recipeTextView.text ?? "",
           rating: Int(ceil(ratingSlider.value)),
           ingredients: [])
 
         //        RealmManager().updateObjects(objc: editedDiary)
-        //        self.delegate?.updateDiaryDetailView(editedDiary: editedDiary)
+        self.delegate?.updateDiaryDetailView(editedDiary: editedDiary)
       }
     }
     self.navigationController?.popViewController(animated: true)

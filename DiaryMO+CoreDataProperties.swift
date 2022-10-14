@@ -1,5 +1,5 @@
 //
-//  Diary+CoreDataProperties.swift
+//  DiaryMO+CoreDataProperties.swift
 //  
 //
 //  Created by Daye on 2022/10/11.
@@ -9,10 +9,11 @@
 import Foundation
 import CoreData
 
-extension Diary {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<Diary> {
-        return NSFetchRequest<Diary>(entityName: "Diary")
+extension DiaryMO {
+
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<DiaryMO> {
+        return NSFetchRequest<DiaryMO>(entityName: "Diary")
     }
 
     @NSManaged public var creationDate: String?

@@ -9,7 +9,6 @@ import Foundation
 
 protocol DiaryViewModelProtocol {
   func dateToString(date: Date?) -> String
-
 }
 
 class DiaryViewModel {

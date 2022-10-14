@@ -14,7 +14,7 @@ struct DiaryModel {
   }
   var date: Date
   var photo: String
-  var recipe: String
+  var receipe: String
   var rating: Int
   var ingredients: [String]
 
