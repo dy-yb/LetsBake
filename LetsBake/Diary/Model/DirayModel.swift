@@ -8,6 +8,7 @@
 import Foundation
 
 struct DiaryModel {
+//  let id: Int
   var title: String
   var creationDate: String {
     return dateToString(date: Date())

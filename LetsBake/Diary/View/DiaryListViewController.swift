@@ -43,6 +43,7 @@ class DiaryListViewController: UIViewController {
     collectionView.translatesAutoresizingMaskIntoConstraints = false
     collectionView.register(DiaryCollectionViewCell.self, forCellWithReuseIdentifier: DiaryListViewController.cellID)
     collectionView.allowsSelection = true
+    collectionView.backgroundColor = .clear
     return collectionView
   }()
   

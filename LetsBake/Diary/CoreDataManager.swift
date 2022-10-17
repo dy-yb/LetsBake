@@ -51,6 +51,7 @@ class CoreDataManager {
         result.append(
           DiaryModel(
             title: $0.title ?? "",
+//            creationDate: $0.creationDate,
             date: $0.date ?? Date(),
             photo: $0.photo ?? "",
             receipe: $0.receipe ?? "",
@@ -66,7 +67,7 @@ class CoreDataManager {
     }
   }
 
-  func updateDiary(editedData: DiaryMO, editedDiary: DiaryMO) {
+  func updateDiary(editedData: DiaryModel, editedDiary: DiaryMO) {
     let context = self.container.viewContext
 
     editedDiary.setValue(editedData.creationDate, forKey: "creationDate")
